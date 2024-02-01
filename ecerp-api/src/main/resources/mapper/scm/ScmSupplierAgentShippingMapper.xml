@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.ScmSupplierAgentShippingMapper">
+    
+    <resultMap type="ScmSupplierAgentShipping" id="ScmSupplierAgentShippingResult">
+        <result property="id"    column="id"    />
+        <result property="shopId"    column="shop_id"    />
+        <result property="shopType"    column="shop_type"    />
+        <result property="supplierId"    column="supplier_id"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="erpOrderItemId"    column="erp_order_item_id"    />
+        <result property="erpOrderId"    column="erp_order_id"    />
+        <result property="orderDate"    column="order_date"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="specId"    column="spec_id"    />
+        <result property="goodsTitle"    column="goods_title"    />
+        <result property="goodsImg"    column="goods_img"    />
+        <result property="goodsNum"    column="goods_num"    />
+        <result property="goodsSpec"    column="goods_spec"    />
+        <result property="specNum"    column="spec_num"    />
+        <result property="goodsPrice"    column="goods_price"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="remark"    column="remark"    />
+        <result property="shipCompany"    column="ship_company"    />
+        <result property="shipNo"    column="ship_no"    />
+        <result property="shipCost"    column="ship_cost"    />
+        <result property="shipTime"    column="ship_time"    />
+        <result property="status"    column="status"    />
+        <result property="itemAmount"    column="item_amount"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectScmSupplierAgentShippingVo">
+        select id, shop_id, shop_type, supplier_id, order_num,erp_order_id, erp_order_item_id, order_date, goods_id, spec_id, goods_title, goods_img, goods_num, goods_spec, spec_num, goods_price, quantity, remark, ship_company, ship_no, ship_cost, ship_time, status, item_amount, create_time, create_by, update_by, update_time from scm_supplier_agent_shipping
+    </sql>
+
+    <select id="selectScmSupplierAgentShippingList" parameterType="ScmSupplierAgentShipping" resultMap="ScmSupplierAgentShippingResult">
+        <include refid="selectScmSupplierAgentShippingVo"/>
+        <where>  
+            <if test="shopId != null "> and shop_id = #{shopId}</if>
+            <if test="shopType != null "> and shop_type = #{shopType}</if>
+            <if test="supplierId != null "> and supplier_id = #{supplierId}</if>
+            <if test="orderNum != null  and orderNum != ''"> and order_num = #{orderNum}</if>
+
+            <if test="orderDate != null "> and order_date = #{orderDate}</if>
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="specId != null "> and spec_id = #{specId}</if>
+            <if test="goodsTitle != null  and goodsTitle != ''"> and goods_title = #{goodsTitle}</if>
+            <if test="goodsImg != null  and goodsImg != ''"> and goods_img = #{goodsImg}</if>
+            <if test="goodsNum != null  and goodsNum != ''"> and goods_num = #{goodsNum}</if>
+            <if test="goodsSpec != null  and goodsSpec != ''"> and goods_spec = #{goodsSpec}</if>
+            <if test="specNum != null  and specNum != ''"> and spec_num = #{specNum}</if>
+            <if test="goodsPrice != null "> and goods_price = #{goodsPrice}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="shipCompany != null  and shipCompany != ''"> and ship_company = #{shipCompany}</if>
+            <if test="shipNo != null  and shipNo != ''"> and ship_no = #{shipNo}</if>
+            <if test="shipCost != null "> and ship_cost = #{shipCost}</if>
+            <if test="shipTime != null "> and ship_time = #{shipTime}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="itemAmount != null "> and item_amount = #{itemAmount}</if>
+        </where>
+    </select>
+    
+    <select id="selectScmSupplierAgentShippingById" parameterType="Long" resultMap="ScmSupplierAgentShippingResult">
+        <include refid="selectScmSupplierAgentShippingVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertScmSupplierAgentShipping" parameterType="ScmSupplierAgentShipping" useGeneratedKeys="true" keyProperty="id">
+        insert into scm_supplier_agent_shipping
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shopId != null">shop_id,</if>
+            <if test="shopType != null">shop_type,</if>
+            <if test="supplierId != null">supplier_id,</if>
+            <if test="orderNum != null and orderNum != ''">order_num,</if>
+            <if test="erpOrderId != null and erpOrderId != ''">erp_order_id,</if>
+            <if test="erpOrderItemId != null and erpOrderItemId != ''">erp_order_item_id,</if>
+            <if test="orderDate != null">order_date,</if>
+            <if test="goodsId != null">goods_id,</if>
+            <if test="specId != null">spec_id,</if>
+            <if test="goodsTitle != null">goods_title,</if>
+            <if test="goodsImg != null">goods_img,</if>
+            <if test="goodsNum != null">goods_num,</if>
+            <if test="goodsSpec != null">goods_spec,</if>
+            <if test="specNum != null">spec_num,</if>
+            <if test="goodsPrice != null">goods_price,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="remark != null">remark,</if>
+            <if test="shipCompany != null">ship_company,</if>
+            <if test="shipNo != null">ship_no,</if>
+            <if test="shipCost != null">ship_cost,</if>
+            <if test="shipTime != null">ship_time,</if>
+            <if test="status != null">status,</if>
+            <if test="itemAmount != null">item_amount,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="shopId != null">#{shopId},</if>
+            <if test="shopType != null">#{shopType},</if>
+            <if test="supplierId != null">#{supplierId},</if>
+            <if test="orderNum != null and orderNum != ''">#{orderNum},</if>
+            <if test="erpOrderId != null and erpOrderId != ''">#{erpOrderId},</if>
+            <if test="erpOrderItemId != null and erpOrderItemId != ''">#{erpOrderItemId},</if>
+            <if test="orderDate != null">#{orderDate},</if>
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="specId != null">#{specId},</if>
+            <if test="goodsTitle != null">#{goodsTitle},</if>
+            <if test="goodsImg != null">#{goodsImg},</if>
+            <if test="goodsNum != null">#{goodsNum},</if>
+            <if test="goodsSpec != null">#{goodsSpec},</if>
+            <if test="specNum != null">#{specNum},</if>
+            <if test="goodsPrice != null">#{goodsPrice},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="shipCompany != null">#{shipCompany},</if>
+            <if test="shipNo != null">#{shipNo},</if>
+            <if test="shipCost != null">#{shipCost},</if>
+            <if test="shipTime != null">#{shipTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="itemAmount != null">#{itemAmount},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateScmSupplierAgentShipping" parameterType="ScmSupplierAgentShipping">
+        update scm_supplier_agent_shipping
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shopId != null">shop_id = #{shopId},</if>
+            <if test="shopType != null">shop_type = #{shopType},</if>
+            <if test="supplierId != null">supplier_id = #{supplierId},</if>
+            <if test="orderNum != null and orderNum != ''">order_num = #{orderNum},</if>
+
+            <if test="orderDate != null">order_date = #{orderDate},</if>
+            <if test="goodsId != null">goods_id = #{goodsId},</if>
+            <if test="specId != null">spec_id = #{specId},</if>
+            <if test="goodsTitle != null">goods_title = #{goodsTitle},</if>
+            <if test="goodsImg != null">goods_img = #{goodsImg},</if>
+            <if test="goodsNum != null">goods_num = #{goodsNum},</if>
+            <if test="goodsSpec != null">goods_spec = #{goodsSpec},</if>
+            <if test="specNum != null">spec_num = #{specNum},</if>
+            <if test="goodsPrice != null">goods_price = #{goodsPrice},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="shipCompany != null">ship_company = #{shipCompany},</if>
+            <if test="shipNo != null">ship_no = #{shipNo},</if>
+            <if test="shipCost != null">ship_cost = #{shipCost},</if>
+            <if test="shipTime != null">ship_time = #{shipTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="itemAmount != null">item_amount = #{itemAmount},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteScmSupplierAgentShippingById" parameterType="Long">
+        delete from scm_supplier_agent_shipping where id = #{id}
+    </delete>
+
+    <delete id="deleteScmSupplierAgentShippingByIds" parameterType="String">
+        delete from scm_supplier_agent_shipping where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

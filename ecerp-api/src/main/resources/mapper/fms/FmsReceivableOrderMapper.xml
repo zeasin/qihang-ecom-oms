@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.FmsReceivableOrderMapper">
+    
+    <resultMap type="FmsReceivableOrder" id="FmsReceivableOrderResult">
+        <result property="id"    column="id"    />
+        <result property="date"    column="date"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="orderItemId"    column="order_item_id"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="goodsName"    column="goods_name"    />
+        <result property="specId"    column="spec_id"    />
+        <result property="specName"    column="spec_name"    />
+        <result property="price"    column="price"    />
+        <result property="amount"    column="amount"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="invoiceNo"    column="invoice_no"    />
+        <result property="orderDesc"    column="order_desc"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectFmsReceivableOrderVo">
+        select id, date, order_num, order_id, order_item_id, goods_id, goods_name, spec_id, spec_name, price, amount, quantity, invoice_no, order_desc, remark, status, create_time, create_by, update_time, update_by from fms_receivable_order
+    </sql>
+
+    <select id="selectFmsReceivableOrderList" parameterType="FmsReceivableOrder" resultMap="FmsReceivableOrderResult">
+        <include refid="selectFmsReceivableOrderVo"/>
+        <where>  
+            <if test="date != null "> and date = #{date}</if>
+            <if test="orderNum != null  and orderNum != ''"> and order_num = #{orderNum}</if>
+            <if test="orderId != null "> and order_id = #{orderId}</if>
+            <if test="orderItemId != null "> and order_item_id = #{orderItemId}</if>
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="goodsName != null  and goodsName != ''"> and goods_name like concat('%', #{goodsName}, '%')</if>
+            <if test="specId != null "> and spec_id = #{specId}</if>
+            <if test="specName != null  and specName != ''"> and spec_name like concat('%', #{specName}, '%')</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="invoiceNo != null  and invoiceNo != ''"> and invoice_no = #{invoiceNo}</if>
+            <if test="orderDesc != null  and orderDesc != ''"> and order_desc = #{orderDesc}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectFmsReceivableOrderById" parameterType="Long" resultMap="FmsReceivableOrderResult">
+        <include refid="selectFmsReceivableOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFmsReceivableOrder" parameterType="FmsReceivableOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into fms_receivable_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="date != null">date,</if>
+            <if test="orderNum != null and orderNum != ''">order_num,</if>
+            <if test="orderId != null">order_id,</if>
+            <if test="orderItemId != null">order_item_id,</if>
+            <if test="goodsId != null">goods_id,</if>
+            <if test="goodsName != null and goodsName != ''">goods_name,</if>
+            <if test="specId != null">spec_id,</if>
+            <if test="specName != null">spec_name,</if>
+            <if test="price != null">price,</if>
+            <if test="amount != null">amount,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="invoiceNo != null">invoice_no,</if>
+            <if test="orderDesc != null">order_desc,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="date != null">#{date},</if>
+            <if test="orderNum != null and orderNum != ''">#{orderNum},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="orderItemId != null">#{orderItemId},</if>
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="goodsName != null and goodsName != ''">#{goodsName},</if>
+            <if test="specId != null">#{specId},</if>
+            <if test="specName != null">#{specName},</if>
+            <if test="price != null">#{price},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="invoiceNo != null">#{invoiceNo},</if>
+            <if test="orderDesc != null">#{orderDesc},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFmsReceivableOrder" parameterType="FmsReceivableOrder">
+        update fms_receivable_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="date != null">date = #{date},</if>
+            <if test="orderNum != null and orderNum != ''">order_num = #{orderNum},</if>
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="orderItemId != null">order_item_id = #{orderItemId},</if>
+            <if test="goodsId != null">goods_id = #{goodsId},</if>
+            <if test="goodsName != null and goodsName != ''">goods_name = #{goodsName},</if>
+            <if test="specId != null">spec_id = #{specId},</if>
+            <if test="specName != null">spec_name = #{specName},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="invoiceNo != null">invoice_no = #{invoiceNo},</if>
+            <if test="orderDesc != null">order_desc = #{orderDesc},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFmsReceivableOrderById" parameterType="Long">
+        delete from fms_receivable_order where id = #{id}
+    </delete>
+
+    <delete id="deleteFmsReceivableOrderByIds" parameterType="String">
+        delete from fms_receivable_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.GoodsImgMapper">
+    
+    <resultMap type="GoodsImg" id="GoodsImgResult">
+        <result property="id"    column="id"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="type"    column="type"    />
+        <result property="url"    column="url"    />
+        <result property="remark"    column="remark"    />
+        <result property="sort"    column="sort"    />
+    </resultMap>
+
+    <sql id="selectGoodsImgVo">
+        select id, goods_id, type, url, remark, sort from erp_goods_img
+    </sql>
+
+    <select id="selectGoodsImgList" parameterType="GoodsImg" resultMap="GoodsImgResult">
+        <include refid="selectGoodsImgVo"/>
+        <where>  
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+        </where>
+    </select>
+    
+    <select id="selectGoodsImgById" parameterType="Long" resultMap="GoodsImgResult">
+        <include refid="selectGoodsImgVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGoodsImg" parameterType="GoodsImg" useGeneratedKeys="true" keyProperty="id">
+        insert into erp_goods_img
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">goods_id,</if>
+            <if test="type != null">type,</if>
+            <if test="url != null">url,</if>
+            <if test="remark != null">remark,</if>
+            <if test="sort != null">sort,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="url != null">#{url},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="sort != null">#{sort},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoodsImg" parameterType="GoodsImg">
+        update erp_goods_img
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsId != null">goods_id = #{goodsId},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="sort != null">sort = #{sort},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsImgById" parameterType="Long">
+        delete from erp_goods_img where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsImgByIds" parameterType="String">
+        delete from erp_goods_img where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

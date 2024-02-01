@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.XhsRefundMapper">
+    
+    <resultMap type="XhsRefund" id="XhsRefundResult">
+        <result property="id"    column="id"    />
+        <result property="returnsId"    column="returnsId"    />
+        <result property="returnType"    column="returnType"    />
+        <result property="reasonId"    column="reasonId"    />
+        <result property="shopId"    column="shopId"    />
+        <result property="reason"    column="reason"    />
+        <result property="status"    column="status"    />
+        <result property="subStatus"    column="subStatus"    />
+        <result property="receiveAbnormalType"    column="receiveAbnormalType"    />
+        <result property="packageId"    column="packageId"    />
+        <result property="exchangePackageId"    column="exchangePackageId"    />
+        <result property="createdTime"    column="createdTime"    />
+        <result property="returnExpressNo"    column="returnExpressNo"    />
+        <result property="returnExpressCompany"    column="returnExpressCompany"    />
+        <result property="returnAddress"    column="returnAddress"    />
+        <result property="shipNeeded"    column="shipNeeded"    />
+        <result property="refunded"    column="refunded"    />
+        <result property="refundStatus"    column="refundStatus"    />
+        <result property="refundTime"    column="refundTime"    />
+        <result property="fillExpressTime"    column="fillExpressTime"    />
+        <result property="expressSignTime"    column="expressSignTime"    />
+        <result property="refundFee"    column="refundFee"    />
+        <result property="returnExpressRefundable"    column="returnExpressRefundable"    />
+        <result property="returnExpressRefunded"    column="returnExpressRefunded"    />
+        <result property="expectRefundFee"    column="expectRefundFee"    />
+        <result property="autoReceiveDeadline"    column="autoReceiveDeadline"    />
+        <result property="updateTime"    column="updateTime"    />
+        <result property="erpSendStatus"    column="erpSendStatus"    />
+        <result property="returnExpressCompanyCode"    column="returnExpressCompanyCode"    />
+        <result property="createOn"    column="createOn"    />
+        <result property="modifyOn"    column="modifyOn"    />
+    </resultMap>
+
+    <resultMap id="XhsRefundXhsRefundItemResult" type="XhsRefund" extends="XhsRefundResult">
+        <collection property="xhsRefundItemList" notNullColumn="sub_id" javaType="java.util.List" resultMap="XhsRefundItemResult" />
+    </resultMap>
+
+    <resultMap type="XhsRefundItem" id="XhsRefundItemResult">
+        <result property="id"    column="sub_id"    />
+        <result property="refundId"    column="sub_refundId"    />
+        <result property="itemId"    column="sub_itemId"    />
+        <result property="itemName"    column="sub_itemName"    />
+        <result property="image"    column="sub_image"    />
+        <result property="price"    column="sub_price"    />
+        <result property="boughtCount"    column="sub_boughtCount"    />
+        <result property="appliedCount"    column="sub_appliedCount"    />
+        <result property="returnedCount"    column="sub_returnedCount"    />
+        <result property="refundedCount"    column="sub_refundedCount"    />
+        <result property="returnPrice"    column="sub_returnPrice"    />
+        <result property="exchangeItemId"    column="sub_exchangeItemId"    />
+        <result property="exchangeItemName"    column="sub_exchangeItemName"    />
+        <result property="exchangeItemImage"    column="sub_exchangeItemImage"    />
+        <result property="skucode"    column="sub_skucode"    />
+        <result property="exchangeSkucode"    column="sub_exchangeSkucode"    />
+    </resultMap>
+
+    <sql id="selectXhsRefundVo">
+        select id, returnsId, returnType, reasonId, shopId, reason, status, subStatus, receiveAbnormalType, packageId, exchangePackageId, createdTime, returnExpressNo, returnExpressCompany, returnAddress, shipNeeded, refunded, refundStatus, refundTime, fillExpressTime, expressSignTime, refundFee, returnExpressRefundable, returnExpressRefunded, expectRefundFee, autoReceiveDeadline, updateTime, erpSendStatus, returnExpressCompanyCode, createOn, modifyOn from s_xhs_refund
+    </sql>
+
+    <select id="selectXhsRefundList" parameterType="XhsRefund" resultMap="XhsRefundResult">
+        <include refid="selectXhsRefundVo"/>
+        <where>  
+            <if test="returnsId != null  and returnsId != ''"> and returnsId = #{returnsId}</if>
+            <if test="returnType != null "> and returnType = #{returnType}</if>
+            <if test="reasonId != null "> and reasonId = #{reasonId}</if>
+            <if test="shopId != null "> and shopId = #{shopId}</if>
+            <if test="reason != null  and reason != ''"> and reason = #{reason}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="subStatus != null "> and subStatus = #{subStatus}</if>
+            <if test="receiveAbnormalType != null "> and receiveAbnormalType = #{receiveAbnormalType}</if>
+            <if test="packageId != null  and packageId != ''"> and packageId = #{packageId}</if>
+            <if test="exchangePackageId != null  and exchangePackageId != ''"> and exchangePackageId = #{exchangePackageId}</if>
+            <if test="createdTime != null "> and createdTime = #{createdTime}</if>
+            <if test="returnExpressNo != null  and returnExpressNo != ''"> and returnExpressNo = #{returnExpressNo}</if>
+            <if test="returnExpressCompany != null  and returnExpressCompany != ''"> and returnExpressCompany = #{returnExpressCompany}</if>
+            <if test="returnAddress != null  and returnAddress != ''"> and returnAddress = #{returnAddress}</if>
+            <if test="shipNeeded != null "> and shipNeeded = #{shipNeeded}</if>
+            <if test="refunded != null "> and refunded = #{refunded}</if>
+            <if test="refundStatus != null "> and refundStatus = #{refundStatus}</if>
+            <if test="refundTime != null "> and refundTime = #{refundTime}</if>
+            <if test="fillExpressTime != null "> and fillExpressTime = #{fillExpressTime}</if>
+            <if test="expressSignTime != null "> and expressSignTime = #{expressSignTime}</if>
+            <if test="refundFee != null "> and refundFee = #{refundFee}</if>
+            <if test="returnExpressRefundable != null "> and returnExpressRefundable = #{returnExpressRefundable}</if>
+            <if test="returnExpressRefunded != null "> and returnExpressRefunded = #{returnExpressRefunded}</if>
+            <if test="expectRefundFee != null "> and expectRefundFee = #{expectRefundFee}</if>
+            <if test="autoReceiveDeadline != null "> and autoReceiveDeadline = #{autoReceiveDeadline}</if>
+            <if test="updateTime != null "> and updateTime = #{updateTime}</if>
+            <if test="erpSendStatus != null "> and erpSendStatus = #{erpSendStatus}</if>
+            <if test="returnExpressCompanyCode != null  and returnExpressCompanyCode != ''"> and returnExpressCompanyCode = #{returnExpressCompanyCode}</if>
+            <if test="createOn != null "> and createOn = #{createOn}</if>
+            <if test="modifyOn != null "> and modifyOn = #{modifyOn}</if>
+        </where>
+    </select>
+    
+    <select id="selectXhsRefundById" parameterType="Long" resultMap="XhsRefundXhsRefundItemResult">
+        select a.id, a.returnsId, a.returnType, a.reasonId, a.shopId, a.reason, a.status, a.subStatus, a.receiveAbnormalType, a.packageId, a.exchangePackageId, a.createdTime, a.returnExpressNo, a.returnExpressCompany, a.returnAddress, a.shipNeeded, a.refunded, a.refundStatus, a.refundTime, a.fillExpressTime, a.expressSignTime, a.refundFee, a.returnExpressRefundable, a.returnExpressRefunded, a.expectRefundFee, a.autoReceiveDeadline, a.updateTime, a.erpSendStatus, a.returnExpressCompanyCode, a.createOn, a.modifyOn,
+ b.id as sub_id, b.refundId as sub_refundId, b.itemId as sub_itemId, b.itemName as sub_itemName, b.image as sub_image, b.price as sub_price, b.boughtCount as sub_boughtCount, b.appliedCount as sub_appliedCount, b.returnedCount as sub_returnedCount, b.refundedCount as sub_refundedCount, b.returnPrice as sub_returnPrice, b.exchangeItemId as sub_exchangeItemId, b.exchangeItemName as sub_exchangeItemName, b.exchangeItemImage as sub_exchangeItemImage, b.skucode as sub_skucode, b.exchangeSkucode as sub_exchangeSkucode
+        from s_xhs_refund a
+        left join s_xhs_refund_item b on b.refundId = a.id
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertXhsRefund" parameterType="XhsRefund" useGeneratedKeys="true" keyProperty="id">
+        insert into s_xhs_refund
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="returnsId != null and returnsId != ''">returnsId,</if>
+            <if test="returnType != null">returnType,</if>
+            <if test="reasonId != null">reasonId,</if>
+            <if test="shopId != null">shopId,</if>
+            <if test="reason != null and reason != ''">reason,</if>
+            <if test="status != null">status,</if>
+            <if test="subStatus != null">subStatus,</if>
+            <if test="receiveAbnormalType != null">receiveAbnormalType,</if>
+            <if test="packageId != null and packageId != ''">packageId,</if>
+            <if test="exchangePackageId != null">exchangePackageId,</if>
+            <if test="createdTime != null">createdTime,</if>
+            <if test="returnExpressNo != null">returnExpressNo,</if>
+            <if test="returnExpressCompany != null">returnExpressCompany,</if>
+            <if test="returnAddress != null">returnAddress,</if>
+            <if test="shipNeeded != null">shipNeeded,</if>
+            <if test="refunded != null">refunded,</if>
+            <if test="refundStatus != null">refundStatus,</if>
+            <if test="refundTime != null">refundTime,</if>
+            <if test="fillExpressTime != null">fillExpressTime,</if>
+            <if test="expressSignTime != null">expressSignTime,</if>
+            <if test="refundFee != null">refundFee,</if>
+            <if test="returnExpressRefundable != null">returnExpressRefundable,</if>
+            <if test="returnExpressRefunded != null">returnExpressRefunded,</if>
+            <if test="expectRefundFee != null">expectRefundFee,</if>
+            <if test="autoReceiveDeadline != null">autoReceiveDeadline,</if>
+            <if test="updateTime != null">updateTime,</if>
+            <if test="erpSendStatus != null">erpSendStatus,</if>
+            <if test="returnExpressCompanyCode != null">returnExpressCompanyCode,</if>
+            <if test="createOn != null">createOn,</if>
+            <if test="modifyOn != null">modifyOn,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="returnsId != null and returnsId != ''">#{returnsId},</if>
+            <if test="returnType != null">#{returnType},</if>
+            <if test="reasonId != null">#{reasonId},</if>
+            <if test="shopId != null">#{shopId},</if>
+            <if test="reason != null and reason != ''">#{reason},</if>
+            <if test="status != null">#{status},</if>
+            <if test="subStatus != null">#{subStatus},</if>
+            <if test="receiveAbnormalType != null">#{receiveAbnormalType},</if>
+            <if test="packageId != null and packageId != ''">#{packageId},</if>
+            <if test="exchangePackageId != null">#{exchangePackageId},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="returnExpressNo != null">#{returnExpressNo},</if>
+            <if test="returnExpressCompany != null">#{returnExpressCompany},</if>
+            <if test="returnAddress != null">#{returnAddress},</if>
+            <if test="shipNeeded != null">#{shipNeeded},</if>
+            <if test="refunded != null">#{refunded},</if>
+            <if test="refundStatus != null">#{refundStatus},</if>
+            <if test="refundTime != null">#{refundTime},</if>
+            <if test="fillExpressTime != null">#{fillExpressTime},</if>
+            <if test="expressSignTime != null">#{expressSignTime},</if>
+            <if test="refundFee != null">#{refundFee},</if>
+            <if test="returnExpressRefundable != null">#{returnExpressRefundable},</if>
+            <if test="returnExpressRefunded != null">#{returnExpressRefunded},</if>
+            <if test="expectRefundFee != null">#{expectRefundFee},</if>
+            <if test="autoReceiveDeadline != null">#{autoReceiveDeadline},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="erpSendStatus != null">#{erpSendStatus},</if>
+            <if test="returnExpressCompanyCode != null">#{returnExpressCompanyCode},</if>
+            <if test="createOn != null">#{createOn},</if>
+            <if test="modifyOn != null">#{modifyOn},</if>
+         </trim>
+    </insert>
+
+    <update id="updateXhsRefund" parameterType="XhsRefund">
+        update s_xhs_refund
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="returnsId != null and returnsId != ''">returnsId = #{returnsId},</if>
+            <if test="returnType != null">returnType = #{returnType},</if>
+            <if test="reasonId != null">reasonId = #{reasonId},</if>
+            <if test="shopId != null">shopId = #{shopId},</if>
+            <if test="reason != null and reason != ''">reason = #{reason},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="subStatus != null">subStatus = #{subStatus},</if>
+            <if test="receiveAbnormalType != null">receiveAbnormalType = #{receiveAbnormalType},</if>
+            <if test="packageId != null and packageId != ''">packageId = #{packageId},</if>
+            <if test="exchangePackageId != null">exchangePackageId = #{exchangePackageId},</if>
+            <if test="createdTime != null">createdTime = #{createdTime},</if>
+            <if test="returnExpressNo != null">returnExpressNo = #{returnExpressNo},</if>
+            <if test="returnExpressCompany != null">returnExpressCompany = #{returnExpressCompany},</if>
+            <if test="returnAddress != null">returnAddress = #{returnAddress},</if>
+            <if test="shipNeeded != null">shipNeeded = #{shipNeeded},</if>
+            <if test="refunded != null">refunded = #{refunded},</if>
+            <if test="refundStatus != null">refundStatus = #{refundStatus},</if>
+            <if test="refundTime != null">refundTime = #{refundTime},</if>
+            <if test="fillExpressTime != null">fillExpressTime = #{fillExpressTime},</if>
+            <if test="expressSignTime != null">expressSignTime = #{expressSignTime},</if>
+            <if test="refundFee != null">refundFee = #{refundFee},</if>
+            <if test="returnExpressRefundable != null">returnExpressRefundable = #{returnExpressRefundable},</if>
+            <if test="returnExpressRefunded != null">returnExpressRefunded = #{returnExpressRefunded},</if>
+            <if test="expectRefundFee != null">expectRefundFee = #{expectRefundFee},</if>
+            <if test="autoReceiveDeadline != null">autoReceiveDeadline = #{autoReceiveDeadline},</if>
+            <if test="updateTime != null">updateTime = #{updateTime},</if>
+            <if test="erpSendStatus != null">erpSendStatus = #{erpSendStatus},</if>
+            <if test="returnExpressCompanyCode != null">returnExpressCompanyCode = #{returnExpressCompanyCode},</if>
+            <if test="createOn != null">createOn = #{createOn},</if>
+            <if test="modifyOn != null">modifyOn = #{modifyOn},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteXhsRefundById" parameterType="Long">
+        delete from s_xhs_refund where id = #{id}
+    </delete>
+
+    <delete id="deleteXhsRefundByIds" parameterType="String">
+        delete from s_xhs_refund where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteXhsRefundItemByRefundIds" parameterType="String">
+        delete from s_xhs_refund_item where refundId in 
+        <foreach item="refundId" collection="array" open="(" separator="," close=")">
+            #{refundId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteXhsRefundItemByRefundId" parameterType="Long">
+        delete from s_xhs_refund_item where refundId = #{refundId}
+    </delete>
+
+    <insert id="batchXhsRefundItem">
+        insert into s_xhs_refund_item( id, refundId, itemId, itemName, image, price, boughtCount, appliedCount, returnedCount, refundedCount, returnPrice, exchangeItemId, exchangeItemName, exchangeItemImage, skucode, exchangeSkucode) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.refundId}, #{item.itemId}, #{item.itemName}, #{item.image}, #{item.price}, #{item.boughtCount}, #{item.appliedCount}, #{item.returnedCount}, #{item.refundedCount}, #{item.returnPrice}, #{item.exchangeItemId}, #{item.exchangeItemName}, #{item.exchangeItemImage}, #{item.skucode}, #{item.exchangeSkucode})
+        </foreach>
+    </insert>
+</mapper>

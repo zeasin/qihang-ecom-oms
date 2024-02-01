@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.XhsOrderMapper">
+    
+    <resultMap type="XhsOrder" id="XhsOrderResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="orderId"    />
+        <result property="shopType"    column="shopType"    />
+        <result property="shopId"    column="shopId"    />
+        <result property="orderType"    column="orderType"    />
+        <result property="orderStatus"    column="orderStatus"    />
+        <result property="afterSalesStatus"    column="afterSalesStatus"    />
+        <result property="cancelStatus"    column="cancelStatus"    />
+        <result property="orderCreatedTime"    column="orderCreatedTime"    />
+        <result property="orderPaidTime"    column="orderPaidTime"    />
+        <result property="orderUpdateTime"    column="orderUpdateTime"    />
+        <result property="orderDeliveryTime"    column="orderDeliveryTime"    />
+        <result property="orderCancelTime"    column="orderCancelTime"    />
+        <result property="orderFinishTime"    column="orderFinishTime"    />
+        <result property="promiseLastDeliveryTime"    column="promiseLastDeliveryTime"    />
+        <result property="customerRemark"    column="customerRemark"    />
+        <result property="sellerRemark"    column="sellerRemark"    />
+        <result property="sellerRemarkFlag"    column="sellerRemarkFlag"    />
+        <result property="presaleDeliveryStartTime"    column="presaleDeliveryStartTime"    />
+        <result property="presaleDeliveryEndTime"    column="presaleDeliveryEndTime"    />
+        <result property="originalPackageId"    column="originalPackageId"    />
+        <result property="totalPayAmount"    column="totalPayAmount"    />
+        <result property="totalShippingFree"    column="totalShippingFree"    />
+        <result property="expressTrackingNo"    column="expressTrackingNo"    />
+        <result property="expressCompanyCode"    column="expressCompanyCode"    />
+        <result property="openAddressId"    column="openAddressId"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="district"    column="district"    />
+        <result property="auditStatus"    column="auditStatus"    />
+        <result property="auditTime"    column="auditTime"    />
+        <result property="settleStatus"    column="settleStatus"    />
+        <result property="settleAmount"    column="settleAmount"    />
+        <result property="sendStatus"    column="sendStatus"    />
+        <result property="sendTime"    column="sendTime"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="createBy"    column="createBy"    />
+        <result property="updateTime"    column="updateTime"    />
+        <result property="updateBy"    column="updateBy"    />
+    </resultMap>
+
+    <resultMap id="XhsOrderXhsOrderItemResult" type="XhsOrder" extends="XhsOrderResult">
+        <collection property="xhsOrderItemList" notNullColumn="sub_id" javaType="java.util.List" resultMap="XhsOrderItemResult" />
+    </resultMap>
+
+    <resultMap type="XhsOrderItem" id="XhsOrderItemResult">
+        <result property="id"    column="sub_id"    />
+        <result property="orderId"    column="sub_orderId"    />
+        <result property="itemId"    column="sub_itemId"    />
+        <result property="itemName"    column="sub_itemName"    />
+        <result property="erpCode"    column="sub_erpCode"    />
+        <result property="itemSpecCode"    column="sub_itemSpecCode"    />
+        <result property="itemSpec"    column="sub_itemSpec"    />
+        <result property="itemImage"    column="sub_itemImage"    />
+        <result property="price"    column="sub_price"    />
+        <result property="quantity"    column="sub_quantity"    />
+        <result property="totalPaidAmount"    column="sub_totalPaidAmount"    />
+        <result property="totalMerchantDiscount"    column="sub_totalMerchantDiscount"    />
+        <result property="totalRedDiscount"    column="sub_totalRedDiscount"    />
+        <result property="itemTag"    column="sub_itemTag"    />
+        <result property="erpSendStatus"    column="sub_erpSendStatus"    />
+        <result property="erpGoodsId"    column="sub_erpGoodsId"    />
+        <result property="erpGoodsSpecId"    column="sub_erpGoodsSpecId"    />
+    </resultMap>
+
+    <sql id="selectXhsOrderVo">
+        select id, orderId, shopType, shopId, orderType, orderStatus, afterSalesStatus, cancelStatus, orderCreatedTime, orderPaidTime, orderUpdateTime, orderDeliveryTime, orderCancelTime, orderFinishTime, promiseLastDeliveryTime, customerRemark, sellerRemark, sellerRemarkFlag, presaleDeliveryStartTime, presaleDeliveryEndTime, originalPackageId, totalPayAmount, totalShippingFree, expressTrackingNo, expressCompanyCode, openAddressId, province, city, district, auditStatus, auditTime, settleStatus, settleAmount, sendStatus, sendTime, createTime, createBy, updateTime, updateBy from s_xhs_order
+    </sql>
+
+    <select id="selectXhsOrderList" parameterType="XhsOrder" resultMap="XhsOrderResult">
+        <include refid="selectXhsOrderVo"/>
+        <where>  
+            <if test="orderId != null  and orderId != ''"> and orderId = #{orderId}</if>
+            <if test="shopType != null "> and shopType = #{shopType}</if>
+            <if test="shopId != null "> and shopId = #{shopId}</if>
+            <if test="orderType != null "> and orderType = #{orderType}</if>
+            <if test="orderStatus != null "> and orderStatus = #{orderStatus}</if>
+            <if test="afterSalesStatus != null "> and afterSalesStatus = #{afterSalesStatus}</if>
+            <if test="cancelStatus != null "> and cancelStatus = #{cancelStatus}</if>
+            <if test="orderCreatedTime != null "> and orderCreatedTime = #{orderCreatedTime}</if>
+            <if test="orderPaidTime != null "> and orderPaidTime = #{orderPaidTime}</if>
+            <if test="orderUpdateTime != null "> and orderUpdateTime = #{orderUpdateTime}</if>
+            <if test="orderDeliveryTime != null "> and orderDeliveryTime = #{orderDeliveryTime}</if>
+            <if test="orderCancelTime != null "> and orderCancelTime = #{orderCancelTime}</if>
+            <if test="orderFinishTime != null "> and orderFinishTime = #{orderFinishTime}</if>
+            <if test="promiseLastDeliveryTime != null "> and promiseLastDeliveryTime = #{promiseLastDeliveryTime}</if>
+            <if test="customerRemark != null  and customerRemark != ''"> and customerRemark = #{customerRemark}</if>
+            <if test="sellerRemark != null  and sellerRemark != ''"> and sellerRemark = #{sellerRemark}</if>
+            <if test="sellerRemarkFlag != null "> and sellerRemarkFlag = #{sellerRemarkFlag}</if>
+            <if test="presaleDeliveryStartTime != null "> and presaleDeliveryStartTime = #{presaleDeliveryStartTime}</if>
+            <if test="presaleDeliveryEndTime != null "> and presaleDeliveryEndTime = #{presaleDeliveryEndTime}</if>
+            <if test="originalPackageId != null  and originalPackageId != ''"> and originalPackageId = #{originalPackageId}</if>
+            <if test="totalPayAmount != null "> and totalPayAmount = #{totalPayAmount}</if>
+            <if test="totalShippingFree != null "> and totalShippingFree = #{totalShippingFree}</if>
+            <if test="expressTrackingNo != null  and expressTrackingNo != ''"> and expressTrackingNo = #{expressTrackingNo}</if>
+            <if test="expressCompanyCode != null  and expressCompanyCode != ''"> and expressCompanyCode = #{expressCompanyCode}</if>
+            <if test="openAddressId != null  and openAddressId != ''"> and openAddressId = #{openAddressId}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="district != null  and district != ''"> and district = #{district}</if>
+            <if test="auditStatus != null "> and auditStatus = #{auditStatus}</if>
+            <if test="auditTime != null "> and auditTime = #{auditTime}</if>
+            <if test="settleStatus != null "> and settleStatus = #{settleStatus}</if>
+            <if test="settleAmount != null "> and settleAmount = #{settleAmount}</if>
+            <if test="sendStatus != null "> and sendStatus = #{sendStatus}</if>
+            <if test="sendTime != null "> and sendTime = #{sendTime}</if>
+            <if test="createTime != null "> and createTime = #{createTime}</if>
+            <if test="createBy != null  and createBy != ''"> and createBy = #{createBy}</if>
+            <if test="updateTime != null "> and updateTime = #{updateTime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and updateBy = #{updateBy}</if>
+        </where>
+    </select>
+    <select id="selectOrderItemByOrderId" parameterType="Long" resultMap="XhsOrderItemResult">
+        select b.id as sub_id, b.orderId as sub_orderId, b.itemId as sub_itemId, b.itemName as sub_itemName, b.erpCode as sub_erpCode,b.itemSpecCode as sub_itemSpecCode,b.erpGoodsId as sub_erpGoodsId,b.erpGoodsSpecId as sub_erpGoodsSpecId,
+               b.itemSpec as sub_itemSpec, b.itemImage as sub_itemImage,b.price as sub_price, b.quantity as sub_quantity, b.totalPaidAmount as sub_totalPaidAmount, b.totalMerchantDiscount as sub_totalMerchantDiscount, b.totalRedDiscount as sub_totalRedDiscount, b.itemTag as sub_itemTag, b.erpSendStatus as sub_erpSendStatus
+        from s_xhs_order_item b
+        where b.orderId = #{orderId}
+    </select>
+    <select id="selectXhsOrderById" parameterType="Long" resultMap="XhsOrderXhsOrderItemResult">
+        select a.id, a.orderId, a.shopType, a.shopId, a.orderType, a.orderStatus, a.afterSalesStatus, a.cancelStatus, a.orderCreatedTime, a.orderPaidTime, a.orderUpdateTime, a.orderDeliveryTime, a.orderCancelTime, a.orderFinishTime, a.promiseLastDeliveryTime, a.customerRemark, a.sellerRemark, a.sellerRemarkFlag, a.presaleDeliveryStartTime, a.presaleDeliveryEndTime, a.originalPackageId, a.totalPayAmount, a.totalShippingFree, a.expressTrackingNo, a.expressCompanyCode, a.openAddressId, a.province, a.city, a.district, a.auditStatus, a.auditTime, a.settleStatus, a.settleAmount, a.sendStatus, a.sendTime, a.createTime, a.createBy, a.updateTime, a.updateBy,
+               b.id as sub_id, b.orderId as sub_orderId, b.itemId as sub_itemId, b.itemName as sub_itemName, b.erpCode as sub_erpCode,b.itemSpecCode as sub_itemSpecCode, b.itemSpec as sub_itemSpec, b.itemImage as sub_itemImage,
+
+                b.erpGoodsId as sub_erpGoodsId,b.erpGoodsSpecId as sub_erpGoodsSpecId,b.price as sub_price,b.quantity as sub_quantity, b.totalPaidAmount as sub_totalPaidAmount, b.totalMerchantDiscount as sub_totalMerchantDiscount, b.totalRedDiscount as sub_totalRedDiscount, b.itemTag as sub_itemTag, b.erpSendStatus as sub_erpSendStatus
+        from s_xhs_order a
+        left join s_xhs_order_item b on b.orderId = a.id
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertXhsOrder" parameterType="XhsOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into s_xhs_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null and orderId != ''">orderId,</if>
+            <if test="shopType != null">shopType,</if>
+            <if test="shopId != null">shopId,</if>
+            <if test="orderType != null">orderType,</if>
+            <if test="orderStatus != null">orderStatus,</if>
+            <if test="afterSalesStatus != null">afterSalesStatus,</if>
+            <if test="cancelStatus != null">cancelStatus,</if>
+            <if test="orderCreatedTime != null">orderCreatedTime,</if>
+            <if test="orderPaidTime != null">orderPaidTime,</if>
+            <if test="orderUpdateTime != null">orderUpdateTime,</if>
+            <if test="orderDeliveryTime != null">orderDeliveryTime,</if>
+            <if test="orderCancelTime != null">orderCancelTime,</if>
+            <if test="orderFinishTime != null">orderFinishTime,</if>
+            <if test="promiseLastDeliveryTime != null">promiseLastDeliveryTime,</if>
+            <if test="customerRemark != null">customerRemark,</if>
+            <if test="sellerRemark != null">sellerRemark,</if>
+            <if test="sellerRemarkFlag != null">sellerRemarkFlag,</if>
+            <if test="presaleDeliveryStartTime != null">presaleDeliveryStartTime,</if>
+            <if test="presaleDeliveryEndTime != null">presaleDeliveryEndTime,</if>
+            <if test="originalPackageId != null">originalPackageId,</if>
+            <if test="totalPayAmount != null">totalPayAmount,</if>
+            <if test="totalShippingFree != null">totalShippingFree,</if>
+            <if test="expressTrackingNo != null">expressTrackingNo,</if>
+            <if test="expressCompanyCode != null">expressCompanyCode,</if>
+            <if test="openAddressId != null and openAddressId != ''">openAddressId,</if>
+            <if test="province != null and province != ''">province,</if>
+            <if test="city != null and city != ''">city,</if>
+            <if test="district != null and district != ''">district,</if>
+            <if test="auditStatus != null">auditStatus,</if>
+            <if test="auditTime != null">auditTime,</if>
+            <if test="settleStatus != null">settleStatus,</if>
+            <if test="settleAmount != null">settleAmount,</if>
+            <if test="sendStatus != null">sendStatus,</if>
+            <if test="sendTime != null">sendTime,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="createBy != null">createBy,</if>
+            <if test="updateTime != null">updateTime,</if>
+            <if test="updateBy != null">updateBy,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null and orderId != ''">#{orderId},</if>
+            <if test="shopType != null">#{shopType},</if>
+            <if test="shopId != null">#{shopId},</if>
+            <if test="orderType != null">#{orderType},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+            <if test="afterSalesStatus != null">#{afterSalesStatus},</if>
+            <if test="cancelStatus != null">#{cancelStatus},</if>
+            <if test="orderCreatedTime != null">#{orderCreatedTime},</if>
+            <if test="orderPaidTime != null">#{orderPaidTime},</if>
+            <if test="orderUpdateTime != null">#{orderUpdateTime},</if>
+            <if test="orderDeliveryTime != null">#{orderDeliveryTime},</if>
+            <if test="orderCancelTime != null">#{orderCancelTime},</if>
+            <if test="orderFinishTime != null">#{orderFinishTime},</if>
+            <if test="promiseLastDeliveryTime != null">#{promiseLastDeliveryTime},</if>
+            <if test="customerRemark != null">#{customerRemark},</if>
+            <if test="sellerRemark != null">#{sellerRemark},</if>
+            <if test="sellerRemarkFlag != null">#{sellerRemarkFlag},</if>
+            <if test="presaleDeliveryStartTime != null">#{presaleDeliveryStartTime},</if>
+            <if test="presaleDeliveryEndTime != null">#{presaleDeliveryEndTime},</if>
+            <if test="originalPackageId != null">#{originalPackageId},</if>
+            <if test="totalPayAmount != null">#{totalPayAmount},</if>
+            <if test="totalShippingFree != null">#{totalShippingFree},</if>
+            <if test="expressTrackingNo != null">#{expressTrackingNo},</if>
+            <if test="expressCompanyCode != null">#{expressCompanyCode},</if>
+            <if test="openAddressId != null and openAddressId != ''">#{openAddressId},</if>
+            <if test="province != null and province != ''">#{province},</if>
+            <if test="city != null and city != ''">#{city},</if>
+            <if test="district != null and district != ''">#{district},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="settleStatus != null">#{settleStatus},</if>
+            <if test="settleAmount != null">#{settleAmount},</if>
+            <if test="sendStatus != null">#{sendStatus},</if>
+            <if test="sendTime != null">#{sendTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateXhsOrder" parameterType="XhsOrder">
+        update s_xhs_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null and orderId != ''">orderId = #{orderId},</if>
+            <if test="shopType != null">shopType = #{shopType},</if>
+            <if test="shopId != null">shopId = #{shopId},</if>
+            <if test="orderType != null">orderType = #{orderType},</if>
+            <if test="orderStatus != null">orderStatus = #{orderStatus},</if>
+            <if test="afterSalesStatus != null">afterSalesStatus = #{afterSalesStatus},</if>
+            <if test="cancelStatus != null">cancelStatus = #{cancelStatus},</if>
+            <if test="orderCreatedTime != null">orderCreatedTime = #{orderCreatedTime},</if>
+            <if test="orderPaidTime != null">orderPaidTime = #{orderPaidTime},</if>
+            <if test="orderUpdateTime != null">orderUpdateTime = #{orderUpdateTime},</if>
+            <if test="orderDeliveryTime != null">orderDeliveryTime = #{orderDeliveryTime},</if>
+            <if test="orderCancelTime != null">orderCancelTime = #{orderCancelTime},</if>
+            <if test="orderFinishTime != null">orderFinishTime = #{orderFinishTime},</if>
+            <if test="promiseLastDeliveryTime != null">promiseLastDeliveryTime = #{promiseLastDeliveryTime},</if>
+            <if test="customerRemark != null">customerRemark = #{customerRemark},</if>
+            <if test="sellerRemark != null">sellerRemark = #{sellerRemark},</if>
+            <if test="sellerRemarkFlag != null">sellerRemarkFlag = #{sellerRemarkFlag},</if>
+            <if test="presaleDeliveryStartTime != null">presaleDeliveryStartTime = #{presaleDeliveryStartTime},</if>
+            <if test="presaleDeliveryEndTime != null">presaleDeliveryEndTime = #{presaleDeliveryEndTime},</if>
+            <if test="originalPackageId != null">originalPackageId = #{originalPackageId},</if>
+            <if test="totalPayAmount != null">totalPayAmount = #{totalPayAmount},</if>
+            <if test="totalShippingFree != null">totalShippingFree = #{totalShippingFree},</if>
+            <if test="expressTrackingNo != null">expressTrackingNo = #{expressTrackingNo},</if>
+            <if test="expressCompanyCode != null">expressCompanyCode = #{expressCompanyCode},</if>
+            <if test="openAddressId != null and openAddressId != ''">openAddressId = #{openAddressId},</if>
+            <if test="province != null and province != ''">province = #{province},</if>
+            <if test="city != null and city != ''">city = #{city},</if>
+            <if test="district != null and district != ''">district = #{district},</if>
+            <if test="auditStatus != null">auditStatus = #{auditStatus},</if>
+            <if test="auditTime != null">auditTime = #{auditTime},</if>
+            <if test="settleStatus != null">settleStatus = #{settleStatus},</if>
+            <if test="settleAmount != null">settleAmount = #{settleAmount},</if>
+            <if test="sendStatus != null">sendStatus = #{sendStatus},</if>
+            <if test="sendTime != null">sendTime = #{sendTime},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+            <if test="createBy != null">createBy = #{createBy},</if>
+            <if test="updateTime != null">updateTime = #{updateTime},</if>
+            <if test="updateBy != null">updateBy = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteXhsOrderById" parameterType="Long">
+        delete from s_xhs_order where id = #{id}
+    </delete>
+
+    <delete id="deleteXhsOrderByIds" parameterType="String">
+        delete from s_xhs_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteXhsOrderItemByOrderIds" parameterType="String">
+        delete from s_xhs_order_item where orderId in 
+        <foreach item="orderId" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteXhsOrderItemByOrderId" parameterType="Long">
+        delete from s_xhs_order_item where orderId = #{orderId}
+    </delete>
+
+    <insert id="batchXhsOrderItem">
+        insert into s_xhs_order_item( id, orderId, itemId, itemName, erpCode,itemSpecCode, itemSpec, itemImage,price, quantity, totalPaidAmount, totalMerchantDiscount, totalRedDiscount, itemTag, erpSendStatus,erpGoodsId,erpGoodsSpecId) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.orderId}, #{item.itemId}, #{item.itemName}, #{item.erpCode}, #{item.itemSpecCode}, #{item.itemSpec}, #{item.itemImage}, #{item.price}, #{item.quantity}, #{item.totalPaidAmount}, #{item.totalMerchantDiscount}, #{item.totalRedDiscount}, #{item.itemTag}, #{item.erpSendStatus}, #{item.erpGoodsId}, #{item.erpGoodsSpecId})
+        </foreach>
+    </insert>
+</mapper>

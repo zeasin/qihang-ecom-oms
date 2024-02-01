@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.GoodsSpecAttrMapper">
+    
+    <resultMap type="GoodsSpecAttr" id="GoodsSpecAttrResult">
+        <result property="id"    column="id"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="type"    column="type"    />
+        <result property="k"    column="k"    />
+        <result property="kid"    column="kid"    />
+        <result property="vid"    column="vid"    />
+        <result property="v"    column="v"    />
+        <result property="img"    column="img"    />
+    </resultMap>
+
+    <sql id="selectGoodsSpecAttrVo">
+        select id, goods_id, type, k, kid, vid, v, img from erp_goods_spec_attr
+    </sql>
+
+    <select id="selectGoodsSpecAttrList" parameterType="GoodsSpecAttr" resultMap="GoodsSpecAttrResult">
+        <include refid="selectGoodsSpecAttrVo"/>
+        <where>  
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="k != null  and k != ''"> and k = #{k}</if>
+            <if test="kid != null "> and kid = #{kid}</if>
+            <if test="vid != null "> and vid = #{vid}</if>
+            <if test="v != null  and v != ''"> and v = #{v}</if>
+            <if test="img != null  and img != ''"> and img = #{img}</if>
+        </where>
+    </select>
+    
+    <select id="selectGoodsSpecAttrById" parameterType="Long" resultMap="GoodsSpecAttrResult">
+        <include refid="selectGoodsSpecAttrVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGoodsSpecAttr" parameterType="GoodsSpecAttr" useGeneratedKeys="true" keyProperty="id">
+        insert into erp_goods_spec_attr
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">goods_id,</if>
+            <if test="type != null">type,</if>
+            <if test="k != null">k,</if>
+            <if test="kid != null">kid,</if>
+            <if test="vid != null">vid,</if>
+            <if test="v != null">v,</if>
+            <if test="img != null">img,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="k != null">#{k},</if>
+            <if test="kid != null">#{kid},</if>
+            <if test="vid != null">#{vid},</if>
+            <if test="v != null">#{v},</if>
+            <if test="img != null">#{img},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoodsSpecAttr" parameterType="GoodsSpecAttr">
+        update erp_goods_spec_attr
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsId != null">goods_id = #{goodsId},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="k != null">k = #{k},</if>
+            <if test="kid != null">kid = #{kid},</if>
+            <if test="vid != null">vid = #{vid},</if>
+            <if test="v != null">v = #{v},</if>
+            <if test="img != null">img = #{img},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsSpecAttrById" parameterType="Long">
+        delete from erp_goods_spec_attr where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsSpecAttrByIds" parameterType="String">
+        delete from erp_goods_spec_attr where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.TaoOrderAddressMapper">
+    
+    <resultMap type="TaoOrderAddress" id="TaoOrderAddressResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="orderId"    />
+        <result property="contactPerson"    column="contactPerson"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="area"    column="area"    />
+        <result property="areaCode"    column="areaCode"    />
+        <result property="town"    column="town"    />
+        <result property="townCode"    column="townCode"    />
+        <result property="address"    column="address"    />
+    </resultMap>
+
+    <sql id="selectTaoOrderAddressVo">
+        select id, orderId, contactPerson, mobile, province, city, area, areaCode, town, townCode, address from s_tao_order_address
+    </sql>
+
+    <select id="selectTaoOrderAddressList" parameterType="TaoOrderAddress" resultMap="TaoOrderAddressResult">
+        <include refid="selectTaoOrderAddressVo"/>
+        <where>  
+            <if test="orderId != null "> and orderId = #{orderId}</if>
+            <if test="contactPerson != null  and contactPerson != ''"> and contactPerson = #{contactPerson}</if>
+            <if test="mobile != null  and mobile != ''"> and mobile = #{mobile}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="area != null  and area != ''"> and area = #{area}</if>
+            <if test="areaCode != null  and areaCode != ''"> and areaCode = #{areaCode}</if>
+            <if test="town != null  and town != ''"> and town = #{town}</if>
+            <if test="townCode != null  and townCode != ''"> and townCode = #{townCode}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+        </where>
+    </select>
+    
+    <select id="selectTaoOrderAddressById" parameterType="Long" resultMap="TaoOrderAddressResult">
+        <include refid="selectTaoOrderAddressVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectTaoOrderAddressByOrderId" parameterType="String" resultMap="TaoOrderAddressResult">
+        <include refid="selectTaoOrderAddressVo"/>
+        where orderId = #{orderId}
+    </select>
+        
+    <insert id="insertTaoOrderAddress" parameterType="TaoOrderAddress" useGeneratedKeys="true" keyProperty="id">
+        insert into s_tao_order_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">orderId,</if>
+            <if test="contactPerson != null">contactPerson,</if>
+            <if test="mobile != null">mobile,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="area != null">area,</if>
+            <if test="areaCode != null">areaCode,</if>
+            <if test="town != null">town,</if>
+            <if test="townCode != null">townCode,</if>
+            <if test="address != null">address,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="contactPerson != null">#{contactPerson},</if>
+            <if test="mobile != null">#{mobile},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="area != null">#{area},</if>
+            <if test="areaCode != null">#{areaCode},</if>
+            <if test="town != null">#{town},</if>
+            <if test="townCode != null">#{townCode},</if>
+            <if test="address != null">#{address},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTaoOrderAddress" parameterType="TaoOrderAddress">
+        update s_tao_order_address
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">orderId = #{orderId},</if>
+            <if test="contactPerson != null">contactPerson = #{contactPerson},</if>
+            <if test="mobile != null">mobile = #{mobile},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="area != null">area = #{area},</if>
+            <if test="areaCode != null">areaCode = #{areaCode},</if>
+            <if test="town != null">town = #{town},</if>
+            <if test="townCode != null">townCode = #{townCode},</if>
+            <if test="address != null">address = #{address},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTaoOrderAddressById" parameterType="Long">
+        delete from s_tao_order_address where id = #{id}
+    </delete>
+
+    <delete id="deleteTaoOrderAddressByIds" parameterType="String">
+        delete from s_tao_order_address where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

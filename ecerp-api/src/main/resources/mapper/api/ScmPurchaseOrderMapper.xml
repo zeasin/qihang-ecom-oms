@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.ScmPurchaseOrderMapper">
+    
+    <resultMap type="ScmPurchaseOrder" id="ScmPurchaseOrderResult">
+        <result property="id"    column="id"    />
+        <result property="contactId"    column="contact_id"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="orderDate"    column="order_date"    />
+        <result property="orderTime"    column="order_time"    />
+        <result property="orderAmount"    column="order_amount"    />
+        <result property="shipAmount"    column="ship_amount"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="auditUser"    column="audit_user"    />
+        <result property="auditTime"    column="audit_time"    />
+        <result property="supplierConfirmTime"    column="supplier_confirm_time"    />
+        <result property="supplierDeliveryTime"    column="supplier_delivery_time"    />
+        <result property="receivedTime"    column="received_time"    />
+        <result property="stockInTime"    column="stock_in_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectScmPurchaseOrderVo">
+        select id, contact_id, order_no, order_date, order_time, order_amount,ship_amount, remark, status, audit_user, audit_time, supplier_confirm_time, supplier_delivery_time, received_time, stock_in_time, create_by, create_time, update_by, update_time from scm_purchase_order
+    </sql>
+    <sql id="selectScmPurchaseOrderVo1">
+                select
+                pur.id, pur.contact_id, pur.order_no, pur.order_date, pur.order_time, pur.order_amount,pur.ship_amount, pur.remark, pur.status, pur.audit_user, pur.audit_time, pur.supplier_confirm_time, pur.supplier_delivery_time, pur.received_time,
+                pur.stock_in_time, pur.create_by, pur.create_time, pur.update_by, pur.update_time
+                ,sup.name as supplier
+                from scm_purchase_order as pur
+                left join scm_supplier as sup on sup.ID = pur.contact_id
+    </sql>
+
+    <select id="selectScmPurchaseOrderList" parameterType="ScmPurchaseOrder" resultMap="ScmPurchaseOrderResult">
+        <include refid="selectScmPurchaseOrderVo"/>
+        <where>  
+            <if test="contactId != null "> and contact_id = #{contactId}</if>
+            <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+            <if test="orderDate != null "> and order_date = #{orderDate}</if>
+            <if test="orderTime != null "> and order_time = #{orderTime}</if>
+            <if test="orderAmount != null "> and order_amount = #{orderAmount}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="auditUser != null  and auditUser != ''"> and audit_user = #{auditUser}</if>
+            <if test="auditTime != null "> and audit_time = #{auditTime}</if>
+            <if test="supplierConfirmTime != null "> and supplier_confirm_time = #{supplierConfirmTime}</if>
+            <if test="supplierDeliveryTime != null "> and supplier_delivery_time = #{supplierDeliveryTime}</if>
+            <if test="receivedTime != null "> and received_time = #{receivedTime}</if>
+            <if test="stockInTime != null "> and stock_in_time = #{stockInTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectScmPurchaseOrderById" parameterType="Long" resultMap="ScmPurchaseOrderResult">
+        <include refid="selectScmPurchaseOrderVo1"/>
+
+        where pur.id = #{id}
+    </select>
+        
+    <insert id="insertScmPurchaseOrder" parameterType="ScmPurchaseOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into scm_purchase_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="contactId != null">contact_id,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="orderDate != null">order_date,</if>
+            <if test="orderTime != null">order_time,</if>
+            <if test="orderAmount != null">order_amount,</if>
+            <if test="shipAmount != null">ship_amount,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="auditUser != null">audit_user,</if>
+            <if test="auditTime != null">audit_time,</if>
+            <if test="supplierConfirmTime != null">supplier_confirm_time,</if>
+            <if test="supplierDeliveryTime != null">supplier_delivery_time,</if>
+            <if test="receivedTime != null">received_time,</if>
+            <if test="stockInTime != null">stock_in_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="contactId != null">#{contactId},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="orderDate != null">#{orderDate},</if>
+            <if test="orderTime != null">#{orderTime},</if>
+            <if test="orderAmount != null">#{orderAmount},</if>
+            <if test="shipAmount != null">#{shipAmount},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="auditUser != null">#{auditUser},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="supplierConfirmTime != null">#{supplierConfirmTime},</if>
+            <if test="supplierDeliveryTime != null">#{supplierDeliveryTime},</if>
+            <if test="receivedTime != null">#{receivedTime},</if>
+            <if test="stockInTime != null">#{stockInTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateScmPurchaseOrder" parameterType="ScmPurchaseOrder">
+        update scm_purchase_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="contactId != null">contact_id = #{contactId},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="orderDate != null">order_date = #{orderDate},</if>
+            <if test="orderTime != null">order_time = #{orderTime},</if>
+            <if test="orderAmount != null">order_amount = #{orderAmount},</if>
+            <if test="shipAmount != null">ship_amount = #{shipAmount},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="auditUser != null">audit_user = #{auditUser},</if>
+            <if test="auditTime != null">audit_time = #{auditTime},</if>
+            <if test="supplierConfirmTime != null">supplier_confirm_time = #{supplierConfirmTime},</if>
+            <if test="supplierDeliveryTime != null">supplier_delivery_time = #{supplierDeliveryTime},</if>
+            <if test="receivedTime != null">received_time = #{receivedTime},</if>
+            <if test="stockInTime != null">stock_in_time = #{stockInTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteScmPurchaseOrderById" parameterType="Long">
+        delete from scm_purchase_order where id = #{id}
+    </delete>
+
+    <delete id="deleteScmPurchaseOrderByIds" parameterType="String">
+        delete from scm_purchase_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

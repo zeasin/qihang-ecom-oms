@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.DouOrderMapper">
+    
+    <resultMap type="DouOrder" id="DouOrderResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="shopId"    column="shop_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="postAddr"    column="post_addr"    />
+        <result property="postCode"    column="post_code"    />
+        <result property="postReceiver"    column="post_receiver"    />
+        <result property="postTel"    column="post_tel"    />
+        <result property="buyerWords"    column="buyer_words"    />
+        <result property="sellerWords"    column="seller_words"    />
+        <result property="logisticsId"    column="logistics_id"    />
+        <result property="logisticsCode"    column="logistics_code"    />
+        <result property="logisticsCompany"    column="logistics_company"    />
+        <result property="logisticsTime"    column="logistics_time"    />
+        <result property="receiptTime"    column="receipt_time"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="orderStatusStr"    column="order_status_str"    />
+        <result property="orderCreateTime"    column="order_create_time"    />
+        <result property="expShipTime"    column="exp_ship_time"    />
+        <result property="cancelReason"    column="cancel_reason"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="payTypeName"    column="pay_type_name"    />
+        <result property="payTime"    column="pay_time"    />
+        <result property="postAmount"    column="post_amount"    />
+        <result property="couponAmount"    column="coupon_amount"    />
+        <result property="shopCouponAmount"    column="shop_coupon_amount"    />
+        <result property="couponInfo"    column="coupon_info"    />
+        <result property="orderTotalAmount"    column="order_total_amount"    />
+        <result property="postInsuranceAmount"    column="post_insurance_amount"    />
+        <result property="isComment"    column="is_comment"    />
+        <result property="cType"    column="c_type"    />
+        <result property="bType"    column="b_type"    />
+        <result property="appSource"    column="appSource"    />
+        <result property="trafficeSource"    column="trafficeSource"    />
+        <result property="cosRatio"    column="cos_ratio"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="sendStatus"    column="send_status"    />
+        <result property="sendTime"    column="send_time"    />
+        <result property="auditStatus"    column="auditStatus"    />
+        <result property="encryptDetail"    column="encryptDetail"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="town"    column="town"    />
+        <result property="street"    column="street"    />
+        <result property="shipTime"    column="ship_time"    />
+        <result property="tradeType"    column="trade_type"    />
+        <result property="encryptPostTel"    column="encrypt_post_tel"    />
+        <result property="encryptPostReceiver"    column="encrypt_post_receiver"    />
+        <result property="result"    column="result"    />
+        <result property="printStatus"    column="print_status"    />
+        <result property="printTime"    column="print_time"    />
+        <result property="phoneKey"    column="phoneKey"    />
+        <result property="addressKey"    column="addressKey"    />
+        <result property="authorId"    column="author_id"    />
+        <result property="authorName"    column="author_name"    />
+        <result property="settlementStatus"    column="settlement_status"    />
+    </resultMap>
+
+    <resultMap id="DouOrderDouOrderItemResult" type="DouOrder" extends="DouOrderResult">
+        <collection property="douOrderItemList" notNullColumn="sub_id" javaType="java.util.List" resultMap="DouOrderItemResult" />
+    </resultMap>
+
+    <resultMap type="DouOrderItem" id="DouOrderItemResult">
+        <result property="id"    column="sub_id"    />
+        <result property="douyinOrderId"    column="sub_douyin_order_id"    />
+        <result property="orderId"    column="sub_order_id"    />
+        <result property="subOrderId"    column="sub_sub_order_id"    />
+        <result property="productId"    column="sub_product_id"    />
+        <result property="productName"    column="sub_product_name"    />
+        <result property="productPic"    column="sub_product_pic"    />
+        <result property="comboId"    column="sub_combo_id"    />
+        <result property="goodsNum"    column="sub_goods_num"    />
+        <result property="specNum"    column="sub_spec_num"    />
+        <result property="goodsSpec"    column="sub_goods_spec"    />
+        <result property="comboNum"    column="sub_combo_num"    />
+        <result property="postAmount"    column="sub_post_amount"    />
+        <result property="couponAmount"    column="sub_coupon_amount"    />
+        <result property="couponMetaId"    column="sub_coupon_meta_id"    />
+        <result property="couponInfo"    column="sub_coupon_info"    />
+        <result property="campaignInfo"    column="sub_campaign_info"    />
+        <result property="totalAmount"    column="sub_total_amount"    />
+        <result property="isComment"    column="sub_is_comment"    />
+        <result property="erpGoodsId"    column="sub_erp_goods_id"    />
+        <result property="erpSpecId"    column="sub_erp_spec_id"    />
+        <result property="remark"    column="sub_remark"    />
+        <result property="price"    column="sub_price"    />
+        <result property="isGift"    column="sub_is_gift"    />
+        <result property="itemStatus"    column="sub_item_status"    />
+    </resultMap>
+
+    <sql id="selectDouOrderVo">
+        select id, order_id, shop_id, user_name, post_addr, post_code, post_receiver, post_tel, buyer_words, seller_words, logistics_id, logistics_code, logistics_company, logistics_time, receipt_time, order_status, order_status_str, order_create_time, exp_ship_time, cancel_reason, pay_type, pay_type_name, pay_time, post_amount, coupon_amount, shop_coupon_amount, coupon_info, order_total_amount, post_insurance_amount, is_comment, c_type, b_type, appSource, trafficeSource, cos_ratio, created_time, update_time, send_status, send_time, auditStatus, encryptDetail, province, city, town, street, ship_time, trade_type, encrypt_post_tel, encrypt_post_receiver, result, print_status, print_time, phoneKey, addressKey, author_id, author_name, settlement_status from s_dou_order
+    </sql>
+
+    <select id="selectDouOrderList" parameterType="DouOrder" resultMap="DouOrderResult">
+        <include refid="selectDouOrderVo"/>
+        <where>  
+            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
+            <if test="shopId != null "> and shop_id = #{shopId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="postAddr != null  and postAddr != ''"> and post_addr = #{postAddr}</if>
+            <if test="postCode != null  and postCode != ''"> and post_code = #{postCode}</if>
+            <if test="postReceiver != null  and postReceiver != ''"> and post_receiver = #{postReceiver}</if>
+            <if test="postTel != null  and postTel != ''"> and post_tel = #{postTel}</if>
+            <if test="buyerWords != null  and buyerWords != ''"> and buyer_words = #{buyerWords}</if>
+            <if test="sellerWords != null  and sellerWords != ''"> and seller_words = #{sellerWords}</if>
+            <if test="logisticsId != null  and logisticsId != ''"> and logistics_id = #{logisticsId}</if>
+            <if test="logisticsCode != null  and logisticsCode != ''"> and logistics_code = #{logisticsCode}</if>
+            <if test="logisticsCompany != null  and logisticsCompany != ''"> and logistics_company = #{logisticsCompany}</if>
+            <if test="logisticsTime != null "> and logistics_time = #{logisticsTime}</if>
+            <if test="receiptTime != null "> and receipt_time = #{receiptTime}</if>
+            <if test="orderStatus != null "> and order_status = #{orderStatus}</if>
+            <if test="orderStatusStr != null  and orderStatusStr != ''"> and order_status_str = #{orderStatusStr}</if>
+            <if test="orderCreateTime != null "> and order_create_time = #{orderCreateTime}</if>
+            <if test="expShipTime != null "> and exp_ship_time = #{expShipTime}</if>
+            <if test="cancelReason != null  and cancelReason != ''"> and cancel_reason = #{cancelReason}</if>
+            <if test="payType != null "> and pay_type = #{payType}</if>
+            <if test="payTypeName != null  and payTypeName != ''"> and pay_type_name like concat('%', #{payTypeName}, '%')</if>
+            <if test="payTime != null "> and pay_time = #{payTime}</if>
+            <if test="postAmount != null "> and post_amount = #{postAmount}</if>
+            <if test="couponAmount != null "> and coupon_amount = #{couponAmount}</if>
+            <if test="shopCouponAmount != null "> and shop_coupon_amount = #{shopCouponAmount}</if>
+            <if test="couponInfo != null  and couponInfo != ''"> and coupon_info = #{couponInfo}</if>
+            <if test="orderTotalAmount != null "> and order_total_amount = #{orderTotalAmount}</if>
+            <if test="postInsuranceAmount != null "> and post_insurance_amount = #{postInsuranceAmount}</if>
+            <if test="isComment != null "> and is_comment = #{isComment}</if>
+            <if test="cType != null "> and c_type = #{cType}</if>
+            <if test="bType != null "> and b_type = #{bType}</if>
+            <if test="appSource != null  and appSource != ''"> and appSource = #{appSource}</if>
+            <if test="trafficeSource != null  and trafficeSource != ''"> and trafficeSource = #{trafficeSource}</if>
+            <if test="cosRatio != null "> and cos_ratio = #{cosRatio}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="sendStatus != null "> and send_status = #{sendStatus}</if>
+            <if test="sendTime != null "> and send_time = #{sendTime}</if>
+            <if test="auditStatus != null "> and auditStatus = #{auditStatus}</if>
+            <if test="encryptDetail != null  and encryptDetail != ''"> and encryptDetail = #{encryptDetail}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="town != null  and town != ''"> and town = #{town}</if>
+            <if test="street != null  and street != ''"> and street = #{street}</if>
+            <if test="shipTime != null "> and ship_time = #{shipTime}</if>
+            <if test="tradeType != null "> and trade_type = #{tradeType}</if>
+            <if test="encryptPostTel != null  and encryptPostTel != ''"> and encrypt_post_tel = #{encryptPostTel}</if>
+            <if test="encryptPostReceiver != null  and encryptPostReceiver != ''"> and encrypt_post_receiver = #{encryptPostReceiver}</if>
+            <if test="result != null  and result != ''"> and result = #{result}</if>
+            <if test="printStatus != null "> and print_status = #{printStatus}</if>
+            <if test="printTime != null "> and print_time = #{printTime}</if>
+            <if test="phoneKey != null  and phoneKey != ''"> and phoneKey = #{phoneKey}</if>
+            <if test="addressKey != null  and addressKey != ''"> and addressKey = #{addressKey}</if>
+            <if test="authorId != null "> and author_id = #{authorId}</if>
+            <if test="authorName != null  and authorName != ''"> and author_name like concat('%', #{authorName}, '%')</if>
+            <if test="settlementStatus != null "> and settlement_status = #{settlementStatus}</if>
+        </where>
+    </select>
+
+    <select id="selectOrderItemByOrderId" parameterType="Long" resultMap="DouOrderItemResult">
+
+        select
+               b.id as sub_id, b.douyin_order_id as sub_douyin_order_id, b.order_id as sub_order_id, b.sub_order_id as sub_sub_order_id,
+                b.product_id as sub_product_id, b.product_name as sub_product_name, b.product_pic as sub_product_pic,
+               b.combo_id as sub_combo_id, b.goods_num as sub_goods_num, b.spec_num as sub_spec_num, b.goods_spec as sub_goods_spec,
+               b.combo_num as sub_combo_num, b.post_amount as sub_post_amount, b.coupon_amount as sub_coupon_amount, b.coupon_meta_id as sub_coupon_meta_id,
+               b.coupon_info as sub_coupon_info, b.campaign_info as sub_campaign_info, b.total_amount as sub_total_amount, b.is_comment as sub_is_comment,
+               b.erp_goods_id as sub_erp_goods_id, b.erp_spec_id as sub_erp_spec_id, b.remark as sub_remark, b.price as sub_price, b.is_gift as sub_is_gift,
+               b.item_status as sub_item_status
+        from  s_dou_order_item b
+        where b.douyin_order_id = #{orderId}
+    </select>
+
+    <select id="selectDouOrderById" parameterType="Long" resultMap="DouOrderDouOrderItemResult">
+        select a.id, a.order_id, a.shop_id, a.user_name, a.post_addr, a.post_code, a.post_receiver, a.post_tel, a.buyer_words, a.seller_words, a.logistics_id, a.logistics_code, a.logistics_company, a.logistics_time, a.receipt_time, a.order_status, a.order_status_str, a.order_create_time, a.exp_ship_time, a.cancel_reason, a.pay_type, a.pay_type_name, a.pay_time, a.post_amount, a.coupon_amount, a.shop_coupon_amount, a.coupon_info, a.order_total_amount, a.post_insurance_amount, a.is_comment, a.c_type, a.b_type, a.appSource, a.trafficeSource, a.cos_ratio, a.created_time, a.update_time, a.send_status, a.send_time, a.auditStatus, a.encryptDetail, a.province, a.city, a.town, a.street, a.ship_time, a.trade_type, a.encrypt_post_tel, a.encrypt_post_receiver, a.result, a.print_status, a.print_time, a.phoneKey, a.addressKey, a.author_id, a.author_name, a.settlement_status,
+ b.id as sub_id, b.douyin_order_id as sub_douyin_order_id, b.order_id as sub_order_id, b.sub_order_id as sub_sub_order_id, b.product_id as sub_product_id, b.product_name as sub_product_name, b.product_pic as sub_product_pic, b.combo_id as sub_combo_id, b.goods_num as sub_goods_num, b.spec_num as sub_spec_num, b.goods_spec as sub_goods_spec, b.combo_num as sub_combo_num, b.post_amount as sub_post_amount, b.coupon_amount as sub_coupon_amount, b.coupon_meta_id as sub_coupon_meta_id, b.coupon_info as sub_coupon_info, b.campaign_info as sub_campaign_info, b.total_amount as sub_total_amount, b.is_comment as sub_is_comment, b.erp_goods_id as sub_erp_goods_id, b.erp_spec_id as sub_erp_spec_id, b.remark as sub_remark, b.price as sub_price, b.is_gift as sub_is_gift, b.item_status as sub_item_status
+        from s_dou_order a
+        left join s_dou_order_item b on b.douyin_order_id = a.id
+        where a.id = #{id}
+    </select>
+
+
+
+    <select id="selectDouOrderItemBySubOrderId" parameterType="String" resultMap="DouOrderItemResult">
+        select
+        b.id as sub_id, b.douyin_order_id as sub_douyin_order_id, b.order_id as sub_order_id, b.sub_order_id as sub_sub_order_id, b.product_id as sub_product_id, b.product_name as sub_product_name, b.product_pic as sub_product_pic, b.combo_id as sub_combo_id, b.goods_num as sub_goods_num, b.spec_num as sub_spec_num, b.goods_spec as sub_goods_spec, b.combo_num as sub_combo_num, b.post_amount as sub_post_amount, b.coupon_amount as sub_coupon_amount, b.coupon_meta_id as sub_coupon_meta_id, b.coupon_info as sub_coupon_info, b.campaign_info as sub_campaign_info, b.total_amount as sub_total_amount, b.is_comment as sub_is_comment, b.erp_goods_id as sub_erp_goods_id, b.erp_spec_id as sub_erp_spec_id, b.remark as sub_remark, b.price as sub_price, b.is_gift as sub_is_gift, b.item_status as sub_item_status
+        from  s_dou_order_item b
+        where b.sub_order_id = #{subOrderId}
+    </select>
+        
+    <insert id="insertDouOrder" parameterType="DouOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into s_dou_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null and orderId != ''">order_id,</if>
+            <if test="shopId != null">shop_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="postAddr != null">post_addr,</if>
+            <if test="postCode != null">post_code,</if>
+            <if test="postReceiver != null">post_receiver,</if>
+            <if test="postTel != null">post_tel,</if>
+            <if test="buyerWords != null">buyer_words,</if>
+            <if test="sellerWords != null">seller_words,</if>
+            <if test="logisticsId != null">logistics_id,</if>
+            <if test="logisticsCode != null">logistics_code,</if>
+            <if test="logisticsCompany != null">logistics_company,</if>
+            <if test="logisticsTime != null">logistics_time,</if>
+            <if test="receiptTime != null">receipt_time,</if>
+            <if test="orderStatus != null">order_status,</if>
+            <if test="orderStatusStr != null and orderStatusStr != ''">order_status_str,</if>
+            <if test="orderCreateTime != null">order_create_time,</if>
+            <if test="expShipTime != null">exp_ship_time,</if>
+            <if test="cancelReason != null">cancel_reason,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="payTypeName != null and payTypeName != ''">pay_type_name,</if>
+            <if test="payTime != null">pay_time,</if>
+            <if test="postAmount != null">post_amount,</if>
+            <if test="couponAmount != null">coupon_amount,</if>
+            <if test="shopCouponAmount != null">shop_coupon_amount,</if>
+            <if test="couponInfo != null">coupon_info,</if>
+            <if test="orderTotalAmount != null">order_total_amount,</if>
+            <if test="postInsuranceAmount != null">post_insurance_amount,</if>
+            <if test="isComment != null">is_comment,</if>
+            <if test="cType != null">c_type,</if>
+            <if test="bType != null">b_type,</if>
+            <if test="appSource != null">appSource,</if>
+            <if test="trafficeSource != null">trafficeSource,</if>
+            <if test="cosRatio != null">cos_ratio,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="sendStatus != null">send_status,</if>
+            <if test="sendTime != null">send_time,</if>
+            <if test="auditStatus != null">auditStatus,</if>
+            <if test="encryptDetail != null">encryptDetail,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="town != null">town,</if>
+            <if test="street != null">street,</if>
+            <if test="shipTime != null">ship_time,</if>
+            <if test="tradeType != null">trade_type,</if>
+            <if test="encryptPostTel != null">encrypt_post_tel,</if>
+            <if test="encryptPostReceiver != null">encrypt_post_receiver,</if>
+            <if test="result != null">result,</if>
+            <if test="printStatus != null">print_status,</if>
+            <if test="printTime != null">print_time,</if>
+            <if test="phoneKey != null">phoneKey,</if>
+            <if test="addressKey != null">addressKey,</if>
+            <if test="authorId != null">author_id,</if>
+            <if test="authorName != null">author_name,</if>
+            <if test="settlementStatus != null">settlement_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null and orderId != ''">#{orderId},</if>
+            <if test="shopId != null">#{shopId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="postAddr != null">#{postAddr},</if>
+            <if test="postCode != null">#{postCode},</if>
+            <if test="postReceiver != null">#{postReceiver},</if>
+            <if test="postTel != null">#{postTel},</if>
+            <if test="buyerWords != null">#{buyerWords},</if>
+            <if test="sellerWords != null">#{sellerWords},</if>
+            <if test="logisticsId != null">#{logisticsId},</if>
+            <if test="logisticsCode != null">#{logisticsCode},</if>
+            <if test="logisticsCompany != null">#{logisticsCompany},</if>
+            <if test="logisticsTime != null">#{logisticsTime},</if>
+            <if test="receiptTime != null">#{receiptTime},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+            <if test="orderStatusStr != null and orderStatusStr != ''">#{orderStatusStr},</if>
+            <if test="orderCreateTime != null">#{orderCreateTime},</if>
+            <if test="expShipTime != null">#{expShipTime},</if>
+            <if test="cancelReason != null">#{cancelReason},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="payTypeName != null and payTypeName != ''">#{payTypeName},</if>
+            <if test="payTime != null">#{payTime},</if>
+            <if test="postAmount != null">#{postAmount},</if>
+            <if test="couponAmount != null">#{couponAmount},</if>
+            <if test="shopCouponAmount != null">#{shopCouponAmount},</if>
+            <if test="couponInfo != null">#{couponInfo},</if>
+            <if test="orderTotalAmount != null">#{orderTotalAmount},</if>
+            <if test="postInsuranceAmount != null">#{postInsuranceAmount},</if>
+            <if test="isComment != null">#{isComment},</if>
+            <if test="cType != null">#{cType},</if>
+            <if test="bType != null">#{bType},</if>
+            <if test="appSource != null">#{appSource},</if>
+            <if test="trafficeSource != null">#{trafficeSource},</if>
+            <if test="cosRatio != null">#{cosRatio},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="sendStatus != null">#{sendStatus},</if>
+            <if test="sendTime != null">#{sendTime},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="encryptDetail != null">#{encryptDetail},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="town != null">#{town},</if>
+            <if test="street != null">#{street},</if>
+            <if test="shipTime != null">#{shipTime},</if>
+            <if test="tradeType != null">#{tradeType},</if>
+            <if test="encryptPostTel != null">#{encryptPostTel},</if>
+            <if test="encryptPostReceiver != null">#{encryptPostReceiver},</if>
+            <if test="result != null">#{result},</if>
+            <if test="printStatus != null">#{printStatus},</if>
+            <if test="printTime != null">#{printTime},</if>
+            <if test="phoneKey != null">#{phoneKey},</if>
+            <if test="addressKey != null">#{addressKey},</if>
+            <if test="authorId != null">#{authorId},</if>
+            <if test="authorName != null">#{authorName},</if>
+            <if test="settlementStatus != null">#{settlementStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDouOrder" parameterType="DouOrder">
+        update s_dou_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null and orderId != ''">order_id = #{orderId},</if>
+            <if test="shopId != null">shop_id = #{shopId},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="postAddr != null">post_addr = #{postAddr},</if>
+            <if test="postCode != null">post_code = #{postCode},</if>
+            <if test="postReceiver != null">post_receiver = #{postReceiver},</if>
+            <if test="postTel != null">post_tel = #{postTel},</if>
+            <if test="buyerWords != null">buyer_words = #{buyerWords},</if>
+            <if test="sellerWords != null">seller_words = #{sellerWords},</if>
+            <if test="logisticsId != null">logistics_id = #{logisticsId},</if>
+            <if test="logisticsCode != null">logistics_code = #{logisticsCode},</if>
+            <if test="logisticsCompany != null">logistics_company = #{logisticsCompany},</if>
+            <if test="logisticsTime != null">logistics_time = #{logisticsTime},</if>
+            <if test="receiptTime != null">receipt_time = #{receiptTime},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus},</if>
+            <if test="orderStatusStr != null and orderStatusStr != ''">order_status_str = #{orderStatusStr},</if>
+            <if test="orderCreateTime != null">order_create_time = #{orderCreateTime},</if>
+            <if test="expShipTime != null">exp_ship_time = #{expShipTime},</if>
+            <if test="cancelReason != null">cancel_reason = #{cancelReason},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="payTypeName != null and payTypeName != ''">pay_type_name = #{payTypeName},</if>
+            <if test="payTime != null">pay_time = #{payTime},</if>
+            <if test="postAmount != null">post_amount = #{postAmount},</if>
+            <if test="couponAmount != null">coupon_amount = #{couponAmount},</if>
+            <if test="shopCouponAmount != null">shop_coupon_amount = #{shopCouponAmount},</if>
+            <if test="couponInfo != null">coupon_info = #{couponInfo},</if>
+            <if test="orderTotalAmount != null">order_total_amount = #{orderTotalAmount},</if>
+            <if test="postInsuranceAmount != null">post_insurance_amount = #{postInsuranceAmount},</if>
+            <if test="isComment != null">is_comment = #{isComment},</if>
+            <if test="cType != null">c_type = #{cType},</if>
+            <if test="bType != null">b_type = #{bType},</if>
+            <if test="appSource != null">appSource = #{appSource},</if>
+            <if test="trafficeSource != null">trafficeSource = #{trafficeSource},</if>
+            <if test="cosRatio != null">cos_ratio = #{cosRatio},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="sendStatus != null">send_status = #{sendStatus},</if>
+            <if test="sendTime != null">send_time = #{sendTime},</if>
+            <if test="auditStatus != null">auditStatus = #{auditStatus},</if>
+            <if test="encryptDetail != null">encryptDetail = #{encryptDetail},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="town != null">town = #{town},</if>
+            <if test="street != null">street = #{street},</if>
+            <if test="shipTime != null">ship_time = #{shipTime},</if>
+            <if test="tradeType != null">trade_type = #{tradeType},</if>
+            <if test="encryptPostTel != null">encrypt_post_tel = #{encryptPostTel},</if>
+            <if test="encryptPostReceiver != null">encrypt_post_receiver = #{encryptPostReceiver},</if>
+            <if test="result != null">result = #{result},</if>
+            <if test="printStatus != null">print_status = #{printStatus},</if>
+            <if test="printTime != null">print_time = #{printTime},</if>
+            <if test="phoneKey != null">phoneKey = #{phoneKey},</if>
+            <if test="addressKey != null">addressKey = #{addressKey},</if>
+            <if test="authorId != null">author_id = #{authorId},</if>
+            <if test="authorName != null">author_name = #{authorName},</if>
+            <if test="settlementStatus != null">settlement_status = #{settlementStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateDouOrderItem" parameterType="DouOrderItem">
+        update s_dou_order_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="itemStatus != null">item_status = #{itemStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDouOrderById" parameterType="Long">
+        delete from s_dou_order where id = #{id}
+    </delete>
+
+    <delete id="deleteDouOrderByIds" parameterType="String">
+        delete from s_dou_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteDouOrderItemByDouyinOrderIds" parameterType="String">
+        delete from s_dou_order_item where douyin_order_id in 
+        <foreach item="douyinOrderId" collection="array" open="(" separator="," close=")">
+            #{douyinOrderId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteDouOrderItemByDouyinOrderId" parameterType="Long">
+        delete from s_dou_order_item where douyin_order_id = #{douyinOrderId}
+    </delete>
+
+    <insert id="batchDouOrderItem">
+        insert into s_dou_order_item( id, douyin_order_id, order_id, sub_order_id, product_id, product_name, product_pic, combo_id, goods_num, spec_num, goods_spec, combo_num, post_amount, coupon_amount, coupon_meta_id, coupon_info, campaign_info, total_amount, is_comment, erp_goods_id, erp_spec_id, remark, price, is_gift, item_status) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.douyinOrderId}, #{item.orderId}, #{item.subOrderId}, #{item.productId}, #{item.productName}, #{item.productPic}, #{item.comboId}, #{item.goodsNum}, #{item.specNum}, #{item.goodsSpec}, #{item.comboNum}, #{item.postAmount}, #{item.couponAmount}, #{item.couponMetaId}, #{item.couponInfo}, #{item.campaignInfo}, #{item.totalAmount}, #{item.isComment}, #{item.erpGoodsId}, #{item.erpSpecId}, #{item.remark}, #{item.price}, #{item.isGift}, #{item.itemStatus})
+        </foreach>
+    </insert>
+</mapper>

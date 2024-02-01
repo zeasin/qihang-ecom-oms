@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.ScmPurchaseOrderItemMapper">
+    
+    <resultMap type="com.qihang.erp.api.domain.ScmPurchaseOrderItem" id="ScmPurchaseOrderItemResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="transType"    column="transType"    />
+        <result property="amount"    column="amount"    />
+        <result property="orderDate"    column="order_date"    />
+        <result property="remark"    column="remark"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="goodsNum"    column="goods_num"    />
+        <result property="goodsName"    column="goods_name"    />
+        <result property="specId"    column="spec_id"    />
+        <result property="specNum"    column="spec_num"    />
+        <result property="colorValue"    column="color_value"    />
+        <result property="colorImage"    column="color_image"    />
+        <result property="sizeValue"    column="size_value"    />
+        <result property="styleValue"    column="style_value"    />
+        <result property="price"    column="price"    />
+        <result property="disAmount"    column="dis_amount"    />
+        <result property="disRate"    column="dis_rate"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="inQty"    column="inQty"    />
+        <result property="locationId"    column="locationId"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectScmPurchaseOrderItemVo">
+        select id, order_id, order_no, transType, amount, order_date, remark, goods_id, goods_num,goods_name, spec_id, spec_num,color_value,color_image,size_value,style_value, price, dis_amount, dis_rate, quantity, inQty, locationId, is_delete, status from scm_purchase_order_item
+    </sql>
+
+    <select id="selectScmPurchaseOrderItemList" parameterType="ScmPurchaseOrderItem" resultMap="ScmPurchaseOrderItemResult">
+        <include refid="selectScmPurchaseOrderItemVo"/>
+        <where>  
+            <if test="orderId != null "> and order_id = #{orderId}</if>
+            <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+            <if test="transType != null  and transType != ''"> and transType = #{transType}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="orderDate != null "> and order_date = #{orderDate}</if>
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="goodsNum != null  and goodsNum != ''"> and goods_num = #{goodsNum}</if>
+            <if test="specId != null "> and spec_id = #{specId}</if>
+            <if test="specNum != null  and specNum != ''"> and spec_num = #{specNum}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="disAmount != null "> and dis_amount = #{disAmount}</if>
+            <if test="disRate != null "> and dis_rate = #{disRate}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="inQty != null "> and inQty = #{inQty}</if>
+            <if test="locationId != null "> and locationId = #{locationId}</if>
+            <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectScmPurchaseOrderItemById" parameterType="Long" resultMap="ScmPurchaseOrderItemResult">
+        <include refid="selectScmPurchaseOrderItemVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertScmPurchaseOrderItem" parameterType="ScmPurchaseOrderItem" useGeneratedKeys="true" keyProperty="id">
+        insert into scm_purchase_order_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">order_id,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="transType != null">transType,</if>
+            <if test="amount != null">amount,</if>
+            <if test="orderDate != null">order_date,</if>
+            <if test="remark != null">remark,</if>
+            <if test="goodsId != null">goods_id,</if>
+            <if test="goodsNum != null">goods_num,</if>
+            <if test="goodsName != null">goods_name,</if>
+            <if test="specId != null">spec_id,</if>
+            <if test="specNum != null">spec_num,</if>
+            <if test="colorValue != null">color_value,</if>
+            <if test="colorImage != null">color_image,</if>
+            <if test="sizeValue != null">size_value,</if>
+            <if test="styleValue != null">style_value,</if>
+            <if test="price != null">price,</if>
+            <if test="disAmount != null">dis_amount,</if>
+            <if test="disRate != null">dis_rate,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="inQty != null">inQty,</if>
+            <if test="locationId != null">locationId,</if>
+            <if test="isDelete != null">is_delete,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="transType != null">#{transType},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="orderDate != null">#{orderDate},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="goodsNum != null">#{goodsNum},</if>
+            <if test="goodsName != null">#{goodsName},</if>
+            <if test="specId != null">#{specId},</if>
+            <if test="specNum != null">#{specNum},</if>
+            <if test="colorValue != null">#{colorValue},</if>
+            <if test="colorImage != null">#{colorImage},</if>
+            <if test="sizeValue != null">#{sizeValue},</if>
+            <if test="styleValue != null">#{styleValue},</if>
+            <if test="price != null">#{price},</if>
+            <if test="disAmount != null">#{disAmount},</if>
+            <if test="disRate != null">#{disRate},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="inQty != null">#{inQty},</if>
+            <if test="locationId != null">#{locationId},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateScmPurchaseOrderItem" parameterType="ScmPurchaseOrderItem">
+        update scm_purchase_order_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="transType != null">transType = #{transType},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="orderDate != null">order_date = #{orderDate},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="goodsId != null">goods_id = #{goodsId},</if>
+            <if test="goodsNum != null">goods_num = #{goodsNum},</if>
+            <if test="specId != null">spec_id = #{specId},</if>
+            <if test="specNum != null">spec_num = #{specNum},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="disAmount != null">dis_amount = #{disAmount},</if>
+            <if test="disRate != null">dis_rate = #{disRate},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="inQty != null">inQty = #{inQty},</if>
+            <if test="locationId != null">locationId = #{locationId},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteScmPurchaseOrderItemById" parameterType="Long">
+        delete from scm_purchase_order_item where id = #{id}
+    </delete>
+
+    <delete id="deleteScmPurchaseOrderItemByIds" parameterType="String">
+        delete from scm_purchase_order_item where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.ErpOrderReturnedMapper">
+    
+    <resultMap type="ErpOrderReturned" id="ErpOrderReturnedResult">
+        <result property="id"    column="id"    />
+        <result property="returnedNum"    column="returned_num"    />
+        <result property="returnedType"    column="returned_type"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="shopId"    column="shop_id"    />
+        <result property="shopType"    column="shop_type"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="orderItemId"    column="order_item_id"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="specId"    column="spec_id"    />
+        <result property="goodsNum"    column="goods_num"    />
+        <result property="specNum"    column="spec_num"    />
+        <result property="goodsName"    column="goods_name"    />
+        <result property="goodsSpec"    column="goods_spec"    />
+        <result property="goodsImage"    column="goods_image"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="logisticsCompany"    column="logistics_company"    />
+        <result property="logisticsCode"    column="logistics_code"    />
+        <result property="receiveTime"    column="receive_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="contactPerson"    column="contactPerson"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="address"    column="address"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectErpOrderReturnedVo">
+        select id, returned_num, returned_type, order_num, shop_id, shop_type, order_id, order_item_id, goods_id, spec_id, goods_num, spec_num, goods_name, goods_spec, goods_image, quantity, logistics_company, logistics_code, receive_time, remark, contactPerson, mobile, address, status, create_time, create_by, update_time, update_by from erp_order_returned
+    </sql>
+
+    <select id="selectErpOrderReturnedList" parameterType="ErpOrderReturned" resultMap="ErpOrderReturnedResult">
+        <include refid="selectErpOrderReturnedVo"/>
+        <where>  
+            <if test="returnedNum != null  and returnedNum != ''"> and returned_num = #{returnedNum}</if>
+            <if test="returnedType != null "> and returned_type = #{returnedType}</if>
+            <if test="orderNum != null  and orderNum != ''"> and order_num = #{orderNum}</if>
+            <if test="shopId != null "> and shop_id = #{shopId}</if>
+            <if test="shopType != null "> and shop_type = #{shopType}</if>
+            <if test="orderId != null "> and order_id = #{orderId}</if>
+            <if test="orderItemId != null "> and order_item_id = #{orderItemId}</if>
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="specId != null "> and spec_id = #{specId}</if>
+            <if test="goodsNum != null  and goodsNum != ''"> and goods_num = #{goodsNum}</if>
+            <if test="specNum != null  and specNum != ''"> and spec_num = #{specNum}</if>
+            <if test="goodsName != null  and goodsName != ''"> and goods_name like concat('%', #{goodsName}, '%')</if>
+            <if test="goodsSpec != null  and goodsSpec != ''"> and goods_spec = #{goodsSpec}</if>
+            <if test="goodsImage != null  and goodsImage != ''"> and goods_image = #{goodsImage}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="logisticsCompany != null  and logisticsCompany != ''"> and logistics_company = #{logisticsCompany}</if>
+            <if test="logisticsCode != null  and logisticsCode != ''"> and logistics_code = #{logisticsCode}</if>
+            <if test="receiveTime != null "> and receive_time = #{receiveTime}</if>
+            <if test="contactPerson != null  and contactPerson != ''"> and contactPerson = #{contactPerson}</if>
+            <if test="mobile != null  and mobile != ''"> and mobile = #{mobile}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectErpOrderReturnedById" parameterType="Long" resultMap="ErpOrderReturnedResult">
+        <include refid="selectErpOrderReturnedVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertErpOrderReturned" parameterType="ErpOrderReturned" useGeneratedKeys="true" keyProperty="id">
+        insert into erp_order_returned
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="returnedNum != null and returnedNum != ''">returned_num,</if>
+            <if test="returnedType != null">returned_type,</if>
+            <if test="orderNum != null and orderNum != ''">order_num,</if>
+            <if test="shopId != null">shop_id,</if>
+            <if test="shopType != null">shop_type,</if>
+            <if test="orderId != null">order_id,</if>
+            <if test="orderItemId != null">order_item_id,</if>
+            <if test="goodsId != null">goods_id,</if>
+            <if test="specId != null">spec_id,</if>
+            <if test="goodsNum != null">goods_num,</if>
+            <if test="specNum != null">spec_num,</if>
+            <if test="goodsName != null">goods_name,</if>
+            <if test="goodsSpec != null">goods_spec,</if>
+            <if test="goodsImage != null">goods_image,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="logisticsCompany != null">logistics_company,</if>
+            <if test="logisticsCode != null">logistics_code,</if>
+            <if test="receiveTime != null">receive_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="contactPerson != null">contactPerson,</if>
+            <if test="mobile != null">mobile,</if>
+            <if test="address != null">address,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="returnedNum != null and returnedNum != ''">#{returnedNum},</if>
+            <if test="returnedType != null">#{returnedType},</if>
+            <if test="orderNum != null and orderNum != ''">#{orderNum},</if>
+            <if test="shopId != null">#{shopId},</if>
+            <if test="shopType != null">#{shopType},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="orderItemId != null">#{orderItemId},</if>
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="specId != null">#{specId},</if>
+            <if test="goodsNum != null">#{goodsNum},</if>
+            <if test="specNum != null">#{specNum},</if>
+            <if test="goodsName != null">#{goodsName},</if>
+            <if test="goodsSpec != null">#{goodsSpec},</if>
+            <if test="goodsImage != null">#{goodsImage},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="logisticsCompany != null">#{logisticsCompany},</if>
+            <if test="logisticsCode != null">#{logisticsCode},</if>
+            <if test="receiveTime != null">#{receiveTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="contactPerson != null">#{contactPerson},</if>
+            <if test="mobile != null">#{mobile},</if>
+            <if test="address != null">#{address},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateErpOrderReturned" parameterType="ErpOrderReturned">
+        update erp_order_returned
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="returnedNum != null and returnedNum != ''">returned_num = #{returnedNum},</if>
+            <if test="returnedType != null">returned_type = #{returnedType},</if>
+            <if test="orderNum != null and orderNum != ''">order_num = #{orderNum},</if>
+            <if test="shopId != null">shop_id = #{shopId},</if>
+            <if test="shopType != null">shop_type = #{shopType},</if>
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="orderItemId != null">order_item_id = #{orderItemId},</if>
+            <if test="goodsId != null">goods_id = #{goodsId},</if>
+            <if test="specId != null">spec_id = #{specId},</if>
+            <if test="goodsNum != null">goods_num = #{goodsNum},</if>
+            <if test="specNum != null">spec_num = #{specNum},</if>
+            <if test="goodsName != null">goods_name = #{goodsName},</if>
+            <if test="goodsSpec != null">goods_spec = #{goodsSpec},</if>
+            <if test="goodsImage != null">goods_image = #{goodsImage},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="logisticsCompany != null">logistics_company = #{logisticsCompany},</if>
+            <if test="logisticsCode != null">logistics_code = #{logisticsCode},</if>
+            <if test="receiveTime != null">receive_time = #{receiveTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="contactPerson != null">contactPerson = #{contactPerson},</if>
+            <if test="mobile != null">mobile = #{mobile},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteErpOrderReturnedById" parameterType="Long">
+        delete from erp_order_returned where id = #{id}
+    </delete>
+
+    <delete id="deleteErpOrderReturnedByIds" parameterType="String">
+        delete from erp_order_returned where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

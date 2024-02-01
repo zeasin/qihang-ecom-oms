@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.ScmPurchaseOrderShipMapper">
+    
+    <resultMap type="ScmPurchaseOrderShip" id="ScmPurchaseOrderShipResult">
+        <result property="id"    column="id"    />
+        <result property="shipCompany"    column="ship_company"    />
+        <result property="shipNo"    column="ship_no"    />
+        <result property="freight"    column="freight"    />
+        <result property="shipTime"    column="ship_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="receiptTime"    column="receipt_time"    />
+        <result property="stockInTime"    column="stock_in_time"    />
+        <result property="status"    column="status"    />
+        <result property="remark"    column="remark"    />
+        <result property="backCount"    column="back_count"    />
+        <result property="stockInCount"    column="stock_in_count"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="orderDate"    column="order_date"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="orderSpecUnit"    column="order_spec_unit"    />
+        <result property="orderGoodsUnit"    column="order_goods_unit"    />
+        <result property="orderSpecUnitTotal"    column="order_spec_unit_total"    />
+    </resultMap>
+
+    <sql id="selectScmPurchaseOrderShipVo">
+        select id, ship_company, ship_no, freight, ship_time, create_by, create_time, status, remark, back_count, stock_in_count, update_by, update_time,
+        order_date, order_no, order_spec_unit, order_goods_unit, order_spec_unit_total,receipt_time,stock_in_time
+        from scm_purchase_order_ship
+    </sql>
+
+    <select id="selectScmPurchaseOrderShipList" parameterType="ScmPurchaseOrderShip" resultMap="ScmPurchaseOrderShipResult">
+        <include refid="selectScmPurchaseOrderShipVo"/>
+        <where>  
+            <if test="shipCompany != null  and shipCompany != ''"> and ship_company = #{shipCompany}</if>
+            <if test="shipNo != null  and shipNo != ''"> and ship_no = #{shipNo}</if>
+            <if test="freight != null "> and freight = #{freight}</if>
+            <if test="shipTime != null "> and ship_time = #{shipTime}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="backCount != null "> and back_count = #{backCount}</if>
+            <if test="stockInCount != null "> and stock_in_count = #{stockInCount}</if>
+            <if test="orderDate != null "> and order_date = #{orderDate}</if>
+            <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+            <if test="orderSpecUnit != null "> and order_spec_unit = #{orderSpecUnit}</if>
+            <if test="orderGoodsUnit != null "> and order_goods_unit = #{orderGoodsUnit}</if>
+            <if test="orderSpecUnitTotal != null "> and order_spec_unit_total = #{orderSpecUnitTotal}</if>
+        </where>
+    </select>
+    
+    <select id="selectScmPurchaseOrderShipById" parameterType="Long" resultMap="ScmPurchaseOrderShipResult">
+        <include refid="selectScmPurchaseOrderShipVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertScmPurchaseOrderShip" parameterType="ScmPurchaseOrderShip">
+        insert into scm_purchase_order_ship
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="shipCompany != null">ship_company,</if>
+            <if test="shipNo != null">ship_no,</if>
+            <if test="freight != null">freight,</if>
+            <if test="shipTime != null">ship_time,</if>
+            <if test="receiptTime != null">receipt_time,</if>
+            <if test="stockInTime != null">stock_in_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="status != null">status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="backCount != null">back_count,</if>
+            <if test="stockInCount != null">stock_in_count,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="orderDate != null">order_date,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="orderSpecUnit != null">order_spec_unit,</if>
+            <if test="orderGoodsUnit != null">order_goods_unit,</if>
+            <if test="orderSpecUnitTotal != null">order_spec_unit_total,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="shipCompany != null">#{shipCompany},</if>
+            <if test="shipNo != null">#{shipNo},</if>
+            <if test="freight != null">#{freight},</if>
+            <if test="shipTime != null">#{shipTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="backCount != null">#{backCount},</if>
+            <if test="stockInCount != null">#{stockInCount},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="orderDate != null">#{orderDate},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="orderSpecUnit != null">#{orderSpecUnit},</if>
+            <if test="orderGoodsUnit != null">#{orderGoodsUnit},</if>
+            <if test="orderSpecUnitTotal != null">#{orderSpecUnitTotal},</if>
+         </trim>
+    </insert>
+
+    <update id="updateScmPurchaseOrderShip" parameterType="ScmPurchaseOrderShip">
+        update scm_purchase_order_ship
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shipCompany != null">ship_company = #{shipCompany},</if>
+            <if test="shipNo != null">ship_no = #{shipNo},</if>
+            <if test="freight != null">freight = #{freight},</if>
+            <if test="shipTime != null">ship_time = #{shipTime},</if>
+            <if test="receiptTime != null">receipt_time = #{receiptTime},</if>
+            <if test="stockInTime != null">stock_in_time = #{stockInTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="backCount != null">back_count = #{backCount},</if>
+            <if test="stockInCount != null">stock_in_count = #{stockInCount},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="orderDate != null">order_date = #{orderDate},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="orderSpecUnit != null">order_spec_unit = #{orderSpecUnit},</if>
+            <if test="orderGoodsUnit != null">order_goods_unit = #{orderGoodsUnit},</if>
+            <if test="orderSpecUnitTotal != null">order_spec_unit_total = #{orderSpecUnitTotal},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteScmPurchaseOrderShipById" parameterType="Long">
+        delete from scm_purchase_order_ship where id = #{id}
+    </delete>
+
+    <delete id="deleteScmPurchaseOrderShipByIds" parameterType="String">
+        delete from scm_purchase_order_ship where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

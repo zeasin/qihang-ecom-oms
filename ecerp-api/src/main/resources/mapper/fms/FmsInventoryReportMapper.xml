@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.FmsInventoryReportMapper">
+    
+    <resultMap type="FmsInventoryReport" id="FmsInventoryReportResult">
+        <result property="id"    column="id"    />
+        <result property="date"    column="date"    />
+        <result property="total"    column="total"    />
+        <result property="goodsCount"    column="goods_count"    />
+        <result property="skuCount"    column="sku_count"    />
+        <result property="amount"    column="amount"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <resultMap id="FmsInventoryReportFmsInventoryReportDetailResult" type="FmsInventoryReport" extends="FmsInventoryReportResult">
+        <collection property="fmsInventoryReportDetailList" notNullColumn="sub_id" javaType="java.util.List" resultMap="FmsInventoryReportDetailResult" />
+    </resultMap>
+
+    <resultMap type="FmsInventoryReportDetail" id="FmsInventoryReportDetailResult">
+        <result property="id"    column="sub_id"    />
+        <result property="reportId"    column="sub_report_id"    />
+        <result property="date"    column="sub_date"    />
+        <result property="goodsId"    column="sub_goods_id"    />
+        <result property="specId"    column="sub_spec_id"    />
+        <result property="total"    column="sub_total"    />
+        <result property="amount"    column="sub_amount"    />
+        <result property="inventoryDist"    column="sub_inventory_dist"    />
+        <result property="createTime"    column="sub_create_time"    />
+        <result property="createBy"    column="sub_create_by"    />
+        <result property="updateTime"    column="sub_update_time"    />
+        <result property="updateBy"    column="sub_update_by"    />
+    </resultMap>
+
+    <sql id="selectFmsInventoryReportVo">
+        select id, date, total, goods_count, sku_count, amount, create_time, create_by, update_time, update_by from fms_inventory_report
+    </sql>
+
+    <select id="selectFmsInventoryReportList" parameterType="FmsInventoryReport" resultMap="FmsInventoryReportResult">
+        <include refid="selectFmsInventoryReportVo"/>
+        <where>  
+            <if test="date != null "> and date = #{date}</if>
+            <if test="total != null "> and total = #{total}</if>
+            <if test="goodsCount != null "> and goods_count = #{goodsCount}</if>
+            <if test="skuCount != null "> and sku_count = #{skuCount}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+        </where>
+    </select>
+    
+    <select id="selectFmsInventoryReportById" parameterType="Long" resultMap="FmsInventoryReportFmsInventoryReportDetailResult">
+        select a.id, a.date, a.total, a.goods_count, a.sku_count, a.amount, a.create_time, a.create_by, a.update_time, a.update_by,
+ b.id as sub_id, b.report_id as sub_report_id, b.date as sub_date, b.goods_id as sub_goods_id, b.spec_id as sub_spec_id, b.total as sub_total, b.amount as sub_amount, b.inventory_dist as sub_inventory_dist, b.create_time as sub_create_time, b.create_by as sub_create_by, b.update_time as sub_update_time, b.update_by as sub_update_by
+        from fms_inventory_report a
+        left join fms_inventory_report_detail b on b.report_id = a.id
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertFmsInventoryReport" parameterType="FmsInventoryReport">
+        insert into fms_inventory_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="date != null">date,</if>
+            <if test="total != null">total,</if>
+            <if test="goodsCount != null">goods_count,</if>
+            <if test="skuCount != null">sku_count,</if>
+            <if test="amount != null">amount,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="date != null">#{date},</if>
+            <if test="total != null">#{total},</if>
+            <if test="goodsCount != null">#{goodsCount},</if>
+            <if test="skuCount != null">#{skuCount},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFmsInventoryReport" parameterType="FmsInventoryReport">
+        update fms_inventory_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="date != null">date = #{date},</if>
+            <if test="total != null">total = #{total},</if>
+            <if test="goodsCount != null">goods_count = #{goodsCount},</if>
+            <if test="skuCount != null">sku_count = #{skuCount},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFmsInventoryReportById" parameterType="Long">
+        delete from fms_inventory_report where id = #{id}
+    </delete>
+
+    <delete id="deleteFmsInventoryReportByIds" parameterType="String">
+        delete from fms_inventory_report where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteFmsInventoryReportDetailByReportIds" parameterType="String">
+        delete from fms_inventory_report_detail where report_id in 
+        <foreach item="reportId" collection="array" open="(" separator="," close=")">
+            #{reportId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteFmsInventoryReportDetailByReportId" parameterType="Long">
+        delete from fms_inventory_report_detail where report_id = #{reportId}
+    </delete>
+
+    <insert id="batchFmsInventoryReportDetail">
+        insert into fms_inventory_report_detail( id, report_id, date, goods_id, spec_id, total, amount, inventory_dist, create_time, create_by, update_time, update_by) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.reportId}, #{item.date}, #{item.goodsId}, #{item.specId}, #{item.total}, #{item.amount}, #{item.inventoryDist}, #{item.createTime}, #{item.createBy}, #{item.updateTime}, #{item.updateBy})
+        </foreach>
+    </insert>
+</mapper>

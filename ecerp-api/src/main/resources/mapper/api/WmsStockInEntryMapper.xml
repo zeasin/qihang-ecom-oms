@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.WmsStockInEntryMapper">
+    
+    <resultMap type="WmsStockInEntry" id="WmsStockInEntryResult">
+        <result property="id"    column="id"    />
+        <result property="no"    column="no"    />
+        <result property="sourceNo"    column="source_no"    />
+        <result property="sourceId"    column="source_id"    />
+        <result property="sourceType"    column="source_type"    />
+        <result property="sourceGoodsUnit"    column="source_goods_unit"    />
+        <result property="sourceSpecUnitTotal"    column="source_spec_unit_total"    />
+        <result property="sourceSpecUnit"    column="source_spec_unit"    />
+        <result property="remark"    column="remark"    />
+        <result property="stockInOperatorId"    column="stock_in_operator_id"    />
+        <result property="stockInOperator"    column="stock_in_operator"    />
+        <result property="stockInTime"    column="stock_in_time"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap id="WmsStockInEntryWmsStockInEntryItemResult" type="WmsStockInEntry" extends="WmsStockInEntryResult">
+        <collection property="wmsStockInEntryItemList" notNullColumn="sub_id" javaType="java.util.List" resultMap="WmsStockInEntryItemResult" />
+    </resultMap>
+
+    <resultMap type="WmsStockInEntryItem" id="WmsStockInEntryItemResult">
+        <result property="id"    column="sub_id"    />
+        <result property="entryId"    column="sub_entry_id"    />
+        <result property="sourceType"    column="sub_source_type"    />
+        <result property="sourceId"    column="sub_source_id"    />
+        <result property="sourceItemId"    column="sub_source_item_id"    />
+        <result property="goodsId"    column="sub_goods_id"    />
+        <result property="goodsNum"    column="sub_goods_num"    />
+        <result property="goodsName"    column="sub_goods_name"    />
+        <result property="specId"    column="sub_spec_id"    />
+        <result property="specNum"    column="sub_spec_num"    />
+        <result property="colorValue"    column="sub_color_value"    />
+        <result property="colorImage"    column="sub_color_image"    />
+        <result property="sizeValue"    column="sub_size_value"    />
+        <result property="styleValue"    column="sub_style_value"    />
+        <result property="originalQuantity"    column="sub_original_quantity"    />
+        <result property="inQuantity"    column="sub_in_quantity"    />
+        <result property="remark"    column="sub_remark"    />
+        <result property="locationId"    column="sub_location_id"    />
+        <result property="locationNum"    column="sub_location_num"    />
+        <result property="status"    column="sub_status"    />
+        <result property="createBy"    column="sub_create_by"    />
+        <result property="createTime"    column="sub_create_time"    />
+        <result property="updateBy"    column="sub_update_by"    />
+        <result property="updateTime"    column="sub_update_time"    />
+    </resultMap>
+
+    <sql id="selectWmsStockInEntryVo">
+        select id, no, source_no, source_id, source_type, source_goods_unit, source_spec_unit_total, source_spec_unit, remark, stock_in_operator_id,status, stock_in_operator, stock_in_time, create_by, create_time, update_by, update_time from wms_stock_in_entry
+    </sql>
+
+    <select id="selectWmsStockInEntryList" parameterType="WmsStockInEntry" resultMap="WmsStockInEntryResult">
+        <include refid="selectWmsStockInEntryVo"/>
+        <where>  
+            <if test="no != null  and no != ''"> and no = #{no}</if>
+            <if test="sourceNo != null  and sourceNo != ''"> and source_no = #{sourceNo}</if>
+            <if test="sourceId != null "> and source_id = #{sourceId}</if>
+            <if test="sourceType != null "> and source_type = #{sourceType}</if>
+            <if test="sourceGoodsUnit != null "> and source_goods_unit = #{sourceGoodsUnit}</if>
+            <if test="sourceSpecUnitTotal != null "> and source_spec_unit_total = #{sourceSpecUnitTotal}</if>
+            <if test="sourceSpecUnit != null "> and source_spec_unit = #{sourceSpecUnit}</if>
+            <if test="stockInOperatorId != null "> and stock_in_operator_id = #{stockInOperatorId}</if>
+            <if test="stockInOperator != null  and stockInOperator != ''"> and stock_in_operator = #{stockInOperator}</if>
+            <if test="stockInTime != null "> and stock_in_time = #{stockInTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectWmsStockInEntryById" parameterType="Long" resultMap="WmsStockInEntryWmsStockInEntryItemResult">
+        select a.id, a.no, a.source_no,a.status, a.source_id, a.source_type, a.source_goods_unit, a.source_spec_unit_total, a.source_spec_unit, a.remark, a.stock_in_operator_id, a.stock_in_operator, a.stock_in_time, a.create_by, a.create_time, a.update_by, a.update_time,
+ b.id as sub_id, b.entry_id as sub_entry_id,b.status as sub_status, b.source_type as sub_source_type, b.source_id as sub_source_id, b.source_item_id as sub_source_item_id, b.goods_id as sub_goods_id, b.goods_num as sub_goods_num, b.spec_id as sub_spec_id, b.spec_num as sub_spec_num, b.original_quantity as sub_original_quantity, b.in_quantity as sub_in_quantity, b.remark as sub_remark, b.location_id as sub_location_id, b.location_num as sub_location_num, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time
+                ,b.goods_name as sub_goods_name,b.color_value as sub_color_value,b.color_image as sub_color_image,b.size_value as sub_size_value,b.style_value as sub_style_value
+        from wms_stock_in_entry a
+        left join wms_stock_in_entry_item b on b.entry_id = a.id
+        where a.id = #{id}
+    </select>
+
+    <select id="selectWmsStockInEntryItemByEntryId" parameterType="Long" resultMap="WmsStockInEntryItemResult">
+        select
+               b.id as sub_id, b.entry_id as sub_entry_id,b.status as sub_status, b.source_type as sub_source_type, b.source_id as sub_source_id, b.source_item_id as sub_source_item_id, b.goods_id as sub_goods_id, b.goods_num as sub_goods_num, b.spec_id as sub_spec_id, b.spec_num as sub_spec_num, b.original_quantity as sub_original_quantity, b.in_quantity as sub_in_quantity, b.remark as sub_remark, b.location_id as sub_location_id, b.location_num as sub_location_num, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time
+                ,b.goods_name as sub_goods_name,b.color_value as sub_color_value,b.color_image as sub_color_image,b.size_value as sub_size_value,b.style_value as sub_style_value
+        from  wms_stock_in_entry_item b
+        where b.entry_id = #{entryId}
+    </select>
+        
+    <insert id="insertWmsStockInEntry" parameterType="WmsStockInEntry" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_stock_in_entry
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="no != null and no != ''">no,</if>
+            <if test="sourceNo != null">source_no,</if>
+            <if test="sourceId != null">source_id,</if>
+            <if test="sourceType != null">source_type,</if>
+            <if test="sourceGoodsUnit != null">source_goods_unit,</if>
+            <if test="sourceSpecUnitTotal != null">source_spec_unit_total,</if>
+            <if test="sourceSpecUnit != null">source_spec_unit,</if>
+            <if test="remark != null">remark,</if>
+            <if test="stockInOperatorId != null">stock_in_operator_id,</if>
+            <if test="stockInOperator != null">stock_in_operator,</if>
+            <if test="stockInTime != null">stock_in_time,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="no != null and no != ''">#{no},</if>
+            <if test="sourceNo != null">#{sourceNo},</if>
+            <if test="sourceId != null">#{sourceId},</if>
+            <if test="sourceType != null">#{sourceType},</if>
+            <if test="sourceGoodsUnit != null">#{sourceGoodsUnit},</if>
+            <if test="sourceSpecUnitTotal != null">#{sourceSpecUnitTotal},</if>
+            <if test="sourceSpecUnit != null">#{sourceSpecUnit},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="stockInOperatorId != null">#{stockInOperatorId},</if>
+            <if test="stockInOperator != null">#{stockInOperator},</if>
+            <if test="stockInTime != null">#{stockInTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWmsStockInEntryItem" parameterType="WmsStockInEntry">
+        update wms_stock_in_entry_item
+        <trim prefix="SET" suffixOverrides=",">
+
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="inQuantity != null">in_quantity = #{inQuantity},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateWmsStockInEntry" parameterType="WmsStockInEntryItem">
+        update wms_stock_in_entry
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="no != null and no != ''">no = #{no},</if>
+            <if test="sourceNo != null">source_no = #{sourceNo},</if>
+            <if test="sourceId != null">source_id = #{sourceId},</if>
+            <if test="sourceType != null">source_type = #{sourceType},</if>
+            <if test="sourceGoodsUnit != null">source_goods_unit = #{sourceGoodsUnit},</if>
+            <if test="sourceSpecUnitTotal != null">source_spec_unit_total = #{sourceSpecUnitTotal},</if>
+            <if test="sourceSpecUnit != null">source_spec_unit = #{sourceSpecUnit},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="stockInOperatorId != null">stock_in_operator_id = #{stockInOperatorId},</if>
+            <if test="stockInOperator != null">stock_in_operator = #{stockInOperator},</if>
+            <if test="stockInTime != null">stock_in_time = #{stockInTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWmsStockInEntryById" parameterType="Long">
+        delete from wms_stock_in_entry where id = #{id}
+    </delete>
+
+    <delete id="deleteWmsStockInEntryByIds" parameterType="String">
+        delete from wms_stock_in_entry where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteWmsStockInEntryItemByEntryIds" parameterType="String">
+        delete from wms_stock_in_entry_item where entry_id in 
+        <foreach item="entryId" collection="array" open="(" separator="," close=")">
+            #{entryId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteWmsStockInEntryItemByEntryId" parameterType="Long">
+        delete from wms_stock_in_entry_item where entry_id = #{entryId}
+    </delete>
+
+    <insert id="batchWmsStockInEntryItem">
+        insert into wms_stock_in_entry_item( id, entry_id, source_type, source_id, source_item_id, goods_id, goods_num, spec_id, spec_num, original_quantity, in_quantity, remark, create_by, create_time,goods_name,color_value,color_image,size_value,style_value,status) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.entryId}, #{item.sourceType}, #{item.sourceId}, #{item.sourceItemId}, #{item.goodsId}, #{item.goodsNum}, #{item.specId}, #{item.specNum}, #{item.originalQuantity}, #{item.inQuantity}, #{item.remark}, #{item.createBy}, #{item.createTime}, #{item.goodsName},#{item.colorValue},#{item.colorImage},#{item.sizeValue},#{item.styleValue},#{item.status})
+        </foreach>
+    </insert>
+</mapper>

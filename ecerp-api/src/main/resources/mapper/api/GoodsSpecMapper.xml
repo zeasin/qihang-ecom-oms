@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.GoodsSpecMapper">
+    
+    <resultMap type="GoodsSpec" id="GoodsSpecResult">
+        <result property="id"    column="id"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="specName"    column="spec_name"    />
+        <result property="specNum"    column="spec_num"    />
+        <result property="colorId"    column="color_id"    />
+        <result property="colorValue"    column="color_value"    />
+        <result property="colorImage"    column="color_image"    />
+        <result property="sizeId"    column="size_id"    />
+        <result property="sizeValue"    column="size_value"    />
+        <result property="styleId"    column="style_id"    />
+        <result property="styleValue"    column="style_value"    />
+        <result property="barCode"    column="bar_code"    />
+        <result property="purPrice"    column="pur_price"    />
+        <result property="wholePrice"    column="whole_price"    />
+        <result property="retailPrice"    column="retail_price"    />
+        <result property="unitCost"    column="unit_cost"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="lowQty"    column="low_qty"    />
+        <result property="highQty"    column="high_qty"    />
+        <result property="disable"    column="disable"    />
+    </resultMap>
+
+    <sql id="selectGoodsSpecVo">
+        select id, goods_id, spec_name, spec_num, color_id, color_value, color_image, size_id, size_value, style_id, style_value, bar_code, pur_price, whole_price, retail_price, unit_cost, remark, status, low_qty, high_qty, disable from erp_goods_spec
+    </sql>
+
+    <select id="selectGoodsSpecList" parameterType="GoodsSpec" resultMap="GoodsSpecResult">
+        <include refid="selectGoodsSpecVo"/>
+        <where>  
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="specName != null  and specName != ''"> and spec_name like concat('%', #{specName}, '%')</if>
+            <if test="specNum != null  and specNum != ''"> and spec_num = #{specNum}</if>
+            <if test="colorId != null "> and color_id = #{colorId}</if>
+            <if test="colorValue != null  and colorValue != ''"> and color_value = #{colorValue}</if>
+            <if test="colorImage != null  and colorImage != ''"> and color_image = #{colorImage}</if>
+            <if test="sizeId != null "> and size_id = #{sizeId}</if>
+            <if test="sizeValue != null  and sizeValue != ''"> and size_value = #{sizeValue}</if>
+            <if test="styleId != null "> and style_id = #{styleId}</if>
+            <if test="styleValue != null  and styleValue != ''"> and style_value = #{styleValue}</if>
+            <if test="barCode != null  and barCode != ''"> and bar_code = #{barCode}</if>
+            <if test="purPrice != null "> and pur_price = #{purPrice}</if>
+            <if test="wholePrice != null "> and whole_price = #{wholePrice}</if>
+            <if test="retailPrice != null "> and retail_price = #{retailPrice}</if>
+            <if test="unitCost != null "> and unit_cost = #{unitCost}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="lowQty != null "> and low_qty = #{lowQty}</if>
+            <if test="highQty != null "> and high_qty = #{highQty}</if>
+            <if test="disable != null "> and disable = #{disable}</if>
+        </where>
+    </select>
+
+    <select id="selectGoodsSpecBySpecNum" parameterType="String" resultMap="GoodsSpecResult">
+        <include refid="selectGoodsSpecVo"/>
+        where spec_num = #{specNum}
+    </select>
+
+    <select id="selectGoodsSpecById" parameterType="Long" resultMap="GoodsSpecResult">
+        <include refid="selectGoodsSpecVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGoodsSpec" parameterType="GoodsSpec" useGeneratedKeys="true" keyProperty="id">
+        insert into erp_goods_spec
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">goods_id,</if>
+            <if test="specName != null">spec_name,</if>
+            <if test="specNum != null and specNum != ''">spec_num,</if>
+            <if test="colorId != null">color_id,</if>
+            <if test="colorValue != null">color_value,</if>
+            <if test="colorImage != null">color_image,</if>
+            <if test="sizeId != null">size_id,</if>
+            <if test="sizeValue != null">size_value,</if>
+            <if test="styleId != null">style_id,</if>
+            <if test="styleValue != null">style_value,</if>
+            <if test="barCode != null">bar_code,</if>
+            <if test="purPrice != null">pur_price,</if>
+            <if test="wholePrice != null">whole_price,</if>
+            <if test="retailPrice != null">retail_price,</if>
+            <if test="unitCost != null">unit_cost,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="lowQty != null">low_qty,</if>
+            <if test="highQty != null">high_qty,</if>
+            <if test="disable != null">disable,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="specName != null">#{specName},</if>
+            <if test="specNum != null and specNum != ''">#{specNum},</if>
+            <if test="colorId != null">#{colorId},</if>
+            <if test="colorValue != null">#{colorValue},</if>
+            <if test="colorImage != null">#{colorImage},</if>
+            <if test="sizeId != null">#{sizeId},</if>
+            <if test="sizeValue != null">#{sizeValue},</if>
+            <if test="styleId != null">#{styleId},</if>
+            <if test="styleValue != null">#{styleValue},</if>
+            <if test="barCode != null">#{barCode},</if>
+            <if test="purPrice != null">#{purPrice},</if>
+            <if test="wholePrice != null">#{wholePrice},</if>
+            <if test="retailPrice != null">#{retailPrice},</if>
+            <if test="unitCost != null">#{unitCost},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="lowQty != null">#{lowQty},</if>
+            <if test="highQty != null">#{highQty},</if>
+            <if test="disable != null">#{disable},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoodsSpec" parameterType="GoodsSpec">
+        update erp_goods_spec
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsId != null">goods_id = #{goodsId},</if>
+            <if test="specName != null">spec_name = #{specName},</if>
+            <if test="specNum != null and specNum != ''">spec_num = #{specNum},</if>
+            <if test="colorId != null">color_id = #{colorId},</if>
+            <if test="colorValue != null">color_value = #{colorValue},</if>
+            <if test="colorImage != null">color_image = #{colorImage},</if>
+            <if test="sizeId != null">size_id = #{sizeId},</if>
+            <if test="sizeValue != null">size_value = #{sizeValue},</if>
+            <if test="styleId != null">style_id = #{styleId},</if>
+            <if test="styleValue != null">style_value = #{styleValue},</if>
+            <if test="barCode != null">bar_code = #{barCode},</if>
+            <if test="purPrice != null">pur_price = #{purPrice},</if>
+            <if test="wholePrice != null">whole_price = #{wholePrice},</if>
+            <if test="retailPrice != null">retail_price = #{retailPrice},</if>
+            <if test="unitCost != null">unit_cost = #{unitCost},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="lowQty != null">low_qty = #{lowQty},</if>
+            <if test="highQty != null">high_qty = #{highQty},</if>
+            <if test="disable != null">disable = #{disable},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsSpecById" parameterType="Long">
+        delete from erp_goods_spec where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsSpecByIds" parameterType="String">
+        delete from erp_goods_spec where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.FmsPayableShipFeeMapper">
+    
+    <resultMap type="FmsPayableShipFee" id="FmsPayableShipFeeResult">
+        <result property="id"    column="id"    />
+        <result property="logisticsCompany"    column="logistics_company"    />
+        <result property="logisticsCompanyId"    column="logistics_company_id"    />
+        <result property="logisticsNum"    column="logistics_num"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="shopId"    column="shop_id"    />
+        <result property="amount"    column="amount"    />
+        <result property="date"    column="date"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="length"    column="length"    />
+        <result property="width"    column="width"    />
+        <result property="height"    column="height"    />
+        <result property="weight"    column="weight"    />
+        <result property="receiverName"    column="receiver_name"    />
+        <result property="receiverPhone"    column="receiver_phone"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="town"    column="town"    />
+    </resultMap>
+
+    <sql id="selectFmsPayableShipFeeVo">
+        select id, logistics_company, logistics_company_id, logistics_num, order_num, shop_id, amount, date, remark, status, create_time, create_by, update_time, update_by, length, width, height, weight, receiver_name, receiver_phone, province, city, town from fms_payable_ship_fee
+    </sql>
+
+    <select id="selectFmsPayableShipFeeList" parameterType="FmsPayableShipFee" resultMap="FmsPayableShipFeeResult">
+        <include refid="selectFmsPayableShipFeeVo"/>
+        <where>  
+            <if test="logisticsCompany != null  and logisticsCompany != ''"> and logistics_company = #{logisticsCompany}</if>
+            <if test="logisticsCompanyId != null  and logisticsCompanyId != ''"> and logistics_company_id = #{logisticsCompanyId}</if>
+            <if test="logisticsNum != null  and logisticsNum != ''"> and logistics_num = #{logisticsNum}</if>
+            <if test="orderNum != null  and orderNum != ''"> and order_num = #{orderNum}</if>
+            <if test="shopId != null "> and shop_id = #{shopId}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="date != null "> and date = #{date}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="length != null "> and length = #{length}</if>
+            <if test="width != null "> and width = #{width}</if>
+            <if test="height != null "> and height = #{height}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="receiverName != null  and receiverName != ''"> and receiver_name like concat('%', #{receiverName}, '%')</if>
+            <if test="receiverPhone != null  and receiverPhone != ''"> and receiver_phone = #{receiverPhone}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="town != null  and town != ''"> and town = #{town}</if>
+        </where>
+    </select>
+    
+    <select id="selectFmsPayableShipFeeById" parameterType="Long" resultMap="FmsPayableShipFeeResult">
+        <include refid="selectFmsPayableShipFeeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFmsPayableShipFee" parameterType="FmsPayableShipFee" useGeneratedKeys="true" keyProperty="id">
+        insert into fms_payable_ship_fee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="logisticsCompany != null and logisticsCompany != ''">logistics_company,</if>
+            <if test="logisticsCompanyId != null">logistics_company_id,</if>
+            <if test="logisticsNum != null and logisticsNum != ''">logistics_num,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="shopId != null">shop_id,</if>
+            <if test="amount != null">amount,</if>
+            <if test="date != null">date,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="length != null">length,</if>
+            <if test="width != null">width,</if>
+            <if test="height != null">height,</if>
+            <if test="weight != null">weight,</if>
+            <if test="receiverName != null">receiver_name,</if>
+            <if test="receiverPhone != null">receiver_phone,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="town != null">town,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="logisticsCompany != null and logisticsCompany != ''">#{logisticsCompany},</if>
+            <if test="logisticsCompanyId != null">#{logisticsCompanyId},</if>
+            <if test="logisticsNum != null and logisticsNum != ''">#{logisticsNum},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="shopId != null">#{shopId},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="date != null">#{date},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="length != null">#{length},</if>
+            <if test="width != null">#{width},</if>
+            <if test="height != null">#{height},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="receiverName != null">#{receiverName},</if>
+            <if test="receiverPhone != null">#{receiverPhone},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="town != null">#{town},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFmsPayableShipFee" parameterType="FmsPayableShipFee">
+        update fms_payable_ship_fee
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="logisticsCompany != null and logisticsCompany != ''">logistics_company = #{logisticsCompany},</if>
+            <if test="logisticsCompanyId != null">logistics_company_id = #{logisticsCompanyId},</if>
+            <if test="logisticsNum != null and logisticsNum != ''">logistics_num = #{logisticsNum},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="shopId != null">shop_id = #{shopId},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="date != null">date = #{date},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="length != null">length = #{length},</if>
+            <if test="width != null">width = #{width},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="receiverName != null">receiver_name = #{receiverName},</if>
+            <if test="receiverPhone != null">receiver_phone = #{receiverPhone},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="town != null">town = #{town},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFmsPayableShipFeeById" parameterType="Long">
+        delete from fms_payable_ship_fee where id = #{id}
+    </delete>
+
+    <delete id="deleteFmsPayableShipFeeByIds" parameterType="String">
+        delete from fms_payable_ship_fee where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

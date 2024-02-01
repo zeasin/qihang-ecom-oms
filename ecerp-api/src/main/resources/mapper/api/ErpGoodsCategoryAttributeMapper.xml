@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.ErpGoodsCategoryAttributeMapper">
+    
+    <resultMap type="ErpGoodsCategoryAttribute" id="ErpGoodsCategoryAttributeResult">
+        <result property="id"    column="id"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="type"    column="type"    />
+        <result property="title"    column="title"    />
+        <result property="code"    column="code"    />
+    </resultMap>
+
+    <sql id="selectErpGoodsCategoryAttributeVo">
+        select id, category_id, type, title, code from erp_goods_category_attribute
+    </sql>
+
+    <select id="selectErpGoodsCategoryAttributeList" parameterType="ErpGoodsCategoryAttribute" resultMap="ErpGoodsCategoryAttributeResult">
+        <include refid="selectErpGoodsCategoryAttributeVo"/>
+        <where>  
+            <if test="categoryId != null "> and category_id = #{categoryId}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+        </where>
+    </select>
+    
+    <select id="selectErpGoodsCategoryAttributeById" parameterType="Long" resultMap="ErpGoodsCategoryAttributeResult">
+        <include refid="selectErpGoodsCategoryAttributeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertErpGoodsCategoryAttribute" parameterType="ErpGoodsCategoryAttribute" useGeneratedKeys="true" keyProperty="id">
+        insert into erp_goods_category_attribute
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">category_id,</if>
+            <if test="type != null">type,</if>
+            <if test="title != null">title,</if>
+            <if test="code != null">code,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="title != null">#{title},</if>
+            <if test="code != null">#{code},</if>
+         </trim>
+    </insert>
+
+    <update id="updateErpGoodsCategoryAttribute" parameterType="ErpGoodsCategoryAttribute">
+        update erp_goods_category_attribute
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="code != null">code = #{code},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteErpGoodsCategoryAttributeById" parameterType="Long">
+        delete from erp_goods_category_attribute where id = #{id}
+    </delete>
+
+    <delete id="deleteErpGoodsCategoryAttributeByIds" parameterType="String">
+        delete from erp_goods_category_attribute where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

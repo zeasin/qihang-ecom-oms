@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.XhsOrderReceiverMapper">
+    
+    <resultMap type="XhsOrderReceiver" id="XhsOrderReceiverResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="orderId"    />
+        <result property="receiver"    column="receiver"    />
+        <result property="phone"    column="phone"    />
+        <result property="country"    column="country"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="district"    column="district"    />
+        <result property="address"    column="address"    />
+    </resultMap>
+
+    <sql id="selectXhsOrderReceiverVo">
+        select id, orderId, receiver, phone, country, province, city, district, address from s_xhs_order_receiver
+    </sql>
+
+    <select id="selectXhsOrderReceiverList" parameterType="XhsOrderReceiver" resultMap="XhsOrderReceiverResult">
+        <include refid="selectXhsOrderReceiverVo"/>
+        <where>  
+            <if test="orderId != null "> and orderId = #{orderId}</if>
+            <if test="receiver != null  and receiver != ''"> and receiver = #{receiver}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="country != null  and country != ''"> and country = #{country}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="district != null  and district != ''"> and district = #{district}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+        </where>
+    </select>
+    
+    <select id="selectXhsOrderReceiverById" parameterType="Long" resultMap="XhsOrderReceiverResult">
+        <include refid="selectXhsOrderReceiverVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectXhsOrderReceiverByOrderId" parameterType="Long" resultMap="XhsOrderReceiverResult">
+        <include refid="selectXhsOrderReceiverVo"/>
+        where orderId = #{orderId}
+    </select>
+
+        
+    <insert id="insertXhsOrderReceiver" parameterType="XhsOrderReceiver" useGeneratedKeys="true" keyProperty="id">
+        insert into s_xhs_order_receiver
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">orderId,</if>
+            <if test="receiver != null">receiver,</if>
+            <if test="phone != null">phone,</if>
+            <if test="country != null">country,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="district != null">district,</if>
+            <if test="address != null">address,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="receiver != null">#{receiver},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="country != null">#{country},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="district != null">#{district},</if>
+            <if test="address != null">#{address},</if>
+         </trim>
+    </insert>
+
+    <update id="updateXhsOrderReceiver" parameterType="XhsOrderReceiver">
+        update s_xhs_order_receiver
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">orderId = #{orderId},</if>
+            <if test="receiver != null">receiver = #{receiver},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="country != null">country = #{country},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="district != null">district = #{district},</if>
+            <if test="address != null">address = #{address},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteXhsOrderReceiverById" parameterType="Long">
+        delete from s_xhs_order_receiver where id = #{id}
+    </delete>
+
+    <delete id="deleteXhsOrderReceiverByIds" parameterType="String">
+        delete from s_xhs_order_receiver where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

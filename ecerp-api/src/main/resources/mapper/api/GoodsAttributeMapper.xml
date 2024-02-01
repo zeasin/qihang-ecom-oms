@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.GoodsAttributeMapper">
+    
+    <resultMap type="GoodsAttribute" id="GoodsAttributeResult">
+        <result property="id"    column="id"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="attributeId"    column="attribute_id"    />
+        <result property="name"    column="name"    />
+        <result property="value"    column="value"    />
+    </resultMap>
+
+    <sql id="selectGoodsAttributeVo">
+        select id, goods_id, attribute_id, name, value from erp_goods_attribute
+    </sql>
+
+    <select id="selectGoodsAttributeList" parameterType="GoodsAttribute" resultMap="GoodsAttributeResult">
+        <include refid="selectGoodsAttributeVo"/>
+        <where>  
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="attributeId != null "> and attribute_id = #{attributeId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="value != null  and value != ''"> and value = #{value}</if>
+        </where>
+    </select>
+    
+    <select id="selectGoodsAttributeById" parameterType="Long" resultMap="GoodsAttributeResult">
+        <include refid="selectGoodsAttributeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGoodsAttribute" parameterType="GoodsAttribute" useGeneratedKeys="true" keyProperty="id">
+        insert into erp_goods_attribute
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">goods_id,</if>
+            <if test="attributeId != null">attribute_id,</if>
+            <if test="name != null">name,</if>
+            <if test="value != null">value,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="attributeId != null">#{attributeId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="value != null">#{value},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoodsAttribute" parameterType="GoodsAttribute">
+        update erp_goods_attribute
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsId != null">goods_id = #{goodsId},</if>
+            <if test="attributeId != null">attribute_id = #{attributeId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="value != null">value = #{value},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsAttributeById" parameterType="Long">
+        delete from erp_goods_attribute where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsAttributeByIds" parameterType="String">
+        delete from erp_goods_attribute where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

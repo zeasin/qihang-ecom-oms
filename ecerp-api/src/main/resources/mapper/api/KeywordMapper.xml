@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.KeywordMapper">
+    
+    <resultMap type="com.qihang.erp.api.domain.Keyword" id="KeywordResult">
+    	<id     property="id"      column="id"      />
+        <result property="source"    column="source"    />
+        <result property="word"    column="word"    />
+        <result property="remark"    column="remark"    />
+        <result property="date"    column="date"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    
+</mapper>

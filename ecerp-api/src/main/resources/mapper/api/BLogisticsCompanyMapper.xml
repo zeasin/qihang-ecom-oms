@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.BLogisticsCompanyMapper">
+    
+    <resultMap type="BLogisticsCompany" id="BLogisticsCompanyResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="number"    column="number"    />
+    </resultMap>
+
+    <sql id="selectBLogisticsCompanyVo">
+        select id, name, number from b_logistics_company
+    </sql>
+
+    <select id="selectBLogisticsCompanyList" parameterType="BLogisticsCompany" resultMap="BLogisticsCompanyResult">
+        <include refid="selectBLogisticsCompanyVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="number != null  and number != ''"> and number = #{number}</if>
+        </where>
+    </select>
+    
+    <select id="selectBLogisticsCompanyById" parameterType="Long" resultMap="BLogisticsCompanyResult">
+        <include refid="selectBLogisticsCompanyVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBLogisticsCompany" parameterType="BLogisticsCompany" useGeneratedKeys="true" keyProperty="id">
+        insert into b_logistics_company
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="number != null">number,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="number != null">#{number},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBLogisticsCompany" parameterType="BLogisticsCompany">
+        update b_logistics_company
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="number != null">number = #{number},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBLogisticsCompanyById" parameterType="Long">
+        delete from b_logistics_company where id = #{id}
+    </delete>
+
+    <delete id="deleteBLogisticsCompanyByIds" parameterType="String">
+        delete from b_logistics_company where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

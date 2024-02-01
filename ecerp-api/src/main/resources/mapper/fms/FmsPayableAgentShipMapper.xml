@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.FmsPayableAgentShipMapper">
+    
+    <resultMap type="FmsPayableAgentShip" id="FmsPayableAgentShipResult">
+        <result property="id"    column="id"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="shopId"    column="shop_id"    />
+        <result property="supplierId"    column="supplier_id"    />
+        <result property="supplierName"    column="supplier_name"    />
+        <result property="date"    column="date"    />
+        <result property="shipCompany"    column="ship_company"    />
+        <result property="shipNo"    column="ship_no"    />
+        <result property="amount"    column="amount"    />
+        <result property="shipAmount"    column="ship_amount"    />
+        <result property="goodsAmount"    column="goods_amount"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectFmsPayableAgentShipVo">
+        select id, order_num, shop_id, supplier_id, supplier_name, date, ship_company, ship_no, amount, ship_amount, goods_amount, remark, status, create_time, create_by, update_time, update_by from fms_payable_agent_ship
+    </sql>
+
+    <select id="selectFmsPayableAgentShipList" parameterType="FmsPayableAgentShip" resultMap="FmsPayableAgentShipResult">
+        <include refid="selectFmsPayableAgentShipVo"/>
+        <where>  
+            <if test="orderNum != null  and orderNum != ''"> and order_num = #{orderNum}</if>
+            <if test="shopId != null "> and shop_id = #{shopId}</if>
+            <if test="supplierId != null "> and supplier_id = #{supplierId}</if>
+            <if test="supplierName != null  and supplierName != ''"> and supplier_name like concat('%', #{supplierName}, '%')</if>
+            <if test="date != null "> and date = #{date}</if>
+            <if test="shipCompany != null  and shipCompany != ''"> and ship_company = #{shipCompany}</if>
+            <if test="shipNo != null  and shipNo != ''"> and ship_no = #{shipNo}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="shipAmount != null "> and ship_amount = #{shipAmount}</if>
+            <if test="goodsAmount != null "> and goods_amount = #{goodsAmount}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectFmsPayableAgentShipById" parameterType="Long" resultMap="FmsPayableAgentShipResult">
+        <include refid="selectFmsPayableAgentShipVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFmsPayableAgentShip" parameterType="FmsPayableAgentShip" useGeneratedKeys="true" keyProperty="id">
+        insert into fms_payable_agent_ship
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNum != null and orderNum != ''">order_num,</if>
+            <if test="shopId != null">shop_id,</if>
+            <if test="supplierId != null">supplier_id,</if>
+            <if test="supplierName != null">supplier_name,</if>
+            <if test="date != null">date,</if>
+            <if test="shipCompany != null and shipCompany != ''">ship_company,</if>
+            <if test="shipNo != null and shipNo != ''">ship_no,</if>
+            <if test="amount != null">amount,</if>
+            <if test="shipAmount != null">ship_amount,</if>
+            <if test="goodsAmount != null">goods_amount,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderNum != null and orderNum != ''">#{orderNum},</if>
+            <if test="shopId != null">#{shopId},</if>
+            <if test="supplierId != null">#{supplierId},</if>
+            <if test="supplierName != null">#{supplierName},</if>
+            <if test="date != null">#{date},</if>
+            <if test="shipCompany != null and shipCompany != ''">#{shipCompany},</if>
+            <if test="shipNo != null and shipNo != ''">#{shipNo},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="shipAmount != null">#{shipAmount},</if>
+            <if test="goodsAmount != null">#{goodsAmount},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFmsPayableAgentShip" parameterType="FmsPayableAgentShip">
+        update fms_payable_agent_ship
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderNum != null and orderNum != ''">order_num = #{orderNum},</if>
+            <if test="shopId != null">shop_id = #{shopId},</if>
+            <if test="supplierId != null">supplier_id = #{supplierId},</if>
+            <if test="supplierName != null">supplier_name = #{supplierName},</if>
+            <if test="date != null">date = #{date},</if>
+            <if test="shipCompany != null and shipCompany != ''">ship_company = #{shipCompany},</if>
+            <if test="shipNo != null and shipNo != ''">ship_no = #{shipNo},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="shipAmount != null">ship_amount = #{shipAmount},</if>
+            <if test="goodsAmount != null">goods_amount = #{goodsAmount},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFmsPayableAgentShipById" parameterType="Long">
+        delete from fms_payable_agent_ship where id = #{id}
+    </delete>
+
+    <delete id="deleteFmsPayableAgentShipByIds" parameterType="String">
+        delete from fms_payable_agent_ship where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

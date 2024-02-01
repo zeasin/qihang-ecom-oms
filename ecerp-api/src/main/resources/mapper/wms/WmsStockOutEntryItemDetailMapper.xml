@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.WmsStockOutEntryItemDetailMapper">
+    
+    <resultMap type="WmsStockOutEntryItemDetail" id="WmsStockOutEntryItemDetailResult">
+        <result property="id"    column="id"    />
+        <result property="entryId"    column="entryId"    />
+        <result property="entryItemId"    column="entryItemId"    />
+        <result property="goodsInventoryId"    column="goodsInventoryId"    />
+        <result property="goodsInventoryDetailId"    column="goodsInventoryDetailId"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="locationId"    column="locationId"    />
+        <result property="stockOutOperatorId"    column="stockOutOperatorId"    />
+        <result property="stockOutOperatorName"    column="stockOutOperatorName"    />
+        <result property="stockOutTime"    column="stockOutTime"    />
+    </resultMap>
+
+    <sql id="selectWmsStockOutEntryItemDetailVo">
+        select id, entryId, entryItemId, goodsInventoryId, goodsInventoryDetailId, quantity, locationId, stockOutOperatorId, stockOutOperatorName, stockOutTime from wms_stock_out_entry_item_detail
+    </sql>
+
+    <select id="selectWmsStockOutEntryItemDetailList" parameterType="WmsStockOutEntryItemDetail" resultMap="WmsStockOutEntryItemDetailResult">
+        <include refid="selectWmsStockOutEntryItemDetailVo"/>
+        <where>  
+            <if test="entryId != null "> and entryId = #{entryId}</if>
+            <if test="entryItemId != null "> and entryItemId = #{entryItemId}</if>
+            <if test="goodsInventoryId != null "> and goodsInventoryId = #{goodsInventoryId}</if>
+            <if test="goodsInventoryDetailId != null "> and goodsInventoryDetailId = #{goodsInventoryDetailId}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="locationId != null "> and locationId = #{locationId}</if>
+            <if test="stockOutOperatorId != null "> and stockOutOperatorId = #{stockOutOperatorId}</if>
+            <if test="stockOutOperatorName != null  and stockOutOperatorName != ''"> and stockOutOperatorName like concat('%', #{stockOutOperatorName}, '%')</if>
+            <if test="stockOutTime != null "> and stockOutTime = #{stockOutTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectWmsStockOutEntryItemDetailById" parameterType="Long" resultMap="WmsStockOutEntryItemDetailResult">
+        <include refid="selectWmsStockOutEntryItemDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWmsStockOutEntryItemDetail" parameterType="WmsStockOutEntryItemDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_stock_out_entry_item_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="entryId != null">entryId,</if>
+            <if test="entryItemId != null">entryItemId,</if>
+            <if test="goodsInventoryId != null">goodsInventoryId,</if>
+            <if test="goodsInventoryDetailId != null">goodsInventoryDetailId,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="locationId != null">locationId,</if>
+            <if test="stockOutOperatorId != null">stockOutOperatorId,</if>
+            <if test="stockOutOperatorName != null">stockOutOperatorName,</if>
+            <if test="stockOutTime != null">stockOutTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="entryId != null">#{entryId},</if>
+            <if test="entryItemId != null">#{entryItemId},</if>
+            <if test="goodsInventoryId != null">#{goodsInventoryId},</if>
+            <if test="goodsInventoryDetailId != null">#{goodsInventoryDetailId},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="locationId != null">#{locationId},</if>
+            <if test="stockOutOperatorId != null">#{stockOutOperatorId},</if>
+            <if test="stockOutOperatorName != null">#{stockOutOperatorName},</if>
+            <if test="stockOutTime != null">#{stockOutTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWmsStockOutEntryItemDetail" parameterType="WmsStockOutEntryItemDetail">
+        update wms_stock_out_entry_item_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="entryId != null">entryId = #{entryId},</if>
+            <if test="entryItemId != null">entryItemId = #{entryItemId},</if>
+            <if test="goodsInventoryId != null">goodsInventoryId = #{goodsInventoryId},</if>
+            <if test="goodsInventoryDetailId != null">goodsInventoryDetailId = #{goodsInventoryDetailId},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="locationId != null">locationId = #{locationId},</if>
+            <if test="stockOutOperatorId != null">stockOutOperatorId = #{stockOutOperatorId},</if>
+            <if test="stockOutOperatorName != null">stockOutOperatorName = #{stockOutOperatorName},</if>
+            <if test="stockOutTime != null">stockOutTime = #{stockOutTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWmsStockOutEntryItemDetailById" parameterType="Long">
+        delete from wms_stock_out_entry_item_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteWmsStockOutEntryItemDetailByIds" parameterType="String">
+        delete from wms_stock_out_entry_item_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

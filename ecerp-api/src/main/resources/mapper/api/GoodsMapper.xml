@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.GoodsMapper">
+    
+    <resultMap type="com.qihang.erp.api.domain.Goods" id="GoodsResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="image"    column="image"    />
+        <result property="number"    column="number"    />
+        <result property="unitName"    column="unit_name"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="barCode"    column="bar_code"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="length"    column="length"    />
+        <result property="height"    column="height"    />
+        <result property="width"    column="width"    />
+        <result property="width1"    column="width1"    />
+        <result property="width2"    column="width2"    />
+        <result property="width3"    column="width3"    />
+        <result property="weight"    column="weight"    />
+        <result property="disable"    column="disable"    />
+        <result property="period"    column="period"    />
+        <result property="purPrice"    column="pur_price"    />
+        <result property="wholePrice"    column="whole_price"    />
+        <result property="retailPrice"    column="retail_price"    />
+        <result property="unitCost"    column="unit_cost"    />
+        <result property="supplierId"    column="supplier_id"    />
+        <result property="brandId"    column="brand_id"    />
+        <result property="attr1"    column="attr1"    />
+        <result property="attr2"    column="attr2"    />
+        <result property="attr3"    column="attr3"    />
+        <result property="attr4"    column="attr4"    />
+        <result property="attr5"    column="attr5"    />
+        <result property="linkUrl"    column="link_url"    />
+        <result property="lowQty"    column="low_qty"    />
+        <result property="highQty"    column="high_qty"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+    <resultMap type="com.qihang.erp.api.domain.vo.GoodsSpecListVo" id="GoodsSpecListVoResult">
+        <result property="id"    column="id"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="name"    column="name"    />
+        <result property="number"    column="number"    />
+        <result property="specNum"    column="spec_num"    />
+        <result property="colorValue"    column="color_value"    />
+        <result property="colorImage"    column="color_image"    />
+        <result property="sizeValue"    column="size_value"    />
+        <result property="styleValue"    column="style_value"    />
+        <result property="purPrice"    column="pur_price"    />
+    </resultMap>
+
+    <sql id="selectGoodsVo">
+        select id, name, image, number, unit_name, category_id, bar_code, remark, status, length, height, width, width1, width2, width3, weight, disable, period, pur_price, whole_price, retail_price, unit_cost, supplier_id, brand_id, attr1, attr2, attr3, attr4, attr5, link_url, low_qty, high_qty, create_by, create_time, update_by, update_time from erp_goods
+    </sql>
+
+    <select id="selectGoodsList" parameterType="Goods" resultMap="GoodsResult">
+        <include refid="selectGoodsVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="image != null  and image != ''"> and image = #{image}</if>
+            <if test="number != null  and number != ''"> and number = #{number}</if>
+            <if test="unitName != null  and unitName != ''"> and unit_name like concat('%', #{unitName}, '%')</if>
+            <if test="categoryId != null "> and category_id = #{categoryId}</if>
+            <if test="barCode != null  and barCode != ''"> and bar_code = #{barCode}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="length != null "> and length = #{length}</if>
+            <if test="height != null "> and height = #{height}</if>
+            <if test="width != null "> and width = #{width}</if>
+            <if test="width1 != null "> and width1 = #{width1}</if>
+            <if test="width2 != null "> and width2 = #{width2}</if>
+            <if test="width3 != null "> and width3 = #{width3}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="disable != null "> and disable = #{disable}</if>
+            <if test="period != null  and period != ''"> and period = #{period}</if>
+            <if test="purPrice != null "> and pur_price = #{purPrice}</if>
+            <if test="wholePrice != null "> and whole_price = #{wholePrice}</if>
+            <if test="retailPrice != null "> and retail_price = #{retailPrice}</if>
+            <if test="unitCost != null "> and unit_cost = #{unitCost}</if>
+            <if test="supplierId != null "> and supplier_id = #{supplierId}</if>
+            <if test="brandId != null "> and brand_id = #{brandId}</if>
+            <if test="attr1 != null  and attr1 != ''"> and attr1 = #{attr1}</if>
+            <if test="attr2 != null  and attr2 != ''"> and attr2 = #{attr2}</if>
+            <if test="attr3 != null  and attr3 != ''"> and attr3 = #{attr3}</if>
+            <if test="attr4 != null  and attr4 != ''"> and attr4 = #{attr4}</if>
+            <if test="attr5 != null  and attr5 != ''"> and attr5 = #{attr5}</if>
+            <if test="linkUrl != null  and linkUrl != ''"> and link_url = #{linkUrl}</if>
+            <if test="lowQty != null "> and low_qty = #{lowQty}</if>
+            <if test="highQty != null "> and high_qty = #{highQty}</if>
+        </where>
+    </select>
+
+    <select id="selectGoodsByNumber" parameterType="String" resultMap="GoodsResult">
+        <include refid="selectGoodsVo"/>
+        where `number` = #{number}
+    </select>
+    <select id="selectGoodsById" parameterType="Long" resultMap="GoodsResult">
+        <include refid="selectGoodsVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="searchGoodsSpec" parameterType="com.qihang.erp.api.domain.vo.GoodsSpecListVo" resultMap="GoodsSpecListVoResult">
+        SELECT spec.id,spec.goods_id,g.number,g.`name`,spec.spec_num,spec.color_value,spec.color_image,spec.size_value,spec.style_value,spec.pur_price
+        FROM `erp_goods_spec` as spec
+        LEFT JOIN erp_goods as g on g.id = spec.goods_id
+        <where>
+            <if test="keyword != null  and keyword != ''">
+                and
+                (
+                    g.name like concat('%', #{keyword}, '%')
+                    or g.number like concat(#{keyword}, '%')
+                    or spec.spec_num like concat(#{keyword}, '%')
+                )
+            </if>
+        </where>
+    </select>
+        
+    <insert id="insertGoods" parameterType="Goods" useGeneratedKeys="true" keyProperty="id">
+        insert into erp_goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="image != null">image,</if>
+            <if test="number != null">number,</if>
+            <if test="unitName != null">unit_name,</if>
+            <if test="categoryId != null">category_id,</if>
+            <if test="barCode != null">bar_code,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="length != null">length,</if>
+            <if test="height != null">height,</if>
+            <if test="width != null">width,</if>
+            <if test="width1 != null">width1,</if>
+            <if test="width2 != null">width2,</if>
+            <if test="width3 != null">width3,</if>
+            <if test="weight != null">weight,</if>
+            <if test="disable != null">disable,</if>
+            <if test="period != null">period,</if>
+            <if test="purPrice != null">pur_price,</if>
+            <if test="wholePrice != null">whole_price,</if>
+            <if test="retailPrice != null">retail_price,</if>
+            <if test="unitCost != null">unit_cost,</if>
+            <if test="supplierId != null">supplier_id,</if>
+            <if test="brandId != null">brand_id,</if>
+            <if test="attr1 != null">attr1,</if>
+            <if test="attr2 != null">attr2,</if>
+            <if test="attr3 != null">attr3,</if>
+            <if test="attr4 != null">attr4,</if>
+            <if test="attr5 != null">attr5,</if>
+            <if test="linkUrl != null">link_url,</if>
+            <if test="lowQty != null">low_qty,</if>
+            <if test="highQty != null">high_qty,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="image != null">#{image},</if>
+            <if test="number != null">#{number},</if>
+            <if test="unitName != null">#{unitName},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="barCode != null">#{barCode},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="length != null">#{length},</if>
+            <if test="height != null">#{height},</if>
+            <if test="width != null">#{width},</if>
+            <if test="width1 != null">#{width1},</if>
+            <if test="width2 != null">#{width2},</if>
+            <if test="width3 != null">#{width3},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="disable != null">#{disable},</if>
+            <if test="period != null">#{period},</if>
+            <if test="purPrice != null">#{purPrice},</if>
+            <if test="wholePrice != null">#{wholePrice},</if>
+            <if test="retailPrice != null">#{retailPrice},</if>
+            <if test="unitCost != null">#{unitCost},</if>
+            <if test="supplierId != null">#{supplierId},</if>
+            <if test="brandId != null">#{brandId},</if>
+            <if test="attr1 != null">#{attr1},</if>
+            <if test="attr2 != null">#{attr2},</if>
+            <if test="attr3 != null">#{attr3},</if>
+            <if test="attr4 != null">#{attr4},</if>
+            <if test="attr5 != null">#{attr5},</if>
+            <if test="linkUrl != null">#{linkUrl},</if>
+            <if test="lowQty != null">#{lowQty},</if>
+            <if test="highQty != null">#{highQty},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGoods" parameterType="Goods">
+        update erp_goods
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="number != null">number = #{number},</if>
+            <if test="unitName != null">unit_name = #{unitName},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="barCode != null">bar_code = #{barCode},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="length != null">length = #{length},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="width != null">width = #{width},</if>
+            <if test="width1 != null">width1 = #{width1},</if>
+            <if test="width2 != null">width2 = #{width2},</if>
+            <if test="width3 != null">width3 = #{width3},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="disable != null">disable = #{disable},</if>
+            <if test="period != null">period = #{period},</if>
+            <if test="purPrice != null">pur_price = #{purPrice},</if>
+            <if test="wholePrice != null">whole_price = #{wholePrice},</if>
+            <if test="retailPrice != null">retail_price = #{retailPrice},</if>
+            <if test="unitCost != null">unit_cost = #{unitCost},</if>
+            <if test="supplierId != null">supplier_id = #{supplierId},</if>
+            <if test="brandId != null">brand_id = #{brandId},</if>
+            <if test="attr1 != null">attr1 = #{attr1},</if>
+            <if test="attr2 != null">attr2 = #{attr2},</if>
+            <if test="attr3 != null">attr3 = #{attr3},</if>
+            <if test="attr4 != null">attr4 = #{attr4},</if>
+            <if test="attr5 != null">attr5 = #{attr5},</if>
+            <if test="linkUrl != null">link_url = #{linkUrl},</if>
+            <if test="lowQty != null">low_qty = #{lowQty},</if>
+            <if test="highQty != null">high_qty = #{highQty},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGoodsById" parameterType="Long">
+        delete from erp_goods where id = #{id}
+    </delete>
+
+    <delete id="deleteGoodsByIds" parameterType="String">
+        delete from erp_goods where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

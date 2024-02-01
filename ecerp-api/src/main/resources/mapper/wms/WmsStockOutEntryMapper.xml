@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.WmsStockOutEntryMapper">
+    
+    <resultMap type="WmsStockOutEntry" id="WmsStockOutEntryResult">
+        <result property="id"    column="id"    />
+        <result property="stockOutNum"    column="stockOutNum"    />
+        <result property="sourceNo"    column="sourceNo"    />
+        <result property="sourceId"    column="sourceId"    />
+        <result property="stockOutType"    column="stockOutType"    />
+        <result property="status"    column="status"    />
+        <result property="printStatus"    column="printStatus"    />
+        <result property="printTime"    column="printTime"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="createBy"    column="createBy"    />
+        <result property="updateTime"    column="updateTime"    />
+        <result property="updateBy"    column="updateBy"    />
+        <result property="completeTime"    column="completeTime"    />
+        <result property="stockOutOperatorId"    column="stockOutOperatorId"    />
+        <result property="stockOutOperatorName"    column="stockOutOperatorName"    />
+        <result property="stockOutTime"    column="stockOutTime"    />
+        <result property="remark"    column="remark"    />
+        <result property="isDelete"    column="isDelete"    />
+        <result property="goodsUnit"    column="goodsUnit"    />
+        <result property="specUnit"    column="specUnit"    />
+        <result property="specUnitTotal"    column="specUnitTotal"    />
+    </resultMap>
+
+    <resultMap id="WmsStockOutEntryWmsStockOutEntryItemResult" type="WmsStockOutEntry" extends="WmsStockOutEntryResult">
+        <collection property="wmsStockOutEntryItemList" notNullColumn="sub_id" javaType="java.util.List" resultMap="WmsStockOutEntryItemResult" />
+    </resultMap>
+
+    <resultMap type="WmsStockOutEntryItem" id="WmsStockOutEntryItemResult">
+        <result property="id"    column="sub_id"    />
+        <result property="entryId"    column="sub_entryId"    />
+        <result property="sourceOrderId"    column="sub_sourceOrderId"    />
+        <result property="sourceOrderNo"    column="sub_sourceOrderNo"    />
+        <result property="sourceOrderItemId"    column="sub_sourceOrderItemId"    />
+        <result property="goodsId"    column="sub_goodsId"    />
+        <result property="specId"    column="sub_specId"    />
+        <result property="specNum"    column="sub_specNum"    />
+        <result property="colorImage"    column="color_image"    />
+        <result property="colorValue"    column="color_value"    />
+        <result property="sizeValue"    column="size_value"    />
+        <result property="styleValue"    column="style_value"    />
+        <result property="originalQuantity"    column="sub_originalQuantity"    />
+        <result property="outQuantity"    column="sub_outQuantity"    />
+        <result property="completeTime"    column="sub_completeTime"    />
+        <result property="pickedTime"    column="sub_pickedTime"    />
+        <result property="status"    column="sub_status"    />
+    </resultMap>
+
+    <sql id="selectWmsStockOutEntryVo">
+        select id, stockOutNum, sourceNo, sourceId, stockOutType, status, printStatus, printTime, createTime, createBy, updateTime, updateBy, completeTime, stockOutOperatorId, stockOutOperatorName, stockOutTime, remark, isDelete, goodsUnit, specUnit, specUnitTotal from wms_stock_out_entry
+    </sql>
+
+    <select id="selectWmsStockOutEntryList" parameterType="WmsStockOutEntry" resultMap="WmsStockOutEntryResult">
+        <include refid="selectWmsStockOutEntryVo"/>
+        <where>  
+            <if test="stockOutNum != null  and stockOutNum != ''"> and stockOutNum = #{stockOutNum}</if>
+            <if test="sourceNo != null  and sourceNo != ''"> and sourceNo = #{sourceNo}</if>
+            <if test="sourceId != null "> and sourceId = #{sourceId}</if>
+            <if test="stockOutType != null "> and stockOutType = #{stockOutType}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="printStatus != null "> and printStatus = #{printStatus}</if>
+            <if test="printTime != null "> and printTime = #{printTime}</if>
+            <if test="createTime != null "> and createTime = #{createTime}</if>
+            <if test="createBy != null  and createBy != ''"> and createBy = #{createBy}</if>
+            <if test="updateTime != null "> and updateTime = #{updateTime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and updateBy = #{updateBy}</if>
+            <if test="completeTime != null "> and completeTime = #{completeTime}</if>
+            <if test="stockOutOperatorId != null "> and stockOutOperatorId = #{stockOutOperatorId}</if>
+            <if test="stockOutOperatorName != null  and stockOutOperatorName != ''"> and stockOutOperatorName like concat('%', #{stockOutOperatorName}, '%')</if>
+            <if test="stockOutTime != null "> and stockOutTime = #{stockOutTime}</if>
+            <if test="isDelete != null "> and isDelete = #{isDelete}</if>
+            <if test="goodsUnit != null "> and goodsUnit = #{goodsUnit}</if>
+            <if test="specUnit != null "> and specUnit = #{specUnit}</if>
+            <if test="specUnitTotal != null "> and specUnitTotal = #{specUnitTotal}</if>
+        </where>
+    </select>
+    
+    <select id="selectWmsStockOutEntryById" parameterType="Long" resultMap="WmsStockOutEntryWmsStockOutEntryItemResult">
+        select a.id, a.stockOutNum, a.sourceNo, a.sourceId, a.stockOutType, a.status, a.printStatus, a.printTime, a.createTime, a.createBy, a.updateTime, a.updateBy, a.completeTime, a.stockOutOperatorId, a.stockOutOperatorName, a.stockOutTime, a.remark, a.isDelete, a.goodsUnit, a.specUnit, a.specUnitTotal,
+ b.id as sub_id, b.entryId as sub_entryId, b.sourceOrderId as sub_sourceOrderId, b.sourceOrderNo as sub_sourceOrderNo, b.sourceOrderItemId as sub_sourceOrderItemId, b.goodsId as sub_goodsId, b.specId as sub_specId, b.specNum as sub_specNum, b.originalQuantity as sub_originalQuantity, b.outQuantity as sub_outQuantity, b.completeTime as sub_completeTime, b.pickedTime as sub_pickedTime, b.status as sub_status
+        ,gs.color_image,gs.color_value,gs.size_value,gs.style_value
+        from wms_stock_out_entry a
+        left join wms_stock_out_entry_item b on b.entryId = a.id
+        left join erp_goods_spec gs on gs.id = b.specId
+        where a.id = #{id}
+    </select>
+
+    <select id="selectWmsStockOutEntryItemById" parameterType="Long" resultMap="WmsStockOutEntryItemResult">
+        select b.id as sub_id, b.entryId as sub_entryId, b.sourceOrderId as sub_sourceOrderId, b.sourceOrderNo as sub_sourceOrderNo, b.sourceOrderItemId as sub_sourceOrderItemId, b.goodsId as sub_goodsId, b.specId as sub_specId, b.specNum as sub_specNum, b.originalQuantity as sub_originalQuantity, b.outQuantity as sub_outQuantity, b.completeTime as sub_completeTime, b.pickedTime as sub_pickedTime, b.status as sub_status
+
+        from wms_stock_out_entry_item b
+
+        where b.id = #{id}
+    </select>
+
+        
+    <insert id="insertWmsStockOutEntry" parameterType="WmsStockOutEntry" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_stock_out_entry
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stockOutNum != null and stockOutNum != ''">stockOutNum,</if>
+            <if test="sourceNo != null">sourceNo,</if>
+            <if test="sourceId != null">sourceId,</if>
+            <if test="stockOutType != null">stockOutType,</if>
+            <if test="status != null">status,</if>
+            <if test="printStatus != null">printStatus,</if>
+            <if test="printTime != null">printTime,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="createBy != null">createBy,</if>
+            <if test="updateTime != null">updateTime,</if>
+            <if test="updateBy != null">updateBy,</if>
+            <if test="completeTime != null">completeTime,</if>
+            <if test="stockOutOperatorId != null">stockOutOperatorId,</if>
+            <if test="stockOutOperatorName != null">stockOutOperatorName,</if>
+            <if test="stockOutTime != null">stockOutTime,</if>
+            <if test="remark != null">remark,</if>
+            <if test="isDelete != null">isDelete,</if>
+            <if test="goodsUnit != null">goodsUnit,</if>
+            <if test="specUnit != null">specUnit,</if>
+            <if test="specUnitTotal != null">specUnitTotal,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stockOutNum != null and stockOutNum != ''">#{stockOutNum},</if>
+            <if test="sourceNo != null">#{sourceNo},</if>
+            <if test="sourceId != null">#{sourceId},</if>
+            <if test="stockOutType != null">#{stockOutType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="printStatus != null">#{printStatus},</if>
+            <if test="printTime != null">#{printTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="completeTime != null">#{completeTime},</if>
+            <if test="stockOutOperatorId != null">#{stockOutOperatorId},</if>
+            <if test="stockOutOperatorName != null">#{stockOutOperatorName},</if>
+            <if test="stockOutTime != null">#{stockOutTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="goodsUnit != null">#{goodsUnit},</if>
+            <if test="specUnit != null">#{specUnit},</if>
+            <if test="specUnitTotal != null">#{specUnitTotal},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWmsStockOutEntryItem" parameterType="WmsStockOutEntryItem">
+        update wms_stock_out_entry_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="outQuantity != null and outQuantity != ''">outQuantity = #{outQuantity},</if>
+            <if test="completeTime != null">completeTime = #{completeTime},</if>
+            <if test="pickedTime != null">pickedTime = #{pickedTime},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateWmsStockOutEntry" parameterType="WmsStockOutEntry">
+        update wms_stock_out_entry
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stockOutNum != null and stockOutNum != ''">stockOutNum = #{stockOutNum},</if>
+            <if test="sourceNo != null">sourceNo = #{sourceNo},</if>
+            <if test="sourceId != null">sourceId = #{sourceId},</if>
+            <if test="stockOutType != null">stockOutType = #{stockOutType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="printStatus != null">printStatus = #{printStatus},</if>
+            <if test="printTime != null">printTime = #{printTime},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+            <if test="createBy != null">createBy = #{createBy},</if>
+            <if test="updateTime != null">updateTime = #{updateTime},</if>
+            <if test="updateBy != null">updateBy = #{updateBy},</if>
+            <if test="completeTime != null">completeTime = #{completeTime},</if>
+            <if test="stockOutOperatorId != null">stockOutOperatorId = #{stockOutOperatorId},</if>
+            <if test="stockOutOperatorName != null">stockOutOperatorName = #{stockOutOperatorName},</if>
+            <if test="stockOutTime != null">stockOutTime = #{stockOutTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="isDelete != null">isDelete = #{isDelete},</if>
+            <if test="goodsUnit != null">goodsUnit = #{goodsUnit},</if>
+            <if test="specUnit != null">specUnit = #{specUnit},</if>
+            <if test="specUnitTotal != null">specUnitTotal = #{specUnitTotal},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWmsStockOutEntryById" parameterType="Long">
+        delete from wms_stock_out_entry where id = #{id}
+    </delete>
+
+    <delete id="deleteWmsStockOutEntryByIds" parameterType="String">
+        delete from wms_stock_out_entry where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteWmsStockOutEntryItemByEntryIds" parameterType="String">
+        delete from wms_stock_out_entry_item where entryId in 
+        <foreach item="entryId" collection="array" open="(" separator="," close=")">
+            #{entryId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteWmsStockOutEntryItemByEntryId" parameterType="Long">
+        delete from wms_stock_out_entry_item where entryId = #{entryId}
+    </delete>
+
+    <insert id="batchWmsStockOutEntryItem">
+        insert into wms_stock_out_entry_item( id, entryId, sourceOrderId, sourceOrderNo, sourceOrderItemId, goodsId, specId, specNum, originalQuantity, outQuantity, completeTime, pickedTime, status) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.entryId}, #{item.sourceOrderId}, #{item.sourceOrderNo}, #{item.sourceOrderItemId}, #{item.goodsId}, #{item.specId}, #{item.specNum}, #{item.originalQuantity}, #{item.outQuantity}, #{item.completeTime}, #{item.pickedTime}, #{item.status})
+        </foreach>
+    </insert>
+</mapper>

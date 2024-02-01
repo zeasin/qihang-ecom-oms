@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.ShopMapper">
+    
+    <resultMap type="Shop" id="ShopResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="nickName"    column="nickName"    />
+        <result property="ename"    column="ename"    />
+        <result property="company"    column="company"    />
+        <result property="type"    column="type"    />
+        <result property="url"    column="url"    />
+        <result property="orderNum"    column="orderNum"    />
+        <result property="isDelete"    column="isDelete"    />
+        <result property="isShow"    column="isShow"    />
+        <result property="modifyOn"    column="modify_on"    />
+        <result property="remark"    column="remark"    />
+        <result property="sellerUserId"    column="sellerUserId"    />
+        <result property="sellerUserIdStr"    column="sellerUserIdStr"    />
+        <result property="sessionKey"    column="sessionKey"    />
+        <result property="appkey"    column="appkey"    />
+        <result property="apiRequestUrl"    column="api_request_url"    />
+        <result property="expiresIn"    column="expires_in"    />
+        <result property="accessTokenBegin"    column="access_token_begin"    />
+        <result property="refreshToken"    column="refresh_token"    />
+        <result property="refreshTokenTimeout"    column="refresh_token_timeout"    />
+
+    </resultMap>
+
+    <sql id="selectShopVo">
+        select id, name, nickName, ename, company, type, url, orderNum, isDelete, isShow, modify_on, remark, sellerUserId, sellerUserIdStr,
+               sessionKey, appkey, appSercet,refresh_token_timeout, api_request_url,refresh_token,access_token_begin,expires_in
+        from s_shop
+    </sql>
+
+    <select id="selectShopList" parameterType="Shop" resultMap="ShopResult">
+        <include refid="selectShopVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="nickName != null  and nickName != ''"> and nickName like concat('%', #{nickName}, '%')</if>
+            <if test="ename != null  and ename != ''"> and ename like concat('%', #{ename}, '%')</if>
+            <if test="company != null  and company != ''"> and company = #{company}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="orderNum != null "> and orderNum = #{orderNum}</if>
+            <if test="isDelete != null "> and isDelete = #{isDelete}</if>
+            <if test="isShow != null "> and isShow = #{isShow}</if>
+            <if test="modifyOn != null "> and modify_on = #{modifyOn}</if>
+            <if test="sellerUserId != null "> and sellerUserId = #{sellerUserId}</if>
+            <if test="sellerUserIdStr != null  and sellerUserIdStr != ''"> and sellerUserIdStr = #{sellerUserIdStr}</if>
+            <if test="sessionKey != null  and sessionKey != ''"> and sessionKey = #{sessionKey}</if>
+            <if test="appkey != null  and appkey != ''"> and appkey = #{appkey}</if>
+            <if test="appSercet != null  and appSercet != ''"> and appSercet = #{appSercet}</if>
+        </where>
+    </select>
+    
+    <select id="selectShopById" parameterType="Long" resultMap="ShopResult">
+        <include refid="selectShopVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertShop" parameterType="Shop" useGeneratedKeys="true" keyProperty="id">
+        insert into s_shop
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="nickName != null">nickName,</if>
+            <if test="ename != null">ename,</if>
+            <if test="company != null">company,</if>
+            <if test="type != null">type,</if>
+            <if test="url != null">url,</if>
+            <if test="orderNum != null">orderNum,</if>
+            <if test="isDelete != null">isDelete,</if>
+            <if test="isShow != null">isShow,</if>
+            <if test="modifyOn != null">modify_on,</if>
+            <if test="remark != null">remark,</if>
+            <if test="sellerUserId != null">sellerUserId,</if>
+            <if test="sellerUserIdStr != null and sellerUserIdStr != ''">sellerUserIdStr,</if>
+            <if test="sessionKey != null">sessionKey,</if>
+            <if test="appkey != null">appkey,</if>
+            <if test="appSercet != null">appSercet,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="nickName != null">#{nickName},</if>
+            <if test="ename != null">#{ename},</if>
+            <if test="company != null">#{company},</if>
+            <if test="type != null">#{type},</if>
+            <if test="url != null">#{url},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="isShow != null">#{isShow},</if>
+            <if test="modifyOn != null">#{modifyOn},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="sellerUserId != null">#{sellerUserId},</if>
+            <if test="sellerUserIdStr != null and sellerUserIdStr != ''">#{sellerUserIdStr},</if>
+            <if test="sessionKey != null">#{sessionKey},</if>
+            <if test="appkey != null">#{appkey},</if>
+            <if test="appSercet != null">#{appSercet},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShop" parameterType="Shop">
+        update s_shop
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="nickName != null">nickName = #{nickName},</if>
+            <if test="ename != null">ename = #{ename},</if>
+            <if test="company != null">company = #{company},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="orderNum != null">orderNum = #{orderNum},</if>
+            <if test="isDelete != null">isDelete = #{isDelete},</if>
+            <if test="isShow != null">isShow = #{isShow},</if>
+            <if test="modifyOn != null">modify_on = #{modifyOn},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="sellerUserId != null">sellerUserId = #{sellerUserId},</if>
+            <if test="sellerUserIdStr != null and sellerUserIdStr != ''">sellerUserIdStr = #{sellerUserIdStr},</if>
+            <if test="sessionKey != null">sessionKey = #{sessionKey},</if>
+            <if test="appkey != null">appkey = #{appkey},</if>
+            <if test="appSercet != null">appSercet = #{appSercet},</if>
+            <if test="apiRequestUrl != null">api_request_url = #{apiRequestUrl},</if>
+            <if test="expiresIn != null">expires_in = #{expiresIn},</if>
+            <if test="accessTokenBegin != null">access_token_begin = #{accessTokenBegin},</if>
+            <if test="refreshToken != null">refresh_token = #{refreshToken},</if>
+            <if test="refreshTokenTimeout != null">refresh_token_timeout = #{refreshTokenTimeout},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteShopById" parameterType="Long">
+        delete from s_shop where id = #{id}
+    </delete>
+
+    <delete id="deleteShopByIds" parameterType="String">
+        delete from s_shop where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

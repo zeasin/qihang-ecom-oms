@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.ErpGoodsInventoryMapper">
+    
+    <resultMap type="ErpGoodsInventory" id="ErpGoodsInventoryResult">
+        <result property="id"    column="id"    />
+        <result property="goodsId"    column="goodsId"    />
+        <result property="goodsNumber"    column="goodsNumber"    />
+        <result property="specId"    column="specId"    />
+        <result property="specNumber"    column="specNumber"    />
+        <result property="currentQty"    column="currentQty"    />
+        <result property="lockedQty"    column="lockedQty"    />
+        <result property="isDelete"    column="isDelete"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="createBy"    column="createBy"    />
+        <result property="updateTime"    column="updateTime"    />
+        <result property="updateBy"    column="updateBy"    />
+    </resultMap>
+
+    <resultMap id="ErpGoodsInventoryErpGoodsInventoryDetailResult" type="ErpGoodsInventory" extends="ErpGoodsInventoryResult">
+        <collection property="erpGoodsInventoryDetailList" notNullColumn="sub_id" javaType="java.util.List" resultMap="ErpGoodsInventoryDetailResult" />
+    </resultMap>
+
+    <resultMap type="ErpGoodsInventoryDetail" id="ErpGoodsInventoryDetailResult">
+        <result property="id"    column="sub_id"    />
+        <result property="inventoryId"    column="sub_inventoryId"    />
+        <result property="inQty"    column="sub_inQty"    />
+        <result property="originQty"    column="sub_originQty"    />
+        <result property="currentQty"    column="sub_currentQty"    />
+        <result property="purPrice"    column="sub_purPrice"    />
+        <result property="entryId"    column="sub_entryId"    />
+        <result property="entryItemId"    column="sub_entryItemId"    />
+        <result property="remark"    column="sub_remark"    />
+        <result property="specId"    column="sub_specId"    />
+        <result property="goodsId"    column="sub_goodsId"    />
+        <result property="inLocation"    column="sub_inLocation"    />
+        <result property="locationNum"    column="location_num"    />
+        <result property="createTime"    column="sub_createTime"    />
+        <result property="createBy"    column="sub_createBy"    />
+    </resultMap>
+
+    <sql id="selectErpGoodsInventoryVo">
+        select id, goodsId, goodsNumber, specId, specNumber, currentQty, lockedQty, isDelete, createTime, createBy, updateTime, updateBy from erp_goods_inventory
+    </sql>
+
+    <select id="selectErpGoodsInventoryList" parameterType="ErpGoodsInventory" resultMap="ErpGoodsInventoryResult">
+        <include refid="selectErpGoodsInventoryVo"/>
+        <where>  
+            <if test="goodsId != null "> and goodsId = #{goodsId}</if>
+            <if test="goodsNumber != null  and goodsNumber != ''"> and goodsNumber = #{goodsNumber}</if>
+            <if test="specId != null "> and specId = #{specId}</if>
+            <if test="specNumber != null  and specNumber != ''"> and specNumber = #{specNumber}</if>
+            <if test="currentQty != null "> and currentQty = #{currentQty}</if>
+            <if test="lockedQty != null "> and lockedQty = #{lockedQty}</if>
+            <if test="isDelete != null "> and isDelete = #{isDelete}</if>
+            <if test="createTime != null "> and createTime = #{createTime}</if>
+            <if test="createBy != null  and createBy != ''"> and createBy = #{createBy}</if>
+            <if test="updateTime != null "> and updateTime = #{updateTime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and updateBy = #{updateBy}</if>
+        </where>
+    </select>
+    
+    <select id="selectErpGoodsInventoryById" parameterType="Long" resultMap="ErpGoodsInventoryErpGoodsInventoryDetailResult">
+        select a.id, a.goodsId, a.goodsNumber, a.specId, a.specNumber, a.currentQty, a.lockedQty, a.isDelete, a.createTime, a.createBy, a.updateTime, a.updateBy,
+ b.id as sub_id, b.inventoryId as sub_inventoryId, b.inQty as sub_inQty, b.originQty as sub_originQty, b.currentQty as sub_currentQty, b.purPrice as sub_purPrice, b.entryId as sub_entryId, b.entryItemId as sub_entryItemId, b.remark as sub_remark, b.specId as sub_specId, b.goodsId as sub_goodsId, b.inLocation as sub_inLocation, b.createTime as sub_createTime, b.createBy as sub_createBy
+        from erp_goods_inventory a
+        left join erp_goods_inventory_detail b on b.inventoryId = a.id
+        where a.id = #{id}
+    </select>
+
+    <select id="selectErpGoodsInventoryBySpecId" parameterType="Long" resultMap="ErpGoodsInventoryResult">
+        select a.id, a.goodsId, a.goodsNumber, a.specId, a.specNumber, a.currentQty, a.lockedQty, a.isDelete, a.createTime, a.createBy, a.updateTime, a.updateBy
+
+        from erp_goods_inventory a
+
+        where a.specId = #{specId}
+    </select>
+    <select id="selectErpGoodsInventoryDetailBySpecId" parameterType="Long" resultMap="ErpGoodsInventoryDetailResult">
+        select
+               b.id as sub_id, b.inventoryId as sub_inventoryId, b.inQty as sub_inQty, b.originQty as sub_originQty, b.currentQty as sub_currentQty, b.purPrice as sub_purPrice,
+               b.entryId as sub_entryId, b.entryItemId as sub_entryItemId, b.remark as sub_remark, b.specId as sub_specId, b.goodsId as sub_goodsId, b.inLocation as sub_inLocation,
+               b.createTime as sub_createTime, b.createBy as sub_createBy
+                ,c.number as location_num
+        from  erp_goods_inventory_detail b
+        left join wms_stock_location as c on c.id=b.inLocation
+
+        where b.specId = #{specId} and b.currentQty > 0
+    </select>
+
+    <select id="selectErpGoodsInventoryDetailById" parameterType="Long" resultMap="ErpGoodsInventoryDetailResult">
+        select
+            b.id as sub_id, b.inventoryId as sub_inventoryId, b.inQty as sub_inQty, b.originQty as sub_originQty, b.currentQty as sub_currentQty, b.purPrice as sub_purPrice,
+            b.entryId as sub_entryId, b.entryItemId as sub_entryItemId, b.remark as sub_remark, b.specId as sub_specId, b.goodsId as sub_goodsId, b.inLocation as sub_inLocation,
+            b.createTime as sub_createTime, b.createBy as sub_createBy
+
+        from  erp_goods_inventory_detail b
+
+        where b.id = #{id}
+    </select>
+
+
+
+
+    <insert id="insertErpGoodsInventory" parameterType="ErpGoodsInventory" useGeneratedKeys="true" keyProperty="id">
+        insert into erp_goods_inventory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">goodsId,</if>
+            <if test="goodsNumber != null">goodsNumber,</if>
+            <if test="specId != null">specId,</if>
+            <if test="specNumber != null and specNumber != ''">specNumber,</if>
+            <if test="currentQty != null">currentQty,</if>
+            <if test="lockedQty != null">lockedQty,</if>
+            <if test="isDelete != null">isDelete,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="createBy != null">createBy,</if>
+            <if test="updateTime != null">updateTime,</if>
+            <if test="updateBy != null">updateBy,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="goodsNumber != null">#{goodsNumber},</if>
+            <if test="specId != null">#{specId},</if>
+            <if test="specNumber != null and specNumber != ''">#{specNumber},</if>
+            <if test="currentQty != null">#{currentQty},</if>
+            <if test="lockedQty != null">#{lockedQty},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateErpGoodsInventoryDetail" parameterType="ErpGoodsInventoryDetail">
+        update erp_goods_inventory_detail
+        <trim prefix="SET" suffixOverrides=",">
+
+            <if test="currentQty != null">currentQty = #{currentQty},</if>
+
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateErpGoodsInventory" parameterType="ErpGoodsInventory">
+        update erp_goods_inventory
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsId != null">goodsId = #{goodsId},</if>
+            <if test="goodsNumber != null">goodsNumber = #{goodsNumber},</if>
+            <if test="specId != null">specId = #{specId},</if>
+            <if test="specNumber != null and specNumber != ''">specNumber = #{specNumber},</if>
+            <if test="currentQty != null">currentQty = #{currentQty},</if>
+            <if test="lockedQty != null">lockedQty = #{lockedQty},</if>
+            <if test="isDelete != null">isDelete = #{isDelete},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+            <if test="createBy != null">createBy = #{createBy},</if>
+            <if test="updateTime != null">updateTime = #{updateTime},</if>
+            <if test="updateBy != null">updateBy = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteErpGoodsInventoryById" parameterType="Long">
+        delete from erp_goods_inventory where id = #{id}
+    </delete>
+
+    <delete id="deleteErpGoodsInventoryByIds" parameterType="String">
+        delete from erp_goods_inventory where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteErpGoodsInventoryDetailByInventoryIds" parameterType="String">
+        delete from erp_goods_inventory_detail where inventoryId in 
+        <foreach item="inventoryId" collection="array" open="(" separator="," close=")">
+            #{inventoryId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteErpGoodsInventoryDetailByInventoryId" parameterType="Long">
+        delete from erp_goods_inventory_detail where inventoryId = #{inventoryId}
+    </delete>
+
+    <insert id="batchErpGoodsInventoryDetail">
+        insert into erp_goods_inventory_detail( id, inventoryId, inQty, originQty, currentQty, purPrice, entryId, entryItemId, remark, specId, goodsId, inLocation, createTime, createBy) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.inventoryId}, #{item.inQty}, #{item.originQty}, #{item.currentQty}, #{item.purPrice}, #{item.entryId}, #{item.entryItemId}, #{item.remark}, #{item.specId}, #{item.goodsId}, #{item.inLocation}, #{item.createTime}, #{item.createBy})
+        </foreach>
+    </insert>
+</mapper>

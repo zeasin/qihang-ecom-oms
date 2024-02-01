@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.PddOrderRefundMapper">
+    
+    <resultMap type="PddOrderRefund" id="PddOrderRefundResult">
+        <result property="id"    column="id"    />
+        <result property="orderSn"    column="order_sn"    />
+        <result property="shopId"    column="shopId"    />
+        <result property="afterSalesType"    column="after_sales_type"    />
+        <result property="afterSalesStatus"    column="after_sales_status"    />
+        <result property="afterSaleReason"    column="after_sale_reason"    />
+        <result property="confirmTime"    column="confirm_time"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="discountAmount"    column="discount_amount"    />
+        <result property="orderAmount"    column="order_amount"    />
+        <result property="refundAmount"    column="refund_amount"    />
+        <result property="goodsImage"    column="goods_image"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="skuId"    column="sku_id"    />
+        <result property="goodsName"    column="goods_name"    />
+        <result property="goodsNumber"    column="goods_number"    />
+        <result property="specNumber"    column="spec_number"    />
+        <result property="goodsSpec"    column="goods_spec"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="goodsPrice"    column="goods_price"    />
+        <result property="updatedTime"    column="updated_time"    />
+        <result property="trackingNumber"    column="tracking_number"    />
+        <result property="trackingCompany"    column="tracking_company"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="auditTime"    column="audit_time"    />
+        <result property="describe"    column="describe"    />
+        <result property="remark"    column="remark"    />
+        <result property="shippingStatus"    column="shipping_status"    />
+        <result property="userShippingStatus"    column="user_shipping_status"    />
+        <result property="erpOrderReturnNum"    column="erp_order_return_num"    />
+        <result property="erpOrderReturnId"    column="erp_order_return_id"    />
+        <result property="sign"    column="sign"    />
+    </resultMap>
+
+    <sql id="selectPddOrderRefundVo">
+        select id, order_sn, shopId, after_sales_type, after_sales_status, after_sale_reason, confirm_time, created_time, discount_amount, order_amount, refund_amount, goods_image, goods_id, sku_id, goods_name, goods_number, spec_number, goods_spec, quantity, goods_price, updated_time, tracking_number, tracking_company, audit_status, audit_time, `describe`, remark, shipping_status, user_shipping_status, erp_order_return_num, erp_order_return_id, sign from s_pdd_order_refund
+    </sql>
+
+    <select id="selectPddOrderRefundList" parameterType="PddOrderRefund" resultMap="PddOrderRefundResult">
+        <include refid="selectPddOrderRefundVo"/>
+        <where>  
+            <if test="orderSn != null  and orderSn != ''"> and order_sn = #{orderSn}</if>
+            <if test="shopId != null "> and shopId = #{shopId}</if>
+            <if test="afterSalesType != null "> and after_sales_type = #{afterSalesType}</if>
+            <if test="afterSalesStatus != null "> and after_sales_status = #{afterSalesStatus}</if>
+            <if test="afterSaleReason != null  and afterSaleReason != ''"> and after_sale_reason = #{afterSaleReason}</if>
+            <if test="confirmTime != null "> and confirm_time = #{confirmTime}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="discountAmount != null "> and discount_amount = #{discountAmount}</if>
+            <if test="orderAmount != null "> and order_amount = #{orderAmount}</if>
+            <if test="refundAmount != null "> and refund_amount = #{refundAmount}</if>
+            <if test="goodsImage != null  and goodsImage != ''"> and goods_image = #{goodsImage}</if>
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="skuId != null "> and sku_id = #{skuId}</if>
+            <if test="goodsName != null  and goodsName != ''"> and goods_name like concat('%', #{goodsName}, '%')</if>
+            <if test="goodsNumber != null  and goodsNumber != ''"> and goods_number = #{goodsNumber}</if>
+            <if test="specNumber != null  and specNumber != ''"> and spec_number = #{specNumber}</if>
+            <if test="goodsSpec != null  and goodsSpec != ''"> and goods_spec = #{goodsSpec}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="goodsPrice != null "> and goods_price = #{goodsPrice}</if>
+            <if test="updatedTime != null  and updatedTime != ''"> and updated_time = #{updatedTime}</if>
+            <if test="trackingNumber != null  and trackingNumber != ''"> and tracking_number = #{trackingNumber}</if>
+            <if test="trackingCompany != null  and trackingCompany != ''"> and tracking_company = #{trackingCompany}</if>
+            <if test="auditStatus != null "> and audit_status = #{auditStatus}</if>
+            <if test="auditTime != null "> and audit_time = #{auditTime}</if>
+            <if test="describe != null  and describe != ''"> and describe = #{describe}</if>
+            <if test="shippingStatus != null "> and shipping_status = #{shippingStatus}</if>
+            <if test="userShippingStatus != null "> and user_shipping_status = #{userShippingStatus}</if>
+            <if test="erpOrderReturnNum != null  and erpOrderReturnNum != ''"> and erp_order_return_num = #{erpOrderReturnNum}</if>
+            <if test="erpOrderReturnId != null "> and erp_order_return_id = #{erpOrderReturnId}</if>
+            <if test="sign != null  and sign != ''"> and sign = #{sign}</if>
+        </where>
+    </select>
+    
+    <select id="selectPddOrderRefundById" parameterType="Long" resultMap="PddOrderRefundResult">
+        <include refid="selectPddOrderRefundVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPddOrderRefund" parameterType="PddOrderRefund">
+        insert into s_pdd_order_refund
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orderSn != null and orderSn != ''">order_sn,</if>
+            <if test="shopId != null">shopId,</if>
+            <if test="afterSalesType != null">after_sales_type,</if>
+            <if test="afterSalesStatus != null">after_sales_status,</if>
+            <if test="afterSaleReason != null and afterSaleReason != ''">after_sale_reason,</if>
+            <if test="confirmTime != null">confirm_time,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="discountAmount != null">discount_amount,</if>
+            <if test="orderAmount != null">order_amount,</if>
+            <if test="refundAmount != null">refund_amount,</if>
+            <if test="goodsImage != null">goods_image,</if>
+            <if test="goodsId != null">goods_id,</if>
+            <if test="skuId != null">sku_id,</if>
+            <if test="goodsName != null">goods_name,</if>
+            <if test="goodsNumber != null">goods_number,</if>
+            <if test="specNumber != null">spec_number,</if>
+            <if test="goodsSpec != null">goods_spec,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="goodsPrice != null">goods_price,</if>
+            <if test="updatedTime != null">updated_time,</if>
+            <if test="trackingNumber != null">tracking_number,</if>
+            <if test="trackingCompany != null">tracking_company,</if>
+            <if test="auditStatus != null">audit_status,</if>
+            <if test="auditTime != null">audit_time,</if>
+            <if test="describe != null">describe,</if>
+            <if test="remark != null">remark,</if>
+            <if test="shippingStatus != null">shipping_status,</if>
+            <if test="userShippingStatus != null">user_shipping_status,</if>
+            <if test="erpOrderReturnNum != null">erp_order_return_num,</if>
+            <if test="erpOrderReturnId != null">erp_order_return_id,</if>
+            <if test="sign != null">sign,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orderSn != null and orderSn != ''">#{orderSn},</if>
+            <if test="shopId != null">#{shopId},</if>
+            <if test="afterSalesType != null">#{afterSalesType},</if>
+            <if test="afterSalesStatus != null">#{afterSalesStatus},</if>
+            <if test="afterSaleReason != null and afterSaleReason != ''">#{afterSaleReason},</if>
+            <if test="confirmTime != null">#{confirmTime},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="discountAmount != null">#{discountAmount},</if>
+            <if test="orderAmount != null">#{orderAmount},</if>
+            <if test="refundAmount != null">#{refundAmount},</if>
+            <if test="goodsImage != null">#{goodsImage},</if>
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="skuId != null">#{skuId},</if>
+            <if test="goodsName != null">#{goodsName},</if>
+            <if test="goodsNumber != null">#{goodsNumber},</if>
+            <if test="specNumber != null">#{specNumber},</if>
+            <if test="goodsSpec != null">#{goodsSpec},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="goodsPrice != null">#{goodsPrice},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+            <if test="trackingNumber != null">#{trackingNumber},</if>
+            <if test="trackingCompany != null">#{trackingCompany},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="describe != null">#{describe},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="shippingStatus != null">#{shippingStatus},</if>
+            <if test="userShippingStatus != null">#{userShippingStatus},</if>
+            <if test="erpOrderReturnNum != null">#{erpOrderReturnNum},</if>
+            <if test="erpOrderReturnId != null">#{erpOrderReturnId},</if>
+            <if test="sign != null">#{sign},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePddOrderRefund" parameterType="PddOrderRefund">
+        update s_pdd_order_refund
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderSn != null and orderSn != ''">order_sn = #{orderSn},</if>
+            <if test="shopId != null">shopId = #{shopId},</if>
+            <if test="afterSalesType != null">after_sales_type = #{afterSalesType},</if>
+            <if test="afterSalesStatus != null">after_sales_status = #{afterSalesStatus},</if>
+            <if test="afterSaleReason != null and afterSaleReason != ''">after_sale_reason = #{afterSaleReason},</if>
+            <if test="confirmTime != null">confirm_time = #{confirmTime},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="discountAmount != null">discount_amount = #{discountAmount},</if>
+            <if test="orderAmount != null">order_amount = #{orderAmount},</if>
+            <if test="refundAmount != null">refund_amount = #{refundAmount},</if>
+            <if test="goodsImage != null">goods_image = #{goodsImage},</if>
+            <if test="goodsId != null">goods_id = #{goodsId},</if>
+            <if test="skuId != null">sku_id = #{skuId},</if>
+            <if test="goodsName != null">goods_name = #{goodsName},</if>
+            <if test="goodsNumber != null">goods_number = #{goodsNumber},</if>
+            <if test="specNumber != null">spec_number = #{specNumber},</if>
+            <if test="goodsSpec != null">goods_spec = #{goodsSpec},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="goodsPrice != null">goods_price = #{goodsPrice},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+            <if test="trackingNumber != null">tracking_number = #{trackingNumber},</if>
+            <if test="trackingCompany != null">tracking_company = #{trackingCompany},</if>
+            <if test="auditStatus != null">audit_status = #{auditStatus},</if>
+            <if test="auditTime != null">audit_time = #{auditTime},</if>
+            <if test="describe != null">describe = #{describe},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="shippingStatus != null">shipping_status = #{shippingStatus},</if>
+            <if test="userShippingStatus != null">user_shipping_status = #{userShippingStatus},</if>
+            <if test="erpOrderReturnNum != null">erp_order_return_num = #{erpOrderReturnNum},</if>
+            <if test="erpOrderReturnId != null">erp_order_return_id = #{erpOrderReturnId},</if>
+            <if test="sign != null">sign = #{sign},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePddOrderRefundById" parameterType="Long">
+        delete from s_pdd_order_refund where id = #{id}
+    </delete>
+
+    <delete id="deletePddOrderRefundByIds" parameterType="String">
+        delete from s_pdd_order_refund where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

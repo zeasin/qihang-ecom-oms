@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.FmsPayablePurchaseMapper">
+    
+    <resultMap type="FmsPayablePurchase" id="FmsPayablePurchaseResult">
+        <result property="id"    column="id"    />
+        <result property="supplierId"    column="supplier_id"    />
+        <result property="supplierName"    column="supplier_name"    />
+        <result property="amount"    column="amount"    />
+        <result property="date"    column="date"    />
+        <result property="invoiceNo"    column="invoice_no"    />
+        <result property="purchaseOrderNo"    column="purchase_order_no"    />
+        <result property="purchaseDesc"    column="purchase_desc"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectFmsPayablePurchaseVo">
+        select id, supplier_id, supplier_name, amount, date, invoice_no, purchase_order_no, purchase_desc, remark, status, create_time, create_by, update_time, update_by from fms_payable_purchase
+    </sql>
+
+    <select id="selectFmsPayablePurchaseList" parameterType="FmsPayablePurchase" resultMap="FmsPayablePurchaseResult">
+        <include refid="selectFmsPayablePurchaseVo"/>
+        <where>  
+            <if test="supplierId != null "> and supplier_id = #{supplierId}</if>
+            <if test="supplierName != null  and supplierName != ''"> and supplier_name like concat('%', #{supplierName}, '%')</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="date != null "> and date = #{date}</if>
+            <if test="invoiceNo != null  and invoiceNo != ''"> and invoice_no = #{invoiceNo}</if>
+            <if test="purchaseOrderNo != null  and purchaseOrderNo != ''"> and purchase_order_no = #{purchaseOrderNo}</if>
+            <if test="purchaseDesc != null  and purchaseDesc != ''"> and purchase_desc = #{purchaseDesc}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectFmsPayablePurchaseById" parameterType="Long" resultMap="FmsPayablePurchaseResult">
+        <include refid="selectFmsPayablePurchaseVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFmsPayablePurchase" parameterType="FmsPayablePurchase">
+        insert into fms_payable_purchase
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="supplierId != null">supplier_id,</if>
+            <if test="supplierName != null and supplierName != ''">supplier_name,</if>
+            <if test="amount != null">amount,</if>
+            <if test="date != null">date,</if>
+            <if test="invoiceNo != null">invoice_no,</if>
+            <if test="purchaseOrderNo != null">purchase_order_no,</if>
+            <if test="purchaseDesc != null">purchase_desc,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="supplierId != null">#{supplierId},</if>
+            <if test="supplierName != null and supplierName != ''">#{supplierName},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="date != null">#{date},</if>
+            <if test="invoiceNo != null">#{invoiceNo},</if>
+            <if test="purchaseOrderNo != null">#{purchaseOrderNo},</if>
+            <if test="purchaseDesc != null">#{purchaseDesc},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFmsPayablePurchase" parameterType="FmsPayablePurchase">
+        update fms_payable_purchase
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="supplierId != null">supplier_id = #{supplierId},</if>
+            <if test="supplierName != null and supplierName != ''">supplier_name = #{supplierName},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="date != null">date = #{date},</if>
+            <if test="invoiceNo != null">invoice_no = #{invoiceNo},</if>
+            <if test="purchaseOrderNo != null">purchase_order_no = #{purchaseOrderNo},</if>
+            <if test="purchaseDesc != null">purchase_desc = #{purchaseDesc},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFmsPayablePurchaseById" parameterType="Long">
+        delete from fms_payable_purchase where id = #{id}
+    </delete>
+
+    <delete id="deleteFmsPayablePurchaseByIds" parameterType="String">
+        delete from fms_payable_purchase where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

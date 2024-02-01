@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.ErpGoodsCategoryMapper">
+    
+    <resultMap type="ErpGoodsCategory" id="ErpGoodsCategoryResult">
+        <result property="id"    column="id"    />
+        <result property="number"    column="number"    />
+        <result property="name"    column="name"    />
+        <result property="remark"    column="remark"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="path"    column="path"    />
+        <result property="sort"    column="sort"    />
+        <result property="image"    column="image"    />
+        <result property="isDelete"    column="isDelete"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectErpGoodsCategoryVo">
+        select id, number, name, remark, parent_id, path, sort, image, isDelete, create_by, create_time, update_by, update_time from erp_goods_category
+    </sql>
+
+    <select id="selectErpGoodsCategoryList" parameterType="ErpGoodsCategory" resultMap="ErpGoodsCategoryResult">
+        <include refid="selectErpGoodsCategoryVo"/>
+        <where>  
+            <if test="number != null  and number != ''"> and number = #{number}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="path != null  and path != ''"> and path = #{path}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="image != null  and image != ''"> and image = #{image}</if>
+            <if test="isDelete != null "> and isDelete = #{isDelete}</if>
+        </where>
+    </select>
+    
+    <select id="selectErpGoodsCategoryById" parameterType="Long" resultMap="ErpGoodsCategoryResult">
+        <include refid="selectErpGoodsCategoryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertErpGoodsCategory" parameterType="ErpGoodsCategory" useGeneratedKeys="true" keyProperty="id">
+        insert into erp_goods_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="number != null">number,</if>
+            <if test="name != null">name,</if>
+            <if test="remark != null">remark,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="path != null and path != ''">path,</if>
+            <if test="sort != null">sort,</if>
+            <if test="image != null">image,</if>
+            <if test="isDelete != null">isDelete,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="number != null">#{number},</if>
+            <if test="name != null">#{name},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="path != null and path != ''">#{path},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="image != null">#{image},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateErpGoodsCategory" parameterType="ErpGoodsCategory">
+        update erp_goods_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="number != null">number = #{number},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="path != null and path != ''">path = #{path},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="isDelete != null">isDelete = #{isDelete},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteErpGoodsCategoryById" parameterType="Long">
+        delete from erp_goods_category where id = #{id}
+    </delete>
+
+    <delete id="deleteErpGoodsCategoryByIds" parameterType="String">
+        delete from erp_goods_category where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

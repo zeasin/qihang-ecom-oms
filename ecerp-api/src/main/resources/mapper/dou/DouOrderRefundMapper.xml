@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.DouOrderRefundMapper">
+    
+    <resultMap type="DouOrderRefund" id="DouOrderRefundResult">
+        <result property="id"    column="id"    />
+        <result property="aftersaleId"    column="aftersale_id"    />
+        <result property="aftersaleType"    column="aftersale_type"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="subOrderId"    column="sub_order_id"    />
+        <result property="shopId"    column="shop_id"    />
+        <result property="productPic"    column="product_pic"    />
+        <result property="productId"    column="product_id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="goodsNum"    column="goods_num"    />
+        <result property="comboId"    column="combo_id"    />
+        <result property="goodsSpec"    column="goods_spec"    />
+        <result property="specNum"    column="spec_num"    />
+        <result property="comboNum"    column="combo_num"    />
+        <result property="logisticsCode"    column="logistics_code"    />
+        <result property="logisticsCompany"    column="logistics_company"    />
+        <result property="logisticsTime"    column="logistics_time"    />
+        <result property="receiptTime"    column="receipt_time"    />
+        <result property="cancelReason"    column="cancel_reason"    />
+        <result property="remark"    column="remark"    />
+        <result property="orderAmount"    column="order_amount"    />
+        <result property="comboAmount"    column="combo_amount"    />
+        <result property="questionDesc"    column="question_desc"    />
+        <result property="applyTime"    column="apply_time"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="auditTime"    column="audit_time"    />
+        <result property="refundStatus"    column="refund_status"    />
+        <result property="erpGoodsId"    column="erp_goods_id"    />
+        <result property="erpSpecId"    column="erp_spec_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectDouOrderRefundVo">
+        select id, aftersale_id, aftersale_type, order_id, sub_order_id, shop_id, product_pic, product_id, product_name, goods_num, combo_id, goods_spec, spec_num, combo_num, logistics_code, logistics_company, logistics_time, receipt_time, cancel_reason, remark, order_amount, combo_amount, question_desc, apply_time, audit_status, audit_time, refund_status, erp_goods_id, erp_spec_id, create_time, update_time from s_dou_order_refund
+    </sql>
+
+    <select id="selectDouOrderRefundList" parameterType="DouOrderRefund" resultMap="DouOrderRefundResult">
+        <include refid="selectDouOrderRefundVo"/>
+        <where>  
+            <if test="aftersaleId != null "> and aftersale_id = #{aftersaleId}</if>
+            <if test="aftersaleType != null "> and aftersale_type = #{aftersaleType}</if>
+            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
+            <if test="subOrderId != null  and subOrderId != ''"> and sub_order_id = #{subOrderId}</if>
+            <if test="shopId != null "> and shop_id = #{shopId}</if>
+            <if test="productPic != null  and productPic != ''"> and product_pic = #{productPic}</if>
+            <if test="productId != null  and productId != ''"> and product_id = #{productId}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="goodsNum != null  and goodsNum != ''"> and goods_num = #{goodsNum}</if>
+            <if test="comboId != null  and comboId != ''"> and combo_id = #{comboId}</if>
+            <if test="goodsSpec != null  and goodsSpec != ''"> and goods_spec = #{goodsSpec}</if>
+            <if test="specNum != null  and specNum != ''"> and spec_num = #{specNum}</if>
+            <if test="comboNum != null "> and combo_num = #{comboNum}</if>
+            <if test="logisticsCode != null  and logisticsCode != ''"> and logistics_code = #{logisticsCode}</if>
+            <if test="logisticsCompany != null  and logisticsCompany != ''"> and logistics_company = #{logisticsCompany}</if>
+            <if test="logisticsTime != null  and logisticsTime != ''"> and logistics_time = #{logisticsTime}</if>
+            <if test="receiptTime != null  and receiptTime != ''"> and receipt_time = #{receiptTime}</if>
+            <if test="cancelReason != null  and cancelReason != ''"> and cancel_reason = #{cancelReason}</if>
+            <if test="orderAmount != null "> and order_amount = #{orderAmount}</if>
+            <if test="comboAmount != null "> and combo_amount = #{comboAmount}</if>
+            <if test="questionDesc != null  and questionDesc != ''"> and question_desc = #{questionDesc}</if>
+            <if test="applyTime != null "> and apply_time = #{applyTime}</if>
+            <if test="auditStatus != null "> and audit_status = #{auditStatus}</if>
+            <if test="auditTime != null "> and audit_time = #{auditTime}</if>
+            <if test="refundStatus != null "> and refund_status = #{refundStatus}</if>
+            <if test="erpGoodsId != null "> and erp_goods_id = #{erpGoodsId}</if>
+            <if test="erpSpecId != null "> and erp_spec_id = #{erpSpecId}</if>
+        </where>
+    </select>
+    
+    <select id="selectDouOrderRefundById" parameterType="Long" resultMap="DouOrderRefundResult">
+        <include refid="selectDouOrderRefundVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDouOrderRefund" parameterType="DouOrderRefund" useGeneratedKeys="true" keyProperty="id">
+        insert into s_dou_order_refund
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="aftersaleId != null">aftersale_id,</if>
+            <if test="aftersaleType != null">aftersale_type,</if>
+            <if test="orderId != null and orderId != ''">order_id,</if>
+            <if test="subOrderId != null and subOrderId != ''">sub_order_id,</if>
+            <if test="shopId != null">shop_id,</if>
+            <if test="productPic != null">product_pic,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="goodsNum != null">goods_num,</if>
+            <if test="comboId != null">combo_id,</if>
+            <if test="goodsSpec != null">goods_spec,</if>
+            <if test="specNum != null">spec_num,</if>
+            <if test="comboNum != null">combo_num,</if>
+            <if test="logisticsCode != null">logistics_code,</if>
+            <if test="logisticsCompany != null">logistics_company,</if>
+            <if test="logisticsTime != null">logistics_time,</if>
+            <if test="receiptTime != null">receipt_time,</if>
+            <if test="cancelReason != null">cancel_reason,</if>
+            <if test="remark != null">remark,</if>
+            <if test="orderAmount != null">order_amount,</if>
+            <if test="comboAmount != null">combo_amount,</if>
+            <if test="questionDesc != null">question_desc,</if>
+            <if test="applyTime != null">apply_time,</if>
+            <if test="auditStatus != null">audit_status,</if>
+            <if test="auditTime != null">audit_time,</if>
+            <if test="refundStatus != null">refund_status,</if>
+            <if test="erpGoodsId != null">erp_goods_id,</if>
+            <if test="erpSpecId != null">erp_spec_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="aftersaleId != null">#{aftersaleId},</if>
+            <if test="aftersaleType != null">#{aftersaleType},</if>
+            <if test="orderId != null and orderId != ''">#{orderId},</if>
+            <if test="subOrderId != null and subOrderId != ''">#{subOrderId},</if>
+            <if test="shopId != null">#{shopId},</if>
+            <if test="productPic != null">#{productPic},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="goodsNum != null">#{goodsNum},</if>
+            <if test="comboId != null">#{comboId},</if>
+            <if test="goodsSpec != null">#{goodsSpec},</if>
+            <if test="specNum != null">#{specNum},</if>
+            <if test="comboNum != null">#{comboNum},</if>
+            <if test="logisticsCode != null">#{logisticsCode},</if>
+            <if test="logisticsCompany != null">#{logisticsCompany},</if>
+            <if test="logisticsTime != null">#{logisticsTime},</if>
+            <if test="receiptTime != null">#{receiptTime},</if>
+            <if test="cancelReason != null">#{cancelReason},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="orderAmount != null">#{orderAmount},</if>
+            <if test="comboAmount != null">#{comboAmount},</if>
+            <if test="questionDesc != null">#{questionDesc},</if>
+            <if test="applyTime != null">#{applyTime},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="refundStatus != null">#{refundStatus},</if>
+            <if test="erpGoodsId != null">#{erpGoodsId},</if>
+            <if test="erpSpecId != null">#{erpSpecId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDouOrderRefund" parameterType="DouOrderRefund">
+        update s_dou_order_refund
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="aftersaleId != null">aftersale_id = #{aftersaleId},</if>
+            <if test="aftersaleType != null">aftersale_type = #{aftersaleType},</if>
+            <if test="orderId != null and orderId != ''">order_id = #{orderId},</if>
+            <if test="subOrderId != null and subOrderId != ''">sub_order_id = #{subOrderId},</if>
+            <if test="shopId != null">shop_id = #{shopId},</if>
+            <if test="productPic != null">product_pic = #{productPic},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="goodsNum != null">goods_num = #{goodsNum},</if>
+            <if test="comboId != null">combo_id = #{comboId},</if>
+            <if test="goodsSpec != null">goods_spec = #{goodsSpec},</if>
+            <if test="specNum != null">spec_num = #{specNum},</if>
+            <if test="comboNum != null">combo_num = #{comboNum},</if>
+            <if test="logisticsCode != null">logistics_code = #{logisticsCode},</if>
+            <if test="logisticsCompany != null">logistics_company = #{logisticsCompany},</if>
+            <if test="logisticsTime != null">logistics_time = #{logisticsTime},</if>
+            <if test="receiptTime != null">receipt_time = #{receiptTime},</if>
+            <if test="cancelReason != null">cancel_reason = #{cancelReason},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="orderAmount != null">order_amount = #{orderAmount},</if>
+            <if test="comboAmount != null">combo_amount = #{comboAmount},</if>
+            <if test="questionDesc != null">question_desc = #{questionDesc},</if>
+            <if test="applyTime != null">apply_time = #{applyTime},</if>
+            <if test="auditStatus != null">audit_status = #{auditStatus},</if>
+            <if test="auditTime != null">audit_time = #{auditTime},</if>
+            <if test="refundStatus != null">refund_status = #{refundStatus},</if>
+            <if test="erpGoodsId != null">erp_goods_id = #{erpGoodsId},</if>
+            <if test="erpSpecId != null">erp_spec_id = #{erpSpecId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDouOrderRefundById" parameterType="Long">
+        delete from s_dou_order_refund where id = #{id}
+    </delete>
+
+    <delete id="deleteDouOrderRefundByIds" parameterType="String">
+        delete from s_dou_order_refund where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.ErpOrderMapper">
+    
+    <resultMap type="com.qihang.erp.api.domain.ErpOrder" id="ErpOrderResult">
+        <result property="id"    column="id"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="shopType"    column="shop_type"    />
+        <result property="shopId"    column="shop_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="buyerMemo"    column="buyer_memo"    />
+        <result property="tag"    column="tag"    />
+        <result property="refundStatus"    column="refund_status"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="goodsAmount"    column="goods_amount"    />
+        <result property="discountAmount"    column="discount_amount"    />
+        <result property="postage"    column="postage"    />
+        <result property="amount"    column="amount"    />
+        <result property="receiverName"    column="receiver_name"    />
+        <result property="receiverPhone"    column="receiver_phone"    />
+        <result property="address"    column="address"    />
+        <result property="country"    column="country"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="town"    column="town"    />
+        <result property="payTime"    column="pay_time"    />
+        <result property="shipType"    column="ship_type"    />
+        <result property="confirmTime"    column="confirm_time"    />
+        <result property="shippingTime"    column="shipping_time"    />
+        <result property="shippingNumber"    column="shipping_number"    />
+        <result property="shippingCompany"    column="shipping_company"    />
+        <result property="shippingMan"    column="shipping_man"    />
+        <result property="shippingCost"    column="shipping_cost"    />
+        <result property="weight"    column="weight"    />
+        <result property="length"    column="length"    />
+        <result property="width"    column="width"    />
+        <result property="height"    column="height"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <resultMap id="ErpOrderErpOrderItemResult" type="ErpOrder" extends="ErpOrderResult">
+        <collection property="erpOrderItemList" notNullColumn="sub_id" javaType="java.util.List" resultMap="ErpOrderItemResult" />
+    </resultMap>
+
+    <resultMap type="ErpOrderItem" id="ErpOrderItemResult">
+        <result property="id"    column="sub_id"    />
+        <result property="orderId"    column="sub_order_id"    />
+        <result property="goodsId"    column="sub_goods_id"    />
+        <result property="specId"    column="sub_spec_id"    />
+        <result property="goodsTitle"    column="sub_goods_title"    />
+        <result property="goodsImg"    column="sub_goods_img"    />
+        <result property="goodsNum"    column="sub_goods_num"    />
+        <result property="goodsSpec"    column="sub_goods_spec"    />
+        <result property="specNum"    column="sub_spec_num"    />
+        <result property="goodsPrice"    column="sub_goods_price"    />
+        <result property="itemAmount"    column="sub_item_amount"    />
+        <result property="quantity"    column="sub_quantity"    />
+        <result property="remark"    column="sub_remark"    />
+        <result property="isGift"    column="sub_is_gift"    />
+        <result property="orderItemNum"    column="sub_order_item_num"    />
+        <result property="supplierId"    column="sub_supplier_id"    />
+        <result property="refundCount"    column="sub_refund_count"    />
+        <result property="refundStatus"    column="sub_refund_status"    />
+        <result property="createTime"    column="sub_create_time"    />
+        <result property="createBy"    column="sub_create_by"    />
+        <result property="updateTime"    column="sub_update_time"    />
+        <result property="updateBy"    column="sub_update_by"    />
+    </resultMap>
+
+    <sql id="selectErpOrderVo">
+        select id, order_num, shop_type,ship_type, shop_id, remark, buyer_memo, tag, refund_status, order_status, goods_amount, discount_amount, postage, amount, receiver_name, receiver_phone, address, country, province, city, town, pay_time, confirm_time, shipping_time, shipping_number, shipping_company,shipping_man,shipping_cost,length,width,height,weight, create_time, create_by, update_time, update_by from erp_order
+    </sql>
+
+    <select id="selectErpOrderList" parameterType="ErpOrder" resultMap="ErpOrderResult">
+        <include refid="selectErpOrderVo"/>
+        <where>  
+            <if test="orderNum != null  and orderNum != ''"> and order_num = #{orderNum}</if>
+            <if test="shopType != null "> and shop_type = #{shopType}</if>
+            <if test="shopId != null "> and shop_id = #{shopId}</if>
+            <if test="buyerMemo != null  and buyerMemo != ''"> and buyer_memo = #{buyerMemo}</if>
+            <if test="tag != null  and tag != ''"> and tag = #{tag}</if>
+            <if test="refundStatus != null "> and refund_status = #{refundStatus}</if>
+            <if test="orderStatus != null "> and order_status = #{orderStatus}</if>
+            <if test="goodsAmount != null "> and goods_amount = #{goodsAmount}</if>
+            <if test="discountAmount != null "> and discount_amount = #{discountAmount}</if>
+            <if test="postage != null "> and postage = #{postage}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="receiverName != null  and receiverName != ''"> and receiver_name like concat('%', #{receiverName}, '%')</if>
+            <if test="receiverPhone != null  and receiverPhone != ''"> and receiver_phone = #{receiverPhone}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="country != null  and country != ''"> and country = #{country}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="town != null  and town != ''"> and town = #{town}</if>
+            <if test="payTime != null "> and pay_time = #{payTime}</if>
+            <if test="shipType != null "> and ship_type = #{shipType}</if>
+            <if test="confirmTime != null "> and confirm_time = #{confirmTime}</if>
+            <if test="shippingTime != null "> and shipping_time = #{shippingTime}</if>
+            <if test="shippingNumber != null  and shippingNumber != ''"> and shipping_number = #{shippingNumber}</if>
+            <if test="shippingCompany != null  and shippingCompany != ''"> and shipping_company = #{shippingCompany}</if>
+        </where>
+    </select>
+
+    <select id="selectOrderItemByOrderItemNum" parameterType="ErpOrderItem" resultMap="ErpOrderItemResult">
+        select
+        b.id as sub_id, b.order_item_num as sub_order_item_num,b.supplier_id as sub_supplier_id,b.order_id as sub_order_id, b.goods_id as sub_goods_id, b.spec_id as sub_spec_id, b.goods_title as sub_goods_title, b.goods_img as sub_goods_img, b.goods_num as sub_goods_num, b.goods_spec as sub_goods_spec, b.spec_num as sub_spec_num, b.goods_price as sub_goods_price, b.item_amount as sub_item_amount, b.quantity as sub_quantity, b.remark as sub_remark, b.is_gift as sub_is_gift, b.refund_count as sub_refund_count, b.refund_status as sub_refund_status, b.create_time as sub_create_time, b.create_by as sub_create_by, b.update_time as sub_update_time, b.update_by as sub_update_by
+        from  erp_order_item b
+        left join s_tao_order a on a.id = b.order_id
+        where b.order_item_num = #{orderItemNum} and a.shopId = #{shopId}
+    </select>
+
+    <select id="selectOrderItemByOrderId" parameterType="Long" resultMap="ErpOrderItemResult">
+        select
+               b.id as sub_id, b.order_item_num as sub_order_item_num,b.supplier_id as sub_supplier_id,b.order_id as sub_order_id, b.goods_id as sub_goods_id, b.spec_id as sub_spec_id, b.goods_title as sub_goods_title, b.goods_img as sub_goods_img, b.goods_num as sub_goods_num, b.goods_spec as sub_goods_spec, b.spec_num as sub_spec_num, b.goods_price as sub_goods_price, b.item_amount as sub_item_amount, b.quantity as sub_quantity, b.remark as sub_remark, b.is_gift as sub_is_gift, b.refund_count as sub_refund_count, b.refund_status as sub_refund_status, b.create_time as sub_create_time, b.create_by as sub_create_by, b.update_time as sub_update_time, b.update_by as sub_update_by
+        from  erp_order_item b
+        where b.order_id = #{orderId}
+    </select>
+
+
+    <select id="selectErpOrderById" parameterType="Long" resultMap="ErpOrderErpOrderItemResult">
+        select a.id,a.ship_type, a.order_num, a.shop_type, a.shop_id, a.remark, a.buyer_memo, a.tag, a.refund_status, a.order_status, a.goods_amount, a.discount_amount, a.postage, a.amount, a.receiver_name, a.receiver_phone, a.address, a.country, a.province, a.city, a.town, a.pay_time, a.confirm_time, a.shipping_time, a.shipping_number, a.shipping_company, a.create_time, a.create_by, a.update_time, a.update_by,a.shipping_cost,a.weight,a.length,a.width,a.height,
+ b.id as sub_id, b.order_item_num as sub_order_item_num,b.supplier_id as sub_supplier_id,b.order_id as sub_order_id, b.goods_id as sub_goods_id, b.spec_id as sub_spec_id, b.goods_title as sub_goods_title, b.goods_img as sub_goods_img, b.goods_num as sub_goods_num, b.goods_spec as sub_goods_spec, b.spec_num as sub_spec_num, b.goods_price as sub_goods_price, b.item_amount as sub_item_amount, b.quantity as sub_quantity, b.remark as sub_remark, b.is_gift as sub_is_gift, b.refund_count as sub_refund_count, b.refund_status as sub_refund_status, b.create_time as sub_create_time, b.create_by as sub_create_by, b.update_time as sub_update_time, b.update_by as sub_update_by
+        from erp_order a
+        left join erp_order_item b on b.order_id = a.id
+        where a.id = #{id}
+    </select>
+
+    <select id="selectErpOrderByNum" parameterType="String" resultMap="ErpOrderResult">
+        <include refid="selectErpOrderVo"/>
+        <where>
+            and order_num = #{orderNum}
+        </where>
+    </select>
+        
+    <insert id="insertErpOrder" parameterType="ErpOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into erp_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNum != null and orderNum != ''">order_num,</if>
+            <if test="shopType != null">shop_type,</if>
+            <if test="shopId != null">shop_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="buyerMemo != null">buyer_memo,</if>
+            <if test="tag != null">tag,</if>
+            <if test="refundStatus != null">refund_status,</if>
+            <if test="orderStatus != null">order_status,</if>
+            <if test="goodsAmount != null">goods_amount,</if>
+            <if test="discountAmount != null">discount_amount,</if>
+            <if test="postage != null">postage,</if>
+            <if test="amount != null">amount,</if>
+            <if test="receiverName != null">receiver_name,</if>
+            <if test="receiverPhone != null">receiver_phone,</if>
+            <if test="address != null">address,</if>
+            <if test="country != null">country,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="town != null">town,</if>
+            <if test="payTime != null">pay_time,</if>
+            <if test="shipType != null">ship_type,</if>
+            <if test="confirmTime != null">confirm_time,</if>
+            <if test="shippingTime != null">shipping_time,</if>
+            <if test="shippingNumber != null">shipping_number,</if>
+            <if test="shippingCompany != null">shipping_company,</if>
+            <if test="shippingCost != null">shipping_cost,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderNum != null and orderNum != ''">#{orderNum},</if>
+            <if test="shopType != null">#{shopType},</if>
+            <if test="shopId != null">#{shopId},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="buyerMemo != null">#{buyerMemo},</if>
+            <if test="tag != null">#{tag},</if>
+            <if test="refundStatus != null">#{refundStatus},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+            <if test="goodsAmount != null">#{goodsAmount},</if>
+            <if test="discountAmount != null">#{discountAmount},</if>
+            <if test="postage != null">#{postage},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="receiverName != null">#{receiverName},</if>
+            <if test="receiverPhone != null">#{receiverPhone},</if>
+            <if test="address != null">#{address},</if>
+            <if test="country != null">#{country},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="town != null">#{town},</if>
+            <if test="payTime != null">#{payTime},</if>
+            <if test="shipType != null">#{shipType},</if>
+            <if test="confirmTime != null">#{confirmTime},</if>
+            <if test="shippingTime != null">#{shippingTime},</if>
+            <if test="shippingNumber != null">#{shippingNumber},</if>
+            <if test="shippingCompany != null">#{shippingCompany},</if>
+            <if test="shippingCost != null">#{shippingCost},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateErpOrder" parameterType="ErpOrder">
+        update erp_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderNum != null and orderNum != ''">order_num = #{orderNum},</if>
+            <if test="shopType != null">shop_type = #{shopType},</if>
+            <if test="shopId != null">shop_id = #{shopId},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="buyerMemo != null">buyer_memo = #{buyerMemo},</if>
+            <if test="tag != null">tag = #{tag},</if>
+            <if test="refundStatus != null">refund_status = #{refundStatus},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus},</if>
+            <if test="goodsAmount != null">goods_amount = #{goodsAmount},</if>
+            <if test="discountAmount != null">discount_amount = #{discountAmount},</if>
+            <if test="postage != null">postage = #{postage},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="receiverName != null">receiver_name = #{receiverName},</if>
+            <if test="receiverPhone != null">receiver_phone = #{receiverPhone},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="country != null">country = #{country},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="town != null">town = #{town},</if>
+            <if test="payTime != null">pay_time = #{payTime},</if>
+            <if test="confirmTime != null">confirm_time = #{confirmTime},</if>
+            <if test="shippingTime != null">shipping_time = #{shippingTime},</if>
+            <if test="shippingNumber != null">shipping_number = #{shippingNumber},</if>
+            <if test="shippingCompany != null">shipping_company = #{shippingCompany},</if>
+            <if test="shippingMan != null">shipping_man = #{shippingMan},</if>
+            <if test="shippingCost != null">shipping_cost = #{shippingCost},</if>
+            <if test="length != null">length = #{length},</if>
+            <if test="width != null">width = #{width},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteErpOrderById" parameterType="Long">
+        delete from erp_order where id = #{id}
+    </delete>
+
+    <delete id="deleteErpOrderByIds" parameterType="String">
+        delete from erp_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteErpOrderItemByOrderIds" parameterType="String">
+        delete from erp_order_item where order_id in 
+        <foreach item="orderId" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteErpOrderItemByOrderId" parameterType="Long">
+        delete from erp_order_item where order_id = #{orderId}
+    </delete>
+
+    <insert id="batchErpOrderItem">
+        insert into erp_order_item( id, order_id,supplier_id,order_item_num, goods_id, spec_id, goods_title, goods_img, goods_num, goods_spec, spec_num, goods_price, item_amount, quantity, remark, is_gift, refund_count, refund_status, create_time, create_by, update_time, update_by) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.orderId},#{item.supplierId},#{item.orderItemNum}, #{item.goodsId}, #{item.specId}, #{item.goodsTitle}, #{item.goodsImg}, #{item.goodsNum}, #{item.goodsSpec}, #{item.specNum}, #{item.goodsPrice}, #{item.itemAmount}, #{item.quantity}, #{item.remark}, #{item.isGift}, #{item.refundCount}, #{item.refundStatus}, #{item.createTime}, #{item.createBy}, #{item.updateTime}, #{item.updateBy})
+        </foreach>
+    </insert>
+
+    <insert id="insertErpOrderItem" parameterType="com.qihang.erp.api.domain.ErpOrderItem" useGeneratedKeys="true" keyProperty="id">
+        insert into erp_order_item(order_id,supplier_id,order_item_num, goods_id, spec_id, goods_title, goods_img, goods_num, goods_spec, spec_num, goods_price, item_amount, quantity, remark, is_gift, refund_count, refund_status, create_time, create_by) values
+
+        (#{orderId},#{supplierId},#{orderItemNum}, #{goodsId}, #{specId}, #{goodsTitle}, #{goodsImg}, #{goodsNum}, #{goodsSpec}, #{specNum}, #{goodsPrice}, #{itemAmount}, #{quantity}, #{remark}, #{isGift}, #{refundCount}, #{refundStatus}, #{createTime}, #{createBy})
+
+    </insert>
+</mapper>

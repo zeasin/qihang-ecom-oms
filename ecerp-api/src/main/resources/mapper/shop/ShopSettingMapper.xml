@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.ShopSettingMapper">
+    
+    <resultMap type="ShopSetting" id="ShopSettingResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="appKey"    column="app_key"    />
+        <result property="appSecret"    column="app_secret"    />
+        <result property="accessToken"    column="access_token"    />
+        <result property="expiresIn"    column="expires_in"    />
+        <result property="accessTokenBegin"    column="access_token_begin"    />
+        <result property="refreshToken"    column="refresh_token"    />
+        <result property="refreshTokenTimeout"    column="refresh_token_timeout"    />
+        <result property="modifyOn"    column="modify_on"    />
+        <result property="remark"    column="remark"    />
+        <result property="requestUrl"    column="request_url"    />
+        <result property="thirdId"    column="third_id"    />
+    </resultMap>
+
+    <sql id="selectShopSettingVo">
+        select id, name, app_key, app_secret, access_token, expires_in, access_token_begin, refresh_token, refresh_token_timeout, modify_on, remark, request_url, third_id from s_shop_setting
+    </sql>
+
+    <select id="selectShopSettingList" parameterType="ShopSetting" resultMap="ShopSettingResult">
+        <include refid="selectShopSettingVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="appKey != null  and appKey != ''"> and app_key = #{appKey}</if>
+            <if test="appSecret != null  and appSecret != ''"> and app_secret = #{appSecret}</if>
+            <if test="accessToken != null  and accessToken != ''"> and access_token = #{accessToken}</if>
+            <if test="expiresIn != null "> and expires_in = #{expiresIn}</if>
+            <if test="accessTokenBegin != null "> and access_token_begin = #{accessTokenBegin}</if>
+            <if test="refreshToken != null  and refreshToken != ''"> and refresh_token = #{refreshToken}</if>
+            <if test="refreshTokenTimeout != null "> and refresh_token_timeout = #{refreshTokenTimeout}</if>
+            <if test="modifyOn != null "> and modify_on = #{modifyOn}</if>
+            <if test="requestUrl != null  and requestUrl != ''"> and request_url = #{requestUrl}</if>
+            <if test="thirdId != null  and thirdId != ''"> and third_id = #{thirdId}</if>
+        </where>
+    </select>
+    
+    <select id="selectShopSettingById" parameterType="Long" resultMap="ShopSettingResult">
+        <include refid="selectShopSettingVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertShopSetting" parameterType="ShopSetting">
+        insert into s_shop_setting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="appKey != null and appKey != ''">app_key,</if>
+            <if test="appSecret != null and appSecret != ''">app_secret,</if>
+            <if test="accessToken != null">access_token,</if>
+            <if test="expiresIn != null">expires_in,</if>
+            <if test="accessTokenBegin != null">access_token_begin,</if>
+            <if test="refreshToken != null">refresh_token,</if>
+            <if test="refreshTokenTimeout != null">refresh_token_timeout,</if>
+            <if test="modifyOn != null">modify_on,</if>
+            <if test="remark != null">remark,</if>
+            <if test="requestUrl != null">request_url,</if>
+            <if test="thirdId != null">third_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="appKey != null and appKey != ''">#{appKey},</if>
+            <if test="appSecret != null and appSecret != ''">#{appSecret},</if>
+            <if test="accessToken != null">#{accessToken},</if>
+            <if test="expiresIn != null">#{expiresIn},</if>
+            <if test="accessTokenBegin != null">#{accessTokenBegin},</if>
+            <if test="refreshToken != null">#{refreshToken},</if>
+            <if test="refreshTokenTimeout != null">#{refreshTokenTimeout},</if>
+            <if test="modifyOn != null">#{modifyOn},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="requestUrl != null">#{requestUrl},</if>
+            <if test="thirdId != null">#{thirdId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShopSetting" parameterType="ShopSetting">
+        update s_shop_setting
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="appKey != null and appKey != ''">app_key = #{appKey},</if>
+            <if test="appSecret != null and appSecret != ''">app_secret = #{appSecret},</if>
+            <if test="accessToken != null">access_token = #{accessToken},</if>
+            <if test="expiresIn != null">expires_in = #{expiresIn},</if>
+            <if test="accessTokenBegin != null">access_token_begin = #{accessTokenBegin},</if>
+            <if test="refreshToken != null">refresh_token = #{refreshToken},</if>
+            <if test="refreshTokenTimeout != null">refresh_token_timeout = #{refreshTokenTimeout},</if>
+            <if test="modifyOn != null">modify_on = #{modifyOn},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="requestUrl != null">request_url = #{requestUrl},</if>
+            <if test="thirdId != null">third_id = #{thirdId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteShopSettingById" parameterType="Long">
+        delete from s_shop_setting where id = #{id}
+    </delete>
+
+    <delete id="deleteShopSettingByIds" parameterType="String">
+        delete from s_shop_setting where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

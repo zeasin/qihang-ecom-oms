@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.ScmSupplierMapper">
+    
+    <resultMap type="ScmSupplier" id="ScmSupplierResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="number"    column="number"    />
+        <result property="taxRate"    column="taxRate"    />
+        <result property="amount"    column="amount"    />
+        <result property="periodMoney"    column="periodMoney"    />
+        <result property="difMoney"    column="difMoney"    />
+        <result property="beginDate"    column="beginDate"    />
+        <result property="remark"    column="remark"    />
+        <result property="place"    column="place"    />
+        <result property="linkMan"    column="linkMan"    />
+        <result property="contact"    column="contact"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="county"    column="county"    />
+        <result property="address"    column="address"    />
+        <result property="pinYin"    column="pinYin"    />
+        <result property="disable"    column="disable"    />
+        <result property="isDelete"    column="isDelete"    />
+        <result property="purchaserName"    column="purchaserName"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+
+    <sql id="selectScmSupplierVo">
+        select id, name, number, taxRate, amount, periodMoney, difMoney, beginDate, remark, place, linkMan, contact, province, city, county, address, pinYin, disable, isDelete, purchaserName, createTime from scm_supplier
+    </sql>
+
+    <select id="selectScmSupplierList" parameterType="ScmSupplier" resultMap="ScmSupplierResult">
+        <include refid="selectScmSupplierVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="number != null  and number != ''"> and number = #{number}</if>
+            <if test="taxRate != null "> and taxRate = #{taxRate}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="periodMoney != null "> and periodMoney = #{periodMoney}</if>
+            <if test="difMoney != null "> and difMoney = #{difMoney}</if>
+            <if test="beginDate != null "> and beginDate = #{beginDate}</if>
+            <if test="place != null  and place != ''"> and place = #{place}</if>
+            <if test="linkMan != null  and linkMan != ''"> and linkMan = #{linkMan}</if>
+            <if test="contact != null  and contact != ''"> and contact = #{contact}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="county != null  and county != ''"> and county = #{county}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="pinYin != null  and pinYin != ''"> and pinYin = #{pinYin}</if>
+            <if test="disable != null "> and disable = #{disable}</if>
+            <if test="isDelete != null "> and isDelete = #{isDelete}</if>
+            <if test="purchaserName != null  and purchaserName != ''"> and purchaserName like concat('%', #{purchaserName}, '%')</if>
+            <if test="createTime != null "> and createTime = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectScmSupplierById" parameterType="Long" resultMap="ScmSupplierResult">
+        <include refid="selectScmSupplierVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertScmSupplier" parameterType="ScmSupplier" useGeneratedKeys="true" keyProperty="id">
+        insert into scm_supplier
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="number != null">number,</if>
+            <if test="taxRate != null">taxRate,</if>
+            <if test="amount != null">amount,</if>
+            <if test="periodMoney != null">periodMoney,</if>
+            <if test="difMoney != null">difMoney,</if>
+            <if test="beginDate != null">beginDate,</if>
+            <if test="remark != null">remark,</if>
+            <if test="place != null">place,</if>
+            <if test="linkMan != null">linkMan,</if>
+            <if test="contact != null">contact,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="county != null">county,</if>
+            <if test="address != null">address,</if>
+            <if test="pinYin != null">pinYin,</if>
+            <if test="disable != null">disable,</if>
+            <if test="isDelete != null">isDelete,</if>
+            <if test="purchaserName != null">purchaserName,</if>
+            <if test="createTime != null">createTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="number != null">#{number},</if>
+            <if test="taxRate != null">#{taxRate},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="periodMoney != null">#{periodMoney},</if>
+            <if test="difMoney != null">#{difMoney},</if>
+            <if test="beginDate != null">#{beginDate},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="place != null">#{place},</if>
+            <if test="linkMan != null">#{linkMan},</if>
+            <if test="contact != null">#{contact},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="county != null">#{county},</if>
+            <if test="address != null">#{address},</if>
+            <if test="pinYin != null">#{pinYin},</if>
+            <if test="disable != null">#{disable},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="purchaserName != null">#{purchaserName},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateScmSupplier" parameterType="ScmSupplier">
+        update scm_supplier
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="number != null">number = #{number},</if>
+            <if test="taxRate != null">taxRate = #{taxRate},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="periodMoney != null">periodMoney = #{periodMoney},</if>
+            <if test="difMoney != null">difMoney = #{difMoney},</if>
+            <if test="beginDate != null">beginDate = #{beginDate},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="place != null">place = #{place},</if>
+            <if test="linkMan != null">linkMan = #{linkMan},</if>
+            <if test="contact != null">contact = #{contact},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="county != null">county = #{county},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="pinYin != null">pinYin = #{pinYin},</if>
+            <if test="disable != null">disable = #{disable},</if>
+            <if test="isDelete != null">isDelete = #{isDelete},</if>
+            <if test="purchaserName != null">purchaserName = #{purchaserName},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteScmSupplierById" parameterType="Long">
+        delete from scm_supplier where id = #{id}
+    </delete>
+
+    <delete id="deleteScmSupplierByIds" parameterType="String">
+        delete from scm_supplier where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

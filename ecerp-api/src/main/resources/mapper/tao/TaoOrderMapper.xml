@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.TaoOrderMapper">
+    
+    <resultMap type="TaoOrder" id="TaoOrderResult">
+        <result property="id"    column="id"    />
+        <result property="shopId"    column="shopId"    />
+        <result property="orderSource"    column="orderSource"    />
+        <result property="buyerName"    column="buyerName"    />
+        <result property="totalAmount"    column="totalAmount"    />
+        <result property="shippingFee"    column="shippingFee"    />
+        <result property="discountAmount"    column="discountAmount"    />
+        <result property="payAmount"    column="payAmount"    />
+        <result property="discountRemark"    column="discountRemark"    />
+        <result property="orderCreateTime"    column="orderCreateTime"    />
+        <result property="orderModifyTime"    column="orderModifyTime"    />
+        <result property="payTime"    column="payTime"    />
+        <result property="confirmedTime"    column="confirmedTime"    />
+        <result property="deliveredTime"    column="deliveredTime"    />
+        <result property="completeTime"    column="completeTime"    />
+        <result property="sellerMemo"    column="sellerMemo"    />
+        <result property="buyerFeedback"    column="buyerFeedback"    />
+        <result property="closeReason"    column="closeReason"    />
+        <result property="receivingTime"    column="receivingTime"    />
+        <result property="statusStr"    column="statusStr"    />
+        <result property="status"    column="status"    />
+        <result property="logisticsCompany"    column="logisticsCompany"    />
+        <result property="logisticsCompanyCode"    column="logisticsCompanyCode"    />
+        <result property="logisticsCode"    column="logisticsCode"    />
+        <result property="refundId"    column="refundId"    />
+        <result property="refundAmount"    column="refundAmount"    />
+        <result property="refundStatus"    column="refundStatus"    />
+        <result property="auditStatus"    column="auditStatus"    />
+        <result property="auditTime"    column="auditTime"    />
+        <result property="sendStatus"    column="sendStatus"    />
+        <result property="sendTime"    column="sendTime"    />
+        <result property="tag"    column="tag"    />
+        <result property="remark"    column="remark"    />
+        <result property="isComment"    column="is_comment"    />
+        <result property="isMerge"    column="is_merge"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="createBy"    column="createBy"    />
+        <result property="updateTime"    column="updateTime"    />
+        <result property="updateBy"    column="updateBy"    />
+    </resultMap>
+
+    <resultMap id="TaoOrderTaoOrderItemResult" type="TaoOrder" extends="TaoOrderResult">
+        <collection property="taoOrderItemList" notNullColumn="sub_id" javaType="java.util.List" resultMap="TaoOrderItemResult" />
+    </resultMap>
+
+    <resultMap type="TaoOrderItem" id="TaoOrderItemResult">
+        <result property="id"    column="sub_id"    />
+        <result property="orderId"    column="sub_orderId"    />
+        <result property="subItemId"    column="sub_subItemId"    />
+        <result property="itemAmount"    column="sub_itemAmount"    />
+        <result property="discountFee"    column="sub_discount_fee"    />
+        <result property="adjustFee"    column="sub_adjust_fee"    />
+        <result property="goodsTitle"    column="sub_goodsTitle"    />
+        <result property="goodsNumber"    column="sub_goodsNumber"    />
+        <result property="productImgUrl"    column="sub_productImgUrl"    />
+        <result property="productUrl"    column="sub_productUrl"    />
+        <result property="productId"    column="sub_productId"    />
+        <result property="skuId"    column="sub_skuId"    />
+        <result property="specNumber"    column="sub_specNumber"    />
+        <result property="skuInfo"    column="sub_skuInfo"    />
+        <result property="price"    column="sub_price"    />
+        <result property="quantity"    column="sub_quantity"    />
+        <result property="status"    column="sub_status"    />
+        <result property="statusStr"    column="sub_statusStr"    />
+        <result property="refundStatus"    column="sub_refundStatus"    />
+        <result property="refundStatusStr"    column="sub_refundStatusStr"    />
+        <result property="refundAmount"    column="sub_refundAmount"    />
+        <result property="refundId"    column="sub_refundId"    />
+        <result property="logisticsStatus"    column="sub_logisticsStatus"    />
+        <result property="newSpecId"    column="sub_new_spec_id"    />
+        <result property="newSpecNumber"    column="sub_new_spec_number"    />
+        <result property="afterSaleState"    column="sub_after_sale_state"    />
+        <result property="erpGoodsId"    column="sub_erpGoodsId"    />
+        <result property="erpGoodsSpecId"    column="sub_erpGoodsSpecId"    />
+        <result property="remark"    column="sub_remark"    />
+        <result property="isGift"    column="sub_isGift"    />
+        <result property="isSwap"    column="sub_isSwap"    />
+    </resultMap>
+
+    <sql id="selectTaoOrderVo">
+        select id, shopId, orderSource, buyerName, totalAmount, shippingFee, discountAmount, payAmount, discountRemark, orderCreateTime, orderModifyTime, payTime, confirmedTime, deliveredTime, completeTime, sellerMemo, buyerFeedback, closeReason, receivingTime, statusStr, status, logisticsCompany, logisticsCompanyCode, logisticsCode, refundId, refundAmount, refundStatus, auditStatus, auditTime, sendStatus, sendTime, tag, remark, is_comment, is_merge, createTime, createBy, updateTime, updateBy from s_tao_order
+    </sql>
+
+    <select id="selectTaoOrderList" parameterType="TaoOrder" resultMap="TaoOrderResult">
+        <include refid="selectTaoOrderVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="shopId != null "> and shopId = #{shopId}</if>
+<!--            <if test="orderSource != null "> and orderSource = #{orderSource}</if>-->
+<!--            <if test="buyerName != null  and buyerName != ''"> and buyerName like concat('%', #{buyerName}, '%')</if>-->
+<!--            <if test="totalAmount != null "> and totalAmount = #{totalAmount}</if>-->
+<!--            <if test="shippingFee != null "> and shippingFee = #{shippingFee}</if>-->
+<!--            <if test="discountAmount != null "> and discountAmount = #{discountAmount}</if>-->
+<!--            <if test="payAmount != null "> and payAmount = #{payAmount}</if>-->
+<!--            <if test="discountRemark != null  and discountRemark != ''"> and discountRemark = #{discountRemark}</if>-->
+            <if test="orderCreateTime != null "> and orderCreateTime = #{orderCreateTime}</if>
+            <if test="orderModifyTime != null "> and orderModifyTime = #{orderModifyTime}</if>
+            <if test="payTime != null "> and payTime = #{payTime}</if>
+            <if test="confirmedTime != null "> and confirmedTime = #{confirmedTime}</if>
+            <if test="deliveredTime != null "> and deliveredTime = #{deliveredTime}</if>
+            <if test="completeTime != null "> and completeTime = #{completeTime}</if>
+<!--            <if test="sellerMemo != null  and sellerMemo != ''"> and sellerMemo = #{sellerMemo}</if>-->
+<!--            <if test="buyerFeedback != null  and buyerFeedback != ''"> and buyerFeedback = #{buyerFeedback}</if>-->
+<!--            <if test="closeReason != null  and closeReason != ''"> and closeReason = #{closeReason}</if>-->
+            <if test="receivingTime != null "> and receivingTime = #{receivingTime}</if>
+            <if test="statusStr != null  and statusStr != ''"> and statusStr = #{statusStr}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="logisticsCompany != null  and logisticsCompany != ''"> and logisticsCompany = #{logisticsCompany}</if>
+            <if test="logisticsCompanyCode != null  and logisticsCompanyCode != ''"> and logisticsCompanyCode = #{logisticsCompanyCode}</if>
+            <if test="logisticsCode != null  and logisticsCode != ''"> and logisticsCode = #{logisticsCode}</if>
+            <if test="refundId != null  and refundId != ''"> and refundId = #{refundId}</if>
+            <if test="refundAmount != null "> and refundAmount = #{refundAmount}</if>
+            <if test="refundStatus != null  and refundStatus != ''"> and refundStatus = #{refundStatus}</if>
+            <if test="auditStatus != null "> and auditStatus = #{auditStatus}</if>
+            <if test="auditTime != null "> and auditTime = #{auditTime}</if>
+            <if test="sendStatus != null "> and sendStatus = #{sendStatus}</if>
+            <if test="sendTime != null "> and sendTime = #{sendTime}</if>
+            <if test="tag != null  and tag != ''"> and tag = #{tag}</if>
+            <if test="isComment != null "> and is_comment = #{isComment}</if>
+            <if test="isMerge != null "> and is_merge = #{isMerge}</if>
+            <if test="createTime != null "> and createTime = #{createTime}</if>
+            <if test="createBy != null  and createBy != ''"> and createBy = #{createBy}</if>
+            <if test="updateTime != null "> and updateTime = #{updateTime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and updateBy = #{updateBy}</if>
+        </where>
+    </select>
+
+    <select id="selectTaoOrderById"  parameterType="String" resultMap="TaoOrderTaoOrderItemResult">
+        select a.id, a.shopId, a.orderSource, a.buyerName, a.totalAmount, a.shippingFee, a.discountAmount, a.payAmount, a.discountRemark, a.orderCreateTime, a.orderModifyTime, a.payTime, a.confirmedTime, a.deliveredTime, a.completeTime, a.sellerMemo, a.buyerFeedback, a.closeReason, a.receivingTime, a.statusStr, a.status, a.logisticsCompany, a.logisticsCompanyCode, a.logisticsCode, a.refundId, a.refundAmount, a.refundStatus, a.auditStatus, a.auditTime, a.sendStatus, a.sendTime, a.tag, a.remark, a.is_comment, a.is_merge, a.createTime, a.createBy, a.updateTime, a.updateBy,
+               b.id as sub_id, b.orderId as sub_orderId, b.subItemId as sub_subItemId, b.itemAmount as sub_itemAmount, b.discount_fee as sub_discount_fee, b.adjust_fee as sub_adjust_fee, b.goodsTitle as sub_goodsTitle, b.goodsNumber as sub_goodsNumber, b.productImgUrl as sub_productImgUrl, b.productUrl as sub_productUrl, b.productId as sub_productId, b.skuId as sub_skuId, b.specNumber as sub_specNumber, b.skuInfo as sub_skuInfo, b.price as sub_price, b.quantity as sub_quantity, b.status as sub_status, b.statusStr as sub_statusStr, b.refundStatus as sub_refundStatus, b.refundStatusStr as sub_refundStatusStr, b.refundAmount as sub_refundAmount, b.refundId as sub_refundId, b.logisticsStatus as sub_logisticsStatus, b.new_spec_id as sub_new_spec_id, b.new_spec_number as sub_new_spec_number, b.after_sale_state as sub_after_sale_state, b.erpGoodsId as sub_erpGoodsId, b.erpGoodsSpecId as sub_erpGoodsSpecId, b.remark as sub_remark, b.isGift as sub_isGift, b.isSwap as sub_isSwap
+        from s_tao_order a
+                 left join s_tao_order_item b on b.orderId = a.id
+        where a.id = #{id}
+    </select>
+    <select id="selectOrderItemByOrderId" parameterType="String" resultMap="TaoOrderItemResult" >
+        select b.id as sub_id, b.orderId as sub_orderId, b.subItemId as sub_subItemId, b.itemAmount as sub_itemAmount, b.discount_fee as sub_discount_fee, b.adjust_fee as sub_adjust_fee, b.goodsTitle as sub_goodsTitle, b.goodsNumber as sub_goodsNumber, b.productImgUrl as sub_productImgUrl, b.productUrl as sub_productUrl, b.productId as sub_productId, b.skuId as sub_skuId, b.specNumber as sub_specNumber, b.skuInfo as sub_skuInfo, b.price as sub_price, b.quantity as sub_quantity, b.status as sub_status, b.statusStr as sub_statusStr, b.refundStatus as sub_refundStatus, b.refundStatusStr as sub_refundStatusStr, b.refundAmount as sub_refundAmount, b.refundId as sub_refundId, b.logisticsStatus as sub_logisticsStatus, b.new_spec_id as sub_new_spec_id, b.new_spec_number as sub_new_spec_number, b.after_sale_state as sub_after_sale_state, b.erpGoodsId as sub_erpGoodsId, b.erpGoodsSpecId as sub_erpGoodsSpecId, b.remark as sub_remark, b.isGift as sub_isGift, b.isSwap as sub_isSwap
+        from  s_tao_order_item b
+        where b.orderId = #{orderId}
+    </select>
+    <select id="selectOrderItemBySubItemIdId" parameterType="Long" resultMap="TaoOrderItemResult" >
+        select b.id as sub_id, b.orderId as sub_orderId, b.subItemId as sub_subItemId, b.itemAmount as sub_itemAmount, b.discount_fee as sub_discount_fee, b.adjust_fee as sub_adjust_fee, b.goodsTitle as sub_goodsTitle, b.goodsNumber as sub_goodsNumber, b.productImgUrl as sub_productImgUrl, b.productUrl as sub_productUrl, b.productId as sub_productId, b.skuId as sub_skuId, b.specNumber as sub_specNumber, b.skuInfo as sub_skuInfo, b.price as sub_price, b.quantity as sub_quantity, b.status as sub_status, b.statusStr as sub_statusStr, b.refundStatus as sub_refundStatus, b.refundStatusStr as sub_refundStatusStr, b.refundAmount as sub_refundAmount, b.refundId as sub_refundId, b.logisticsStatus as sub_logisticsStatus, b.new_spec_id as sub_new_spec_id, b.new_spec_number as sub_new_spec_number, b.after_sale_state as sub_after_sale_state, b.erpGoodsId as sub_erpGoodsId, b.erpGoodsSpecId as sub_erpGoodsSpecId, b.remark as sub_remark, b.isGift as sub_isGift, b.isSwap as sub_isSwap
+        from  s_tao_order_item b
+        where b.subItemId = #{subItemId}
+    </select>
+
+        
+    <insert id="insertTaoOrder" parameterType="TaoOrder">
+        insert into s_tao_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="shopId != null">shopId,</if>
+            <if test="orderSource != null">orderSource,</if>
+            <if test="buyerName != null and buyerName != ''">buyerName,</if>
+            <if test="totalAmount != null">totalAmount,</if>
+            <if test="shippingFee != null">shippingFee,</if>
+            <if test="discountAmount != null">discountAmount,</if>
+            <if test="payAmount != null">payAmount,</if>
+            <if test="discountRemark != null">discountRemark,</if>
+            <if test="orderCreateTime != null">orderCreateTime,</if>
+            <if test="orderModifyTime != null">orderModifyTime,</if>
+            <if test="payTime != null">payTime,</if>
+            <if test="confirmedTime != null">confirmedTime,</if>
+            <if test="deliveredTime != null">deliveredTime,</if>
+            <if test="completeTime != null">completeTime,</if>
+            <if test="sellerMemo != null">sellerMemo,</if>
+            <if test="buyerFeedback != null">buyerFeedback,</if>
+            <if test="closeReason != null">closeReason,</if>
+            <if test="receivingTime != null">receivingTime,</if>
+            <if test="statusStr != null">statusStr,</if>
+            <if test="status != null">status,</if>
+            <if test="logisticsCompany != null">logisticsCompany,</if>
+            <if test="logisticsCompanyCode != null">logisticsCompanyCode,</if>
+            <if test="logisticsCode != null">logisticsCode,</if>
+            <if test="refundId != null">refundId,</if>
+            <if test="refundAmount != null">refundAmount,</if>
+            <if test="refundStatus != null">refundStatus,</if>
+            <if test="auditStatus != null">auditStatus,</if>
+            <if test="auditTime != null">auditTime,</if>
+            <if test="sendStatus != null">sendStatus,</if>
+            <if test="sendTime != null">sendTime,</if>
+            <if test="tag != null">tag,</if>
+            <if test="remark != null">remark,</if>
+            <if test="isComment != null">is_comment,</if>
+            <if test="isMerge != null">is_merge,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="createBy != null">createBy,</if>
+            <if test="updateTime != null">updateTime,</if>
+            <if test="updateBy != null">updateBy,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="shopId != null">#{shopId},</if>
+            <if test="orderSource != null">#{orderSource},</if>
+            <if test="buyerName != null and buyerName != ''">#{buyerName},</if>
+            <if test="totalAmount != null">#{totalAmount},</if>
+            <if test="shippingFee != null">#{shippingFee},</if>
+            <if test="discountAmount != null">#{discountAmount},</if>
+            <if test="payAmount != null">#{payAmount},</if>
+            <if test="discountRemark != null">#{discountRemark},</if>
+            <if test="orderCreateTime != null">#{orderCreateTime},</if>
+            <if test="orderModifyTime != null">#{orderModifyTime},</if>
+            <if test="payTime != null">#{payTime},</if>
+            <if test="confirmedTime != null">#{confirmedTime},</if>
+            <if test="deliveredTime != null">#{deliveredTime},</if>
+            <if test="completeTime != null">#{completeTime},</if>
+            <if test="sellerMemo != null">#{sellerMemo},</if>
+            <if test="buyerFeedback != null">#{buyerFeedback},</if>
+            <if test="closeReason != null">#{closeReason},</if>
+            <if test="receivingTime != null">#{receivingTime},</if>
+            <if test="statusStr != null">#{statusStr},</if>
+            <if test="status != null">#{status},</if>
+            <if test="logisticsCompany != null">#{logisticsCompany},</if>
+            <if test="logisticsCompanyCode != null">#{logisticsCompanyCode},</if>
+            <if test="logisticsCode != null">#{logisticsCode},</if>
+            <if test="refundId != null">#{refundId},</if>
+            <if test="refundAmount != null">#{refundAmount},</if>
+            <if test="refundStatus != null">#{refundStatus},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="sendStatus != null">#{sendStatus},</if>
+            <if test="sendTime != null">#{sendTime},</if>
+            <if test="tag != null">#{tag},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="isComment != null">#{isComment},</if>
+            <if test="isMerge != null">#{isMerge},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTaoOrderItem" parameterType="TaoOrderItem">
+    update s_tao_order_item
+    <trim prefix="SET" suffixOverrides=",">
+        <if test="refundStatus != null">refundStatus = #{refundStatus},</if>
+<!--        <if test="updateTime != null">updateTime = #{updateTime},</if>-->
+<!--        <if test="updateBy != null">updateBy = #{updateBy},</if>-->
+    </trim>
+        where id = #{id}
+    </update>
+    <update id="updateTaoOrder" parameterType="TaoOrder">
+        update s_tao_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shopId != null">shopId = #{shopId},</if>
+            <if test="orderSource != null">orderSource = #{orderSource},</if>
+            <if test="buyerName != null and buyerName != ''">buyerName = #{buyerName},</if>
+            <if test="totalAmount != null">totalAmount = #{totalAmount},</if>
+            <if test="shippingFee != null">shippingFee = #{shippingFee},</if>
+            <if test="discountAmount != null">discountAmount = #{discountAmount},</if>
+            <if test="payAmount != null">payAmount = #{payAmount},</if>
+            <if test="discountRemark != null">discountRemark = #{discountRemark},</if>
+            <if test="orderCreateTime != null">orderCreateTime = #{orderCreateTime},</if>
+            <if test="orderModifyTime != null">orderModifyTime = #{orderModifyTime},</if>
+            <if test="payTime != null">payTime = #{payTime},</if>
+            <if test="confirmedTime != null">confirmedTime = #{confirmedTime},</if>
+            <if test="deliveredTime != null">deliveredTime = #{deliveredTime},</if>
+            <if test="completeTime != null">completeTime = #{completeTime},</if>
+            <if test="sellerMemo != null">sellerMemo = #{sellerMemo},</if>
+            <if test="buyerFeedback != null">buyerFeedback = #{buyerFeedback},</if>
+            <if test="closeReason != null">closeReason = #{closeReason},</if>
+            <if test="receivingTime != null">receivingTime = #{receivingTime},</if>
+            <if test="statusStr != null">statusStr = #{statusStr},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="logisticsCompany != null">logisticsCompany = #{logisticsCompany},</if>
+            <if test="logisticsCompanyCode != null">logisticsCompanyCode = #{logisticsCompanyCode},</if>
+            <if test="logisticsCode != null">logisticsCode = #{logisticsCode},</if>
+            <if test="refundId != null">refundId = #{refundId},</if>
+            <if test="refundAmount != null">refundAmount = #{refundAmount},</if>
+            <if test="refundStatus != null">refundStatus = #{refundStatus},</if>
+            <if test="auditStatus != null">auditStatus = #{auditStatus},</if>
+            <if test="auditTime != null">auditTime = #{auditTime},</if>
+            <if test="sendStatus != null">sendStatus = #{sendStatus},</if>
+            <if test="sendTime != null">sendTime = #{sendTime},</if>
+            <if test="tag != null">tag = #{tag},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="isComment != null">is_comment = #{isComment},</if>
+            <if test="isMerge != null">is_merge = #{isMerge},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+            <if test="createBy != null">createBy = #{createBy},</if>
+            <if test="updateTime != null">updateTime = #{updateTime},</if>
+            <if test="updateBy != null">updateBy = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTaoOrderById" parameterType="Long">
+        delete from s_tao_order where id = #{id}
+    </delete>
+
+    <delete id="deleteTaoOrderByIds" parameterType="String">
+        delete from s_tao_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteTaoOrderItemByOrderIds" parameterType="String">
+        delete from s_tao_order_item where orderId in 
+        <foreach item="orderId" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteTaoOrderItemByOrderId" parameterType="Long">
+        delete from s_tao_order_item where orderId = #{orderId}
+    </delete>
+
+    <insert id="batchTaoOrderItem">
+        insert into s_tao_order_item( id, orderId, subItemId, itemAmount, discount_fee, adjust_fee, goodsTitle, goodsNumber, productImgUrl, productUrl, productId, skuId, specNumber, skuInfo, price, quantity, status, statusStr, refundStatus, refundStatusStr, refundAmount, refundId, logisticsStatus, new_spec_id, new_spec_number, after_sale_state, erpGoodsId, erpGoodsSpecId, remark, isGift, isSwap) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.orderId}, #{item.subItemId}, #{item.itemAmount}, #{item.discountFee}, #{item.adjustFee}, #{item.goodsTitle}, #{item.goodsNumber}, #{item.productImgUrl}, #{item.productUrl}, #{item.productId}, #{item.skuId}, #{item.specNumber}, #{item.skuInfo}, #{item.price}, #{item.quantity}, #{item.status}, #{item.statusStr}, #{item.refundStatus}, #{item.refundStatusStr}, #{item.refundAmount}, #{item.refundId}, #{item.logisticsStatus}, #{item.newSpecId}, #{item.newSpecNumber}, #{item.afterSaleState}, #{item.erpGoodsId}, #{item.erpGoodsSpecId}, #{item.remark}, #{item.isGift}, #{item.isSwap})
+        </foreach>
+    </insert>
+</mapper>

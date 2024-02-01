@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.ShopGoodsMapper">
+    
+    <resultMap type="ShopGoods" id="ShopGoodsResult">
+        <result property="id"    column="id"    />
+        <result property="goodsId"    column="goodsId"    />
+        <result property="erpGoodsId"    column="erp_goods_id"    />
+        <result property="shopId"    column="shopId"    />
+        <result property="shopType"    column="shopType"    />
+        <result property="goodsNum"    column="goodsNum"    />
+        <result property="goodsName"    column="goodsName"    />
+        <result property="price"    column="price"    />
+        <result property="title"    column="title"    />
+        <result property="remark"    column="remark"    />
+        <result property="thumbUrl"    column="thumbUrl"    />
+        <result property="imageUrl"    column="imageUrl"    />
+        <result property="isMoreSku"    column="isMoreSku"    />
+        <result property="isOnsale"    column="isOnsale"    />
+        <result property="totalSales"    column="totalSales"    />
+        <result property="publishTime"    column="publishTime"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+
+    <resultMap id="ShopGoodsSShopGoodsSkuResult" type="ShopGoods" extends="ShopGoodsResult">
+        <collection property="sShopGoodsSkuList" notNullColumn="sub_id" javaType="java.util.List" resultMap="SShopGoodsSkuResult" />
+    </resultMap>
+
+    <resultMap type="SShopGoodsSku" id="SShopGoodsSkuResult">
+        <result property="id"    column="sub_id"    />
+        <result property="shopGoodsId"    column="sub_shop_goods_id"    />
+        <result property="goodsId"    column="sub_goodsId"    />
+        <result property="skuId"    column="sub_skuId"    />
+        <result property="spec"    column="sub_spec"    />
+        <result property="erpGoodsSpecId"    column="sub_erp_goods_spec_id"    />
+        <result property="erpGoodsId"    column="sub_erp_goods_id"    />
+        <result property="erpGoodsSpecCode"    column="sub_erp_goods_spec_code"    />
+        <result property="skuQuantity"    column="sub_skuQuantity"    />
+        <result property="consignPrice"    column="sub_consignPrice"    />
+        <result property="outerId"    column="sub_outerId"    />
+        <result property="outerGoodsId"    column="sub_outerGoodsId"    />
+        <result property="price"    column="sub_price"    />
+        <result property="retailPrice"    column="sub_retailPrice"    />
+        <result property="amountOnSale"    column="sub_amountOnSale"    />
+        <result property="isSkuOnsale"    column="sub_isSkuOnsale"    />
+        <result property="cargoNumber"    column="sub_cargoNumber"    />
+        <result property="attributes"    column="sub_attributes"    />
+    </resultMap>
+
+    <sql id="selectShopGoodsVo">
+        select id, goodsId, erp_goods_id, shopId, shopType, goodsNum, goodsName, price, title, remark, thumbUrl, imageUrl, isMoreSku, isOnsale, totalSales, publishTime, createTime from s_shop_goods
+    </sql>
+
+    <select id="selectShopGoodsList" parameterType="ShopGoods" resultMap="ShopGoodsResult">
+        <include refid="selectShopGoodsVo"/>
+        <where>  
+            <if test="goodsId != null "> and goodsId = #{goodsId}</if>
+            <if test="erpGoodsId != null "> and erp_goods_id = #{erpGoodsId}</if>
+            <if test="shopId != null "> and shopId = #{shopId}</if>
+            <if test="shopType != null "> and shopType = #{shopType}</if>
+            <if test="goodsNum != null  and goodsNum != ''"> and goodsNum = #{goodsNum}</if>
+            <if test="goodsName != null  and goodsName != ''"> and goodsName like concat('%', #{goodsName}, '%')</if>
+            <if test="price != null  and price != ''"> and price = #{price}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="thumbUrl != null  and thumbUrl != ''"> and thumbUrl = #{thumbUrl}</if>
+            <if test="imageUrl != null  and imageUrl != ''"> and imageUrl = #{imageUrl}</if>
+            <if test="isMoreSku != null "> and isMoreSku = #{isMoreSku}</if>
+            <if test="isOnsale != null "> and isOnsale = #{isOnsale}</if>
+            <if test="totalSales != null "> and totalSales = #{totalSales}</if>
+            <if test="publishTime != null "> and publishTime = #{publishTime}</if>
+            <if test="createTime != null "> and createTime = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectShopGoodsById" parameterType="Long" resultMap="ShopGoodsSShopGoodsSkuResult">
+        select a.id, a.goodsId, a.erp_goods_id, a.shopId, a.shopType, a.goodsNum, a.goodsName, a.price, a.title, a.remark, a.thumbUrl, a.imageUrl, a.isMoreSku, a.isOnsale, a.totalSales, a.publishTime, a.createTime,
+ b.id as sub_id, b.shop_goods_id as sub_shop_goods_id, b.goodsId as sub_goodsId, b.skuId as sub_skuId, b.spec as sub_spec, b.erp_goods_spec_id as sub_erp_goods_spec_id, b.erp_goods_id as sub_erp_goods_id, b.erp_goods_spec_code as sub_erp_goods_spec_code, b.skuQuantity as sub_skuQuantity, b.consignPrice as sub_consignPrice, b.outerId as sub_outerId, b.outerGoodsId as sub_outerGoodsId, b.price as sub_price, b.retailPrice as sub_retailPrice, b.amountOnSale as sub_amountOnSale, b.isSkuOnsale as sub_isSkuOnsale, b.cargoNumber as sub_cargoNumber, b.attributes as sub_attributes
+        from s_shop_goods a
+        left join s_shop_goods_sku b on b.shop_goods_id = a.id
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertShopGoods" parameterType="ShopGoods" useGeneratedKeys="true" keyProperty="id">
+        insert into s_shop_goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">goodsId,</if>
+            <if test="erpGoodsId != null">erp_goods_id,</if>
+            <if test="shopId != null">shopId,</if>
+            <if test="shopType != null">shopType,</if>
+            <if test="goodsNum != null">goodsNum,</if>
+            <if test="goodsName != null">goodsName,</if>
+            <if test="price != null">price,</if>
+            <if test="title != null">title,</if>
+            <if test="remark != null">remark,</if>
+            <if test="thumbUrl != null">thumbUrl,</if>
+            <if test="imageUrl != null">imageUrl,</if>
+            <if test="isMoreSku != null">isMoreSku,</if>
+            <if test="isOnsale != null">isOnsale,</if>
+            <if test="totalSales != null">totalSales,</if>
+            <if test="publishTime != null">publishTime,</if>
+            <if test="createTime != null">createTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="erpGoodsId != null">#{erpGoodsId},</if>
+            <if test="shopId != null">#{shopId},</if>
+            <if test="shopType != null">#{shopType},</if>
+            <if test="goodsNum != null">#{goodsNum},</if>
+            <if test="goodsName != null">#{goodsName},</if>
+            <if test="price != null">#{price},</if>
+            <if test="title != null">#{title},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="thumbUrl != null">#{thumbUrl},</if>
+            <if test="imageUrl != null">#{imageUrl},</if>
+            <if test="isMoreSku != null">#{isMoreSku},</if>
+            <if test="isOnsale != null">#{isOnsale},</if>
+            <if test="totalSales != null">#{totalSales},</if>
+            <if test="publishTime != null">#{publishTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShopGoods" parameterType="ShopGoods">
+        update s_shop_goods
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsId != null">goodsId = #{goodsId},</if>
+            <if test="erpGoodsId != null">erp_goods_id = #{erpGoodsId},</if>
+            <if test="shopId != null">shopId = #{shopId},</if>
+            <if test="shopType != null">shopType = #{shopType},</if>
+            <if test="goodsNum != null">goodsNum = #{goodsNum},</if>
+            <if test="goodsName != null">goodsName = #{goodsName},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="thumbUrl != null">thumbUrl = #{thumbUrl},</if>
+            <if test="imageUrl != null">imageUrl = #{imageUrl},</if>
+            <if test="isMoreSku != null">isMoreSku = #{isMoreSku},</if>
+            <if test="isOnsale != null">isOnsale = #{isOnsale},</if>
+            <if test="totalSales != null">totalSales = #{totalSales},</if>
+            <if test="publishTime != null">publishTime = #{publishTime},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteShopGoodsById" parameterType="Long">
+        delete from s_shop_goods where id = #{id}
+    </delete>
+
+    <delete id="deleteShopGoodsByIds" parameterType="String">
+        delete from s_shop_goods where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteSShopGoodsSkuByShopGoodsIds" parameterType="String">
+        delete from s_shop_goods_sku where shop_goods_id in 
+        <foreach item="shopGoodsId" collection="array" open="(" separator="," close=")">
+            #{shopGoodsId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteSShopGoodsSkuByShopGoodsId" parameterType="Long">
+        delete from s_shop_goods_sku where shop_goods_id = #{shopGoodsId}
+    </delete>
+
+    <insert id="batchSShopGoodsSku">
+        insert into s_shop_goods_sku( id, shop_goods_id, goodsId, skuId, spec, erp_goods_spec_id, erp_goods_id, erp_goods_spec_code, skuQuantity, consignPrice, outerId, outerGoodsId, price, retailPrice, amountOnSale, isSkuOnsale, cargoNumber, attributes) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.shopGoodsId}, #{item.goodsId}, #{item.skuId}, #{item.spec}, #{item.erpGoodsSpecId}, #{item.erpGoodsId}, #{item.erpGoodsSpecCode}, #{item.skuQuantity}, #{item.consignPrice}, #{item.outerId}, #{item.outerGoodsId}, #{item.price}, #{item.retailPrice}, #{item.amountOnSale}, #{item.isSkuOnsale}, #{item.cargoNumber}, #{item.attributes})
+        </foreach>
+    </insert>
+</mapper>

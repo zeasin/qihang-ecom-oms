@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.WmsStockLocationMapper">
+    
+    <resultMap type="WmsStockLocation" id="WmsStockLocationResult">
+        <result property="id"    column="id"    />
+        <result property="number"    column="number"    />
+        <result property="name"    column="name"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="depth"    column="depth"    />
+        <result property="parentId1"    column="parent_id1"    />
+        <result property="parentId2"    column="parent_id2"    />
+        <result property="address"    column="address"    />
+        <result property="remark"    column="remark"    />
+        <result property="isDelete"    column="isDelete"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectWmsStockLocationVo">
+        select id, number, name, parent_id, depth, parent_id1, parent_id2, address, remark, isDelete, create_by, create_time, update_by, update_time from wms_stock_location
+    </sql>
+
+    <select id="selectWmsStockLocationList" parameterType="WmsStockLocation" resultMap="WmsStockLocationResult">
+        <include refid="selectWmsStockLocationVo"/>
+        <where>  
+            <if test="number != null  and number != ''"> and number = #{number}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="depth != null "> and depth = #{depth}</if>
+            <if test="parentId1 != null "> and parent_id1 = #{parentId1}</if>
+            <if test="parentId2 != null "> and parent_id2 = #{parentId2}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="isDelete != null "> and isDelete = #{isDelete}</if>
+        </where>
+    </select>
+    <select id="search" parameterType="String" resultMap="WmsStockLocationResult">
+        <include refid="selectWmsStockLocationVo"/>
+        where `number` like concat(#{number}, '%')
+    </select>
+    <select id="selectWmsStockLocationById" parameterType="Long" resultMap="WmsStockLocationResult">
+        <include refid="selectWmsStockLocationVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWmsStockLocation" parameterType="WmsStockLocation" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_stock_location
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="number != null and number != ''">number,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="depth != null">depth,</if>
+            <if test="parentId1 != null">parent_id1,</if>
+            <if test="parentId2 != null">parent_id2,</if>
+            <if test="address != null">address,</if>
+            <if test="remark != null">remark,</if>
+            <if test="isDelete != null">isDelete,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="number != null and number != ''">#{number},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="depth != null">#{depth},</if>
+            <if test="parentId1 != null">#{parentId1},</if>
+            <if test="parentId2 != null">#{parentId2},</if>
+            <if test="address != null">#{address},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWmsStockLocation" parameterType="WmsStockLocation">
+        update wms_stock_location
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="number != null and number != ''">number = #{number},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="depth != null">depth = #{depth},</if>
+            <if test="parentId1 != null">parent_id1 = #{parentId1},</if>
+            <if test="parentId2 != null">parent_id2 = #{parentId2},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="isDelete != null">isDelete = #{isDelete},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWmsStockLocationById" parameterType="Long">
+        delete from wms_stock_location where id = #{id}
+    </delete>
+
+    <delete id="deleteWmsStockLocationByIds" parameterType="String">
+        delete from wms_stock_location where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

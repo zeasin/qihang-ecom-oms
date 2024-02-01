@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.WmsOrderShippingMapper">
+    
+    <resultMap type="WmsOrderShipping" id="WmsOrderShippingResult">
+        <result property="id"    column="id"    />
+        <result property="shopId"    column="shop_id"    />
+        <result property="shopType"    column="shop_type"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="erpOrderId"    column="erp_order_id"    />
+        <result property="erpOrderItemId"    column="erp_order_item_id"    />
+        <result property="orderDate"    column="order_date"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="specId"    column="spec_id"    />
+        <result property="goodsTitle"    column="goods_title"    />
+        <result property="goodsImg"    column="goods_img"    />
+        <result property="goodsNum"    column="goods_num"    />
+        <result property="goodsSpec"    column="goods_spec"    />
+        <result property="specNum"    column="spec_num"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="remark"    column="remark"    />
+        <result property="shipCompany"    column="ship_company"    />
+        <result property="shipNo"    column="ship_no"    />
+        <result property="shipCost"    column="ship_cost"    />
+        <result property="shipTime"    column="ship_time"    />
+        <result property="outOperator"    column="out_operator"    />
+        <result property="outPosition"    column="out_position"    />
+        <result property="outTime"    column="out_time"    />
+        <result property="status"    column="status"    />
+        <result property="inventory"    column="inventory"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectWmsOrderShippingVo">
+        select id, shop_id, shop_type, order_num, erp_order_item_id,erp_order_id, order_date, goods_id, spec_id, goods_title, goods_img, goods_num, goods_spec, spec_num,
+               quantity, remark, ship_company, ship_no, ship_cost, ship_time, out_operator, out_position, out_time, status, create_time, create_by,
+               update_by, update_time
+                ,IFNULL((select SUM((currentQty-lockedQty)) from erp_goods_inventory where specId=spec_id),0) as inventory
+        from wms_order_shipping
+    </sql>
+
+    <select id="selectWmsOrderShippingVoByIds" parameterType="String" resultMap="WmsOrderShippingResult">
+        <include refid="selectWmsOrderShippingVo"/>
+               where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectWmsOrderShippingList" parameterType="WmsOrderShipping" resultMap="WmsOrderShippingResult">
+        <include refid="selectWmsOrderShippingVo"/>
+        <where>  
+            <if test="shopId != null "> and shop_id = #{shopId}</if>
+            <if test="shopType != null "> and shop_type = #{shopType}</if>
+            <if test="orderNum != null  and orderNum != ''"> and order_num = #{orderNum}</if>
+            <if test="erpOrderId != null  and erpOrderId != ''"> and erp_order_id = #{erpOrderId}</if>
+            <if test="erpOrderItemId != null  and erpOrderItemId != ''"> and erp_order_item_id = #{erpOrderItemId}</if>
+            <if test="orderDate != null "> and order_date = #{orderDate}</if>
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="specId != null "> and spec_id = #{specId}</if>
+            <if test="goodsTitle != null  and goodsTitle != ''"> and goods_title = #{goodsTitle}</if>
+            <if test="goodsImg != null  and goodsImg != ''"> and goods_img = #{goodsImg}</if>
+            <if test="goodsNum != null  and goodsNum != ''"> and goods_num = #{goodsNum}</if>
+            <if test="goodsSpec != null  and goodsSpec != ''"> and goods_spec = #{goodsSpec}</if>
+            <if test="specNum != null  and specNum != ''"> and spec_num = #{specNum}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="shipCompany != null  and shipCompany != ''"> and ship_company = #{shipCompany}</if>
+            <if test="shipNo != null  and shipNo != ''"> and ship_no = #{shipNo}</if>
+            <if test="shipCost != null "> and ship_cost = #{shipCost}</if>
+            <if test="shipTime != null "> and ship_time = #{shipTime}</if>
+            <if test="outOperator != null  and outOperator != ''"> and out_operator = #{outOperator}</if>
+            <if test="outPosition != null  and outPosition != ''"> and out_position = #{outPosition}</if>
+            <if test="outTime != null "> and out_time = #{outTime}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectWmsOrderShippingById" parameterType="Long" resultMap="WmsOrderShippingResult">
+        <include refid="selectWmsOrderShippingVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWmsOrderShipping" parameterType="WmsOrderShipping" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_order_shipping
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shopId != null">shop_id,</if>
+            <if test="shopType != null">shop_type,</if>
+            <if test="orderNum != null and orderNum != ''">order_num,</if>
+            <if test="erpOrderId != null and erpOrderId != ''">erp_order_id,</if>
+            <if test="erpOrderItemId != null and erpOrderItemId != ''">erp_order_item_id,</if>
+            <if test="orderDate != null">order_date,</if>
+            <if test="goodsId != null">goods_id,</if>
+            <if test="specId != null">spec_id,</if>
+            <if test="goodsTitle != null">goods_title,</if>
+            <if test="goodsImg != null">goods_img,</if>
+            <if test="goodsNum != null">goods_num,</if>
+            <if test="goodsSpec != null">goods_spec,</if>
+            <if test="specNum != null">spec_num,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="remark != null">remark,</if>
+            <if test="shipCompany != null">ship_company,</if>
+            <if test="shipNo != null">ship_no,</if>
+            <if test="shipCost != null">ship_cost,</if>
+            <if test="shipTime != null">ship_time,</if>
+            <if test="outOperator != null">out_operator,</if>
+            <if test="outPosition != null">out_position,</if>
+            <if test="outTime != null">out_time,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="shopId != null">#{shopId},</if>
+            <if test="shopType != null">#{shopType},</if>
+            <if test="orderNum != null and orderNum != ''">#{orderNum},</if>
+            <if test="erpOrderId != null and erpOrderId != ''">#{erpOrderId},</if>
+            <if test="erpOrderItemId != null and erpOrderItemId != ''">#{erpOrderItemId},</if>
+            <if test="orderDate != null">#{orderDate},</if>
+            <if test="goodsId != null">#{goodsId},</if>
+            <if test="specId != null">#{specId},</if>
+            <if test="goodsTitle != null">#{goodsTitle},</if>
+            <if test="goodsImg != null">#{goodsImg},</if>
+            <if test="goodsNum != null">#{goodsNum},</if>
+            <if test="goodsSpec != null">#{goodsSpec},</if>
+            <if test="specNum != null">#{specNum},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="shipCompany != null">#{shipCompany},</if>
+            <if test="shipNo != null">#{shipNo},</if>
+            <if test="shipCost != null">#{shipCost},</if>
+            <if test="shipTime != null">#{shipTime},</if>
+            <if test="outOperator != null">#{outOperator},</if>
+            <if test="outPosition != null">#{outPosition},</if>
+            <if test="outTime != null">#{outTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWmsOrderShipping" parameterType="WmsOrderShipping">
+        update wms_order_shipping
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shopId != null">shop_id = #{shopId},</if>
+            <if test="shopType != null">shop_type = #{shopType},</if>
+            <if test="orderNum != null and orderNum != ''">order_num = #{orderNum},</if>
+
+            <if test="orderDate != null">order_date = #{orderDate},</if>
+            <if test="goodsId != null">goods_id = #{goodsId},</if>
+            <if test="specId != null">spec_id = #{specId},</if>
+            <if test="goodsTitle != null">goods_title = #{goodsTitle},</if>
+            <if test="goodsImg != null">goods_img = #{goodsImg},</if>
+            <if test="goodsNum != null">goods_num = #{goodsNum},</if>
+            <if test="goodsSpec != null">goods_spec = #{goodsSpec},</if>
+            <if test="specNum != null">spec_num = #{specNum},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="shipCompany != null">ship_company = #{shipCompany},</if>
+            <if test="shipNo != null">ship_no = #{shipNo},</if>
+            <if test="shipCost != null">ship_cost = #{shipCost},</if>
+            <if test="shipTime != null">ship_time = #{shipTime},</if>
+            <if test="outOperator != null">out_operator = #{outOperator},</if>
+            <if test="outPosition != null">out_position = #{outPosition},</if>
+            <if test="outTime != null">out_time = #{outTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateWmsOrderShippingStatusByErpOrderItemId" parameterType="WmsOrderShipping">
+        update wms_order_shipping
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="shipCompany != null">ship_company = #{shipCompany},</if>
+            <if test="shipNo != null">ship_no = #{shipNo},</if>
+            <if test="shipCost != null">ship_cost = #{shipCost},</if>
+            <if test="shipTime != null">ship_time = #{shipTime},</if>
+            <if test="outOperator != null">out_operator = #{outOperator},</if>
+            <if test="outPosition != null">out_position = #{outPosition},</if>
+            <if test="outTime != null">out_time = #{outTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where erp_order_item_id = #{erpOrderItemId}
+    </update>
+
+    <delete id="deleteWmsOrderShippingById" parameterType="Long">
+        delete from wms_order_shipping where id = #{id}
+    </delete>
+
+    <delete id="deleteWmsOrderShippingByIds" parameterType="String">
+        delete from wms_order_shipping where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

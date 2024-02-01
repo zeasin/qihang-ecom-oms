@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.ErpGoodsCategoryAttributeValueMapper">
+    
+    <resultMap type="ErpGoodsCategoryAttributeValue" id="ErpGoodsCategoryAttributeValueResult">
+        <result property="id"    column="id"    />
+        <result property="categoryAttributeId"    column="category_attribute_id"    />
+        <result property="value"    column="value"    />
+        <result property="skuCode"    column="sku_code"    />
+        <result property="orderNum"    column="orderNum"    />
+        <result property="isDelete"    column="isDelete"    />
+    </resultMap>
+
+    <sql id="selectErpGoodsCategoryAttributeValueVo">
+        select id, category_attribute_id, value, sku_code, orderNum, isDelete from erp_goods_category_attribute_value
+    </sql>
+
+    <select id="selectErpGoodsCategoryAttributeValueList" parameterType="ErpGoodsCategoryAttributeValue" resultMap="ErpGoodsCategoryAttributeValueResult">
+        <include refid="selectErpGoodsCategoryAttributeValueVo"/>
+        <where>  
+            <if test="categoryAttributeId != null "> and category_attribute_id = #{categoryAttributeId}</if>
+            <if test="value != null  and value != ''"> and value = #{value}</if>
+            <if test="skuCode != null  and skuCode != ''"> and sku_code = #{skuCode}</if>
+            <if test="orderNum != null "> and orderNum = #{orderNum}</if>
+            <if test="isDelete != null "> and isDelete = #{isDelete}</if>
+        </where>
+    </select>
+    
+    <select id="selectErpGoodsCategoryAttributeValueById" parameterType="Long" resultMap="ErpGoodsCategoryAttributeValueResult">
+        <include refid="selectErpGoodsCategoryAttributeValueVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertErpGoodsCategoryAttributeValue" parameterType="ErpGoodsCategoryAttributeValue" useGeneratedKeys="true" keyProperty="id">
+        insert into erp_goods_category_attribute_value
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="categoryAttributeId != null">category_attribute_id,</if>
+            <if test="value != null">value,</if>
+            <if test="skuCode != null">sku_code,</if>
+            <if test="orderNum != null">orderNum,</if>
+            <if test="isDelete != null">isDelete,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="categoryAttributeId != null">#{categoryAttributeId},</if>
+            <if test="value != null">#{value},</if>
+            <if test="skuCode != null">#{skuCode},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+         </trim>
+    </insert>
+
+    <update id="updateErpGoodsCategoryAttributeValue" parameterType="ErpGoodsCategoryAttributeValue">
+        update erp_goods_category_attribute_value
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="categoryAttributeId != null">category_attribute_id = #{categoryAttributeId},</if>
+            <if test="value != null">value = #{value},</if>
+            <if test="skuCode != null">sku_code = #{skuCode},</if>
+            <if test="orderNum != null">orderNum = #{orderNum},</if>
+            <if test="isDelete != null">isDelete = #{isDelete},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteErpGoodsCategoryAttributeValueById" parameterType="Long">
+        delete from erp_goods_category_attribute_value where id = #{id}
+    </delete>
+
+    <delete id="deleteErpGoodsCategoryAttributeValueByIds" parameterType="String">
+        delete from erp_goods_category_attribute_value where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

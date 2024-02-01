@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qihang.erp.api.mapper.PddOrderMapper">
+    
+    <resultMap type="PddOrder" id="PddOrderResult">
+        <result property="id"    column="id"    />
+        <result property="orderSn"    column="order_sn"    />
+        <result property="shopId"    column="shop_id"    />
+        <result property="tradeType"    column="trade_type"    />
+        <result property="confirmStatus"    column="confirm_status"    />
+        <result property="freeSf"    column="free_sf"    />
+        <result property="groupStatus"    column="group_status"    />
+        <result property="capitalFreeDiscount"    column="capital_free_discount"    />
+        <result property="sellerDiscount"    column="seller_discount"    />
+        <result property="platformDiscount"    column="platform_discount"    />
+        <result property="remark"    column="remark"    />
+        <result property="updatedAt"    column="updated_at"    />
+        <result property="refundStatus"    column="refund_status"    />
+        <result property="isLuckyFlag"    column="is_lucky_flag"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="shippingTime"    column="shipping_time"    />
+        <result property="trackingNumber"    column="tracking_number"    />
+        <result property="trackingCompany"    column="tracking_company"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="payNo"    column="pay_no"    />
+        <result property="postage"    column="postage"    />
+        <result property="discountAmount"    column="discount_amount"    />
+        <result property="goodsAmount"    column="goods_amount"    />
+        <result property="payAmount"    column="pay_amount"    />
+        <result property="receiverPhone"    column="receiver_phone"    />
+        <result property="receiverName"    column="receiver_name"    />
+        <result property="receiverName1"    column="receiver_name1"    />
+        <result property="receiverPhone1"    column="receiver_phone1"    />
+        <result property="receiverAddress1"    column="receiver_address1"    />
+        <result property="address"    column="address"    />
+        <result property="town"    column="town"    />
+        <result property="city"    column="city"    />
+        <result property="province"    column="province"    />
+        <result property="country"    column="country"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="payTime"    column="pay_time"    />
+        <result property="confirmTime"    column="confirm_time"    />
+        <result property="receiveTime"    column="receive_time"    />
+        <result property="buyerMemo"    column="buyer_memo"    />
+        <result property="afterSalesStatus"    column="after_sales_status"    />
+        <result property="orderConfirmTime"    column="order_confirm_time"    />
+        <result property="lastShipTime"    column="last_ship_time"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="settlementStatus"    column="settlement_status"    />
+        <result property="shipStatus"    column="ship_status"    />
+        <result property="shipTime"    column="ship_time"    />
+        <result property="tag"    column="tag"    />
+        <result property="excelLogId"    column="excel_log_id"    />
+        <result property="excelMsg"    column="excel_msg"    />
+        <result property="encryptedData"    column="encryptedData"    />
+        <result property="signature"    column="signature"    />
+        <result property="printStatus"    column="print_status"    />
+        <result property="printTime"    column="print_time"    />
+        <result property="nameKey"    column="nameKey"    />
+        <result property="phoneKey"    column="phoneKey"    />
+        <result property="addressKey"    column="addressKey"    />
+        <result property="result"    column="result"    />
+        <result property="pullTime"    column="pull_time"    />
+    </resultMap>
+
+    <resultMap id="PddOrderPddOrderItemResult" type="PddOrder" extends="PddOrderResult">
+        <collection property="pddOrderItemList" notNullColumn="id" javaType="java.util.List" resultMap="PddOrderItemResult" />
+    </resultMap>
+
+    <resultMap type="com.qihang.erp.api.domain.PddOrderItem" id="PddOrderItemResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="erpGoodsId"    column="erp_goods_id"    />
+        <result property="erpSpecId"    column="erp_spec_id"    />
+        <result property="goodsName"    column="goods_name"    />
+        <result property="goodsImage"    column="goods_image"    />
+        <result property="goodsNum"    column="goods_num"    />
+        <result property="goodsSpec"    column="goods_spec"    />
+        <result property="specNum"    column="spec_num"    />
+        <result property="goodsPrice"    column="goods_price"    />
+        <result property="itemAmount"    column="item_amount"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="remark"    column="remark"    />
+        <result property="isGift"    column="is_gift"    />
+        <result property="goodId"    column="good_id"    />
+        <result property="skuId"    column="sku_id"    />
+        <result property="refundCount"    column="refund_count"    />
+        <result property="refundStatus"    column="refund_status"    />
+    </resultMap>
+
+    <sql id="selectPddOrderVo">
+        select id, order_sn, shop_id, trade_type, confirm_status, free_sf, group_status, capital_free_discount, seller_discount, platform_discount, remark, updated_at, refund_status, is_lucky_flag, order_status, shipping_time, tracking_number, tracking_company, pay_type, pay_no, postage, discount_amount, goods_amount, pay_amount, receiver_phone, receiver_name, receiver_name1, receiver_phone1, receiver_address1, address, town, city, province, country, created_time, pay_time, confirm_time, receive_time, buyer_memo, after_sales_status, order_confirm_time, last_ship_time, audit_status, settlement_status, ship_status, ship_time, tag, excel_log_id, excel_msg, encryptedData, signature, print_status, print_time, nameKey, phoneKey, addressKey, result, pull_time from s_pdd_order
+    </sql>
+
+    <sql id="selectPddOrderItemVo">
+        select * from s_pdd_order_item
+    </sql>
+
+    <select id="selectPddOrderList" parameterType="PddOrder" resultMap="PddOrderResult">
+        <include refid="selectPddOrderVo"/>
+        <where>  
+            <if test="orderSn != null  and orderSn != ''"> and order_sn = #{orderSn}</if>
+            <if test="shopId != null "> and shop_id = #{shopId}</if>
+            <if test="tradeType != null "> and trade_type = #{tradeType}</if>
+            <if test="confirmStatus != null "> and confirm_status = #{confirmStatus}</if>
+            <if test="freeSf != null "> and free_sf = #{freeSf}</if>
+            <if test="groupStatus != null "> and group_status = #{groupStatus}</if>
+            <if test="capitalFreeDiscount != null "> and capital_free_discount = #{capitalFreeDiscount}</if>
+            <if test="sellerDiscount != null "> and seller_discount = #{sellerDiscount}</if>
+            <if test="platformDiscount != null "> and platform_discount = #{platformDiscount}</if>
+            <if test="updatedAt != null  and updatedAt != ''"> and updated_at = #{updatedAt}</if>
+            <if test="refundStatus != null "> and refund_status = #{refundStatus}</if>
+            <if test="isLuckyFlag != null "> and is_lucky_flag = #{isLuckyFlag}</if>
+            <if test="orderStatus != null "> and order_status = #{orderStatus}</if>
+            <if test="shippingTime != null  and shippingTime != ''"> and shipping_time = #{shippingTime}</if>
+            <if test="trackingNumber != null  and trackingNumber != ''"> and tracking_number = #{trackingNumber}</if>
+            <if test="trackingCompany != null  and trackingCompany != ''"> and tracking_company = #{trackingCompany}</if>
+            <if test="payType != null  and payType != ''"> and pay_type = #{payType}</if>
+            <if test="payNo != null  and payNo != ''"> and pay_no = #{payNo}</if>
+            <if test="postage != null "> and postage = #{postage}</if>
+            <if test="discountAmount != null "> and discount_amount = #{discountAmount}</if>
+            <if test="goodsAmount != null "> and goods_amount = #{goodsAmount}</if>
+            <if test="payAmount != null "> and pay_amount = #{payAmount}</if>
+            <if test="receiverPhone != null  and receiverPhone != ''"> and receiver_phone = #{receiverPhone}</if>
+            <if test="receiverName != null  and receiverName != ''"> and receiver_name like concat('%', #{receiverName}, '%')</if>
+            <if test="receiverName1 != null  and receiverName1 != ''"> and receiver_name1 = #{receiverName1}</if>
+            <if test="receiverPhone1 != null  and receiverPhone1 != ''"> and receiver_phone1 = #{receiverPhone1}</if>
+            <if test="receiverAddress1 != null  and receiverAddress1 != ''"> and receiver_address1 = #{receiverAddress1}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="town != null  and town != ''"> and town = #{town}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="country != null  and country != ''"> and country = #{country}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="payTime != null  and payTime != ''"> and pay_time = #{payTime}</if>
+            <if test="confirmTime != null  and confirmTime != ''"> and confirm_time = #{confirmTime}</if>
+            <if test="receiveTime != null  and receiveTime != ''"> and receive_time = #{receiveTime}</if>
+            <if test="buyerMemo != null  and buyerMemo != ''"> and buyer_memo = #{buyerMemo}</if>
+            <if test="afterSalesStatus != null "> and after_sales_status = #{afterSalesStatus}</if>
+            <if test="orderConfirmTime != null "> and order_confirm_time = #{orderConfirmTime}</if>
+            <if test="lastShipTime != null  and lastShipTime != ''"> and last_ship_time = #{lastShipTime}</if>
+            <if test="auditStatus != null "> and audit_status = #{auditStatus}</if>
+            <if test="settlementStatus != null "> and settlement_status = #{settlementStatus}</if>
+            <if test="shipStatus != null "> and ship_status = #{shipStatus}</if>
+            <if test="shipTime != null "> and ship_time = #{shipTime}</if>
+            <if test="tag != null  and tag != ''"> and tag = #{tag}</if>
+            <if test="excelLogId != null "> and excel_log_id = #{excelLogId}</if>
+            <if test="excelMsg != null  and excelMsg != ''"> and excel_msg = #{excelMsg}</if>
+            <if test="encryptedData != null  and encryptedData != ''"> and encryptedData = #{encryptedData}</if>
+            <if test="signature != null  and signature != ''"> and signature = #{signature}</if>
+            <if test="printStatus != null "> and print_status = #{printStatus}</if>
+            <if test="printTime != null  and printTime != ''"> and print_time = #{printTime}</if>
+            <if test="nameKey != null  and nameKey != ''"> and nameKey = #{nameKey}</if>
+            <if test="phoneKey != null  and phoneKey != ''"> and phoneKey = #{phoneKey}</if>
+            <if test="addressKey != null  and addressKey != ''"> and addressKey = #{addressKey}</if>
+            <if test="result != null  and result != ''"> and result = #{result}</if>
+            <if test="pullTime != null "> and pull_time = #{pullTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectPddOrderById" parameterType="Long" resultMap="PddOrderPddOrderItemResult">
+        select a.id, a.order_sn, a.shop_id, a.trade_type, a.confirm_status, a.free_sf, a.group_status, a.capital_free_discount, a.seller_discount, a.platform_discount, a.remark, a.updated_at, a.refund_status, a.is_lucky_flag, a.order_status, a.shipping_time, a.tracking_number, a.tracking_company, a.pay_type, a.pay_no, a.postage, a.discount_amount, a.goods_amount, a.pay_amount, a.receiver_phone, a.receiver_name, a.receiver_name1, a.receiver_phone1, a.receiver_address1, a.address, a.town, a.city, a.province, a.country, a.created_time, a.pay_time, a.confirm_time, a.receive_time, a.buyer_memo, a.after_sales_status, a.order_confirm_time, a.last_ship_time, a.audit_status, a.settlement_status, a.ship_status, a.ship_time, a.tag, a.excel_log_id, a.excel_msg, a.encryptedData, a.signature, a.print_status, a.print_time, a.nameKey, a.phoneKey, a.addressKey, a.result, a.pull_time,
+--  b.id as sub_id,
+ b.order_id as order_id, b.erp_goods_id as erp_goods_id, b.erp_spec_id as erp_spec_id, b.goods_name as goods_name, b.goods_image as goods_image,
+ b.goods_num as goods_num, b.goods_spec as goods_spec, b.spec_num as spec_num, b.goods_price as goods_price, b.item_amount as item_amount, b.quantity as quantity,
+--  b.remark as remark,
+ b.is_gift as is_gift, b.good_id as good_id, b.sku_id as sku_id, b.refund_count as refund_count
+        from s_pdd_order a
+        left join s_pdd_order_item b on b.order_id = a.id
+        where a.id = #{id}
+    </select>
+
+    <select id="selectByOrderSn" parameterType="String" resultMap="PddOrderResult">
+        select a.* from s_pdd_order a
+        where a.order_sn = #{orderSn}
+    </select>
+
+    <select id="selectOrderItemByOrderId" parameterType="Long" resultMap="PddOrderItemResult">
+
+        <include refid="selectPddOrderItemVo"/>
+        <where>
+         and order_id = #{orderId}
+        </where>
+    </select>
+
+
+    <select id="selectOrderItemByOrderItemId" parameterType="Long" resultMap="PddOrderItemResult">
+
+        <include refid="selectPddOrderItemVo"/>
+        <where>
+            and id = #{orderItemId}
+        </where>
+    </select>
+    <insert id="insertPddOrder" parameterType="PddOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into s_pdd_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderSn != null and orderSn != ''">order_sn,</if>
+            <if test="shopId != null">shop_id,</if>
+            <if test="tradeType != null">trade_type,</if>
+            <if test="confirmStatus != null">confirm_status,</if>
+            <if test="freeSf != null">free_sf,</if>
+            <if test="groupStatus != null">group_status,</if>
+            <if test="capitalFreeDiscount != null">capital_free_discount,</if>
+            <if test="sellerDiscount != null">seller_discount,</if>
+            <if test="platformDiscount != null">platform_discount,</if>
+            <if test="remark != null">remark,</if>
+            <if test="updatedAt != null">updated_at,</if>
+            <if test="refundStatus != null">refund_status,</if>
+            <if test="isLuckyFlag != null">is_lucky_flag,</if>
+            <if test="orderStatus != null">order_status,</if>
+            <if test="shippingTime != null">shipping_time,</if>
+            <if test="trackingNumber != null">tracking_number,</if>
+            <if test="trackingCompany != null">tracking_company,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="payNo != null">pay_no,</if>
+            <if test="postage != null">postage,</if>
+            <if test="discountAmount != null">discount_amount,</if>
+            <if test="goodsAmount != null">goods_amount,</if>
+            <if test="payAmount != null">pay_amount,</if>
+            <if test="receiverPhone != null">receiver_phone,</if>
+            <if test="receiverName != null">receiver_name,</if>
+            <if test="receiverName1 != null">receiver_name1,</if>
+            <if test="receiverPhone1 != null">receiver_phone1,</if>
+            <if test="receiverAddress1 != null">receiver_address1,</if>
+            <if test="address != null">address,</if>
+            <if test="town != null">town,</if>
+            <if test="city != null">city,</if>
+            <if test="province != null">province,</if>
+            <if test="country != null">country,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="payTime != null">pay_time,</if>
+            <if test="confirmTime != null">confirm_time,</if>
+            <if test="receiveTime != null">receive_time,</if>
+            <if test="buyerMemo != null">buyer_memo,</if>
+            <if test="afterSalesStatus != null">after_sales_status,</if>
+            <if test="orderConfirmTime != null">order_confirm_time,</if>
+            <if test="lastShipTime != null">last_ship_time,</if>
+            <if test="auditStatus != null">audit_status,</if>
+            <if test="settlementStatus != null">settlement_status,</if>
+            <if test="shipStatus != null">ship_status,</if>
+            <if test="shipTime != null">ship_time,</if>
+            <if test="tag != null">tag,</if>
+            <if test="excelLogId != null">excel_log_id,</if>
+            <if test="excelMsg != null">excel_msg,</if>
+            <if test="encryptedData != null">encryptedData,</if>
+            <if test="signature != null">signature,</if>
+            <if test="printStatus != null">print_status,</if>
+            <if test="printTime != null">print_time,</if>
+            <if test="nameKey != null">nameKey,</if>
+            <if test="phoneKey != null">phoneKey,</if>
+            <if test="addressKey != null">addressKey,</if>
+            <if test="result != null">result,</if>
+            <if test="pullTime != null">pull_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderSn != null and orderSn != ''">#{orderSn},</if>
+            <if test="shopId != null">#{shopId},</if>
+            <if test="tradeType != null">#{tradeType},</if>
+            <if test="confirmStatus != null">#{confirmStatus},</if>
+            <if test="freeSf != null">#{freeSf},</if>
+            <if test="groupStatus != null">#{groupStatus},</if>
+            <if test="capitalFreeDiscount != null">#{capitalFreeDiscount},</if>
+            <if test="sellerDiscount != null">#{sellerDiscount},</if>
+            <if test="platformDiscount != null">#{platformDiscount},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="updatedAt != null">#{updatedAt},</if>
+            <if test="refundStatus != null">#{refundStatus},</if>
+            <if test="isLuckyFlag != null">#{isLuckyFlag},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+            <if test="shippingTime != null">#{shippingTime},</if>
+            <if test="trackingNumber != null">#{trackingNumber},</if>
+            <if test="trackingCompany != null">#{trackingCompany},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="payNo != null">#{payNo},</if>
+            <if test="postage != null">#{postage},</if>
+            <if test="discountAmount != null">#{discountAmount},</if>
+            <if test="goodsAmount != null">#{goodsAmount},</if>
+            <if test="payAmount != null">#{payAmount},</if>
+            <if test="receiverPhone != null">#{receiverPhone},</if>
+            <if test="receiverName != null">#{receiverName},</if>
+            <if test="receiverName1 != null">#{receiverName1},</if>
+            <if test="receiverPhone1 != null">#{receiverPhone1},</if>
+            <if test="receiverAddress1 != null">#{receiverAddress1},</if>
+            <if test="address != null">#{address},</if>
+            <if test="town != null">#{town},</if>
+            <if test="city != null">#{city},</if>
+            <if test="province != null">#{province},</if>
+            <if test="country != null">#{country},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="payTime != null">#{payTime},</if>
+            <if test="confirmTime != null">#{confirmTime},</if>
+            <if test="receiveTime != null">#{receiveTime},</if>
+            <if test="buyerMemo != null">#{buyerMemo},</if>
+            <if test="afterSalesStatus != null">#{afterSalesStatus},</if>
+            <if test="orderConfirmTime != null">#{orderConfirmTime},</if>
+            <if test="lastShipTime != null">#{lastShipTime},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="settlementStatus != null">#{settlementStatus},</if>
+            <if test="shipStatus != null">#{shipStatus},</if>
+            <if test="shipTime != null">#{shipTime},</if>
+            <if test="tag != null">#{tag},</if>
+            <if test="excelLogId != null">#{excelLogId},</if>
+            <if test="excelMsg != null">#{excelMsg},</if>
+            <if test="encryptedData != null">#{encryptedData},</if>
+            <if test="signature != null">#{signature},</if>
+            <if test="printStatus != null">#{printStatus},</if>
+            <if test="printTime != null">#{printTime},</if>
+            <if test="nameKey != null">#{nameKey},</if>
+            <if test="phoneKey != null">#{phoneKey},</if>
+            <if test="addressKey != null">#{addressKey},</if>
+            <if test="result != null">#{result},</if>
+            <if test="pullTime != null">#{pullTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePddOrderItem" parameterType="PddOrderItem">
+        update s_pdd_order_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="refundCount != null">refund_count = #{refundCount},</if>
+            <if test="refundStatus != null">refund_status = #{refundStatus},</if>
+
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updatePddOrder" parameterType="PddOrder">
+        update s_pdd_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderSn != null and orderSn != ''">order_sn = #{orderSn},</if>
+            <if test="shopId != null">shop_id = #{shopId},</if>
+            <if test="tradeType != null">trade_type = #{tradeType},</if>
+            <if test="confirmStatus != null">confirm_status = #{confirmStatus},</if>
+            <if test="freeSf != null">free_sf = #{freeSf},</if>
+            <if test="groupStatus != null">group_status = #{groupStatus},</if>
+            <if test="capitalFreeDiscount != null">capital_free_discount = #{capitalFreeDiscount},</if>
+            <if test="sellerDiscount != null">seller_discount = #{sellerDiscount},</if>
+            <if test="platformDiscount != null">platform_discount = #{platformDiscount},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+            <if test="refundStatus != null">refund_status = #{refundStatus},</if>
+            <if test="isLuckyFlag != null">is_lucky_flag = #{isLuckyFlag},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus},</if>
+            <if test="shippingTime != null">shipping_time = #{shippingTime},</if>
+            <if test="trackingNumber != null">tracking_number = #{trackingNumber},</if>
+            <if test="trackingCompany != null">tracking_company = #{trackingCompany},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="payNo != null">pay_no = #{payNo},</if>
+            <if test="postage != null">postage = #{postage},</if>
+            <if test="discountAmount != null">discount_amount = #{discountAmount},</if>
+            <if test="goodsAmount != null">goods_amount = #{goodsAmount},</if>
+            <if test="payAmount != null">pay_amount = #{payAmount},</if>
+            <if test="receiverPhone != null">receiver_phone = #{receiverPhone},</if>
+            <if test="receiverName != null">receiver_name = #{receiverName},</if>
+            <if test="receiverName1 != null">receiver_name1 = #{receiverName1},</if>
+            <if test="receiverPhone1 != null">receiver_phone1 = #{receiverPhone1},</if>
+            <if test="receiverAddress1 != null">receiver_address1 = #{receiverAddress1},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="town != null">town = #{town},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="country != null">country = #{country},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="payTime != null">pay_time = #{payTime},</if>
+            <if test="confirmTime != null">confirm_time = #{confirmTime},</if>
+            <if test="receiveTime != null">receive_time = #{receiveTime},</if>
+            <if test="buyerMemo != null">buyer_memo = #{buyerMemo},</if>
+            <if test="afterSalesStatus != null">after_sales_status = #{afterSalesStatus},</if>
+            <if test="orderConfirmTime != null">order_confirm_time = #{orderConfirmTime},</if>
+            <if test="lastShipTime != null">last_ship_time = #{lastShipTime},</if>
+            <if test="auditStatus != null">audit_status = #{auditStatus},</if>
+            <if test="settlementStatus != null">settlement_status = #{settlementStatus},</if>
+            <if test="shipStatus != null">ship_status = #{shipStatus},</if>
+            <if test="shipTime != null">ship_time = #{shipTime},</if>
+            <if test="tag != null">tag = #{tag},</if>
+            <if test="excelLogId != null">excel_log_id = #{excelLogId},</if>
+            <if test="excelMsg != null">excel_msg = #{excelMsg},</if>
+            <if test="encryptedData != null">encryptedData = #{encryptedData},</if>
+            <if test="signature != null">signature = #{signature},</if>
+            <if test="printStatus != null">print_status = #{printStatus},</if>
+            <if test="printTime != null">print_time = #{printTime},</if>
+            <if test="nameKey != null">nameKey = #{nameKey},</if>
+            <if test="phoneKey != null">phoneKey = #{phoneKey},</if>
+            <if test="addressKey != null">addressKey = #{addressKey},</if>
+            <if test="result != null">result = #{result},</if>
+            <if test="pullTime != null">pull_time = #{pullTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePddOrderById" parameterType="Long">
+        delete from s_pdd_order where id = #{id}
+    </delete>
+
+    <delete id="deletePddOrderByIds" parameterType="String">
+        delete from s_pdd_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deletePddOrderItemByOrderIds" parameterType="String">
+        delete from s_pdd_order_item where order_id in 
+        <foreach item="orderId" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </delete>
+
+    <delete id="deletePddOrderItemByOrderId" parameterType="Long">
+        delete from s_pdd_order_item where order_id = #{orderId}
+    </delete>
+
+    <insert id="batchPddOrderItem">
+        insert into s_pdd_order_item( id, order_id, erp_goods_id, erp_spec_id, goods_name, goods_image, goods_num, goods_spec, spec_num, goods_price, item_amount, quantity, remark, is_gift, good_id, sku_id, refund_count,refund_status) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.orderId}, #{item.erpGoodsId}, #{item.erpSpecId}, #{item.goodsName}, #{item.goodsImage}, #{item.goodsNum}, #{item.goodsSpec}, #{item.specNum}, #{item.goodsPrice}, #{item.itemAmount}, #{item.quantity}, #{item.remark}, #{item.isGift}, #{item.goodId}, #{item.skuId}, #{item.refundCount}, #{item.refundStatus})
+        </foreach>
+    </insert>
+</mapper>
