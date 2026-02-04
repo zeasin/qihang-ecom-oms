@@ -2,11 +2,12 @@ package cn.qihangerp.api.pdd.controller;
 
 import cn.qihangerp.common.*;
 import cn.qihangerp.domain.bo.LinkErpGoodsSkuBo;
-import cn.qihangerp.module.open.pdd.domain.PddGoods;
-import cn.qihangerp.module.open.pdd.domain.PddGoodsSku;
-import cn.qihangerp.module.open.pdd.domain.bo.PddGoodsBo;
-import cn.qihangerp.module.open.pdd.service.PddGoodsService;
-import cn.qihangerp.module.open.pdd.service.PddGoodsSkuService;
+import cn.qihangerp.model.bo.PddGoodsSkuBo;
+import cn.qihangerp.model.entity.PddGoods;
+import cn.qihangerp.model.entity.PddGoodsSku;
+import cn.qihangerp.model.bo.PddGoodsBo;
+import cn.qihangerp.module.service.PddGoodsService;
+import cn.qihangerp.module.service.PddGoodsSkuService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -27,7 +28,7 @@ public class PddGoodsController extends BaseController {
     }
 
     @RequestMapping(value = "/skuList", method = RequestMethod.GET)
-    public TableDataInfo skuList(PddGoodsSku bo, PageQuery pageQuery) {
+    public TableDataInfo skuList(PddGoodsSkuBo bo, PageQuery pageQuery) {
         PageResult<PddGoodsSku> result = skuService.queryPageList(bo, pageQuery);
 
         return getDataTable(result);

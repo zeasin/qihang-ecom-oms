@@ -28,14 +28,14 @@
         />
       </el-form-item>
 
-<!--      <el-form-item label="申请时间" prop="created">-->
-<!--        <el-date-picker clearable-->
-<!--          v-model="queryParams.created"-->
-<!--          type="date"-->
-<!--          value-format="yyyy-MM-dd"-->
-<!--          placeholder="请选择退款申请时间">-->
-<!--        </el-date-picker>-->
-<!--      </el-form-item>-->
+      <el-form-item label="申请时间" prop="createTime">
+        <el-date-picker clearable @change="handleQuery"
+          v-model="queryParams.createTime"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="请选择退款申请时间">
+        </el-date-picker>
+      </el-form-item>
 
 <!--      <el-form-item label="物流单号" prop="logisticsCode">-->
 <!--        <el-input-->
@@ -64,16 +64,7 @@
           @click="handlePull"
         >API拉取新退款</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-refresh"
-          size="mini"
-          :disabled="multiple"
-          @click="handlePushOms"
-        >手动推送售后</el-button>
-      </el-col>
+
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -262,7 +253,7 @@ export default {
         pageSize: 10,
         refundId: null,
         afterSalesType: null,
-        tid: null,
+        createTime: null,
         oid: null
       },
       // 表单参数
@@ -342,33 +333,45 @@ export default {
       }).catch(() => {});
     },
     handlePull() {
-      if(this.queryParams.shopId){
-        this.pullLoading = true
-        pullRefund({shopId:this.queryParams.shopId,updType:0}).then(response => {
-          console.log('拉取退款接口返回=====',response)
-          if(response.code === 1401) {
-            MessageBox.confirm('Token已过期，需要重新授权', '系统提示', { confirmButtonText: '重新授权', cancelButtonText: '取消', type: 'warning' }).then(() => {
-              isRelogin.show = false;
-              // store.dispatch('LogOut').then(() => {
-              location.href = response.data.tokenRequestUrl+'?shopId='+this.queryParams.shopId
-              // })
-            }).catch(() => {
-              isRelogin.show = false;
-            });
-
-            // return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
-          }else{
-            this.getList()
-            this.$modal.msgSuccess(JSON.stringify(response));
-            this.pullLoading = false
-          }
-
-        })
-      }else{
-        this.$modal.msgSuccess("请先选择店铺");
+      if (!this.queryParams.shopId) {
+        this.$modal.msgError("请先选择店铺");
+        return
       }
+      if (!this.queryParams.createTime) {
+        this.$modal.msgError("请选择售后申请时间")
+        return
+      }
+      this.pullLoading = true
+      pullRefund({
+        shopId: this.queryParams.shopId,
+        updType: 0,
+        createTime: this.queryParams.createTime
+      }).then(response => {
+        console.log('拉取退款接口返回=====', response)
+        if (response.code === 1401) {
+          MessageBox.confirm('Token已过期，需要重新授权', '系统提示', {
+            confirmButtonText: '重新授权',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            isRelogin.show = false;
+            // store.dispatch('LogOut').then(() => {
+            location.href = response.data.tokenRequestUrl + '?shopId=' + this.queryParams.shopId
+            // })
+          }).catch(() => {
+            isRelogin.show = false;
+          });
 
-      // this.$modal.msgSuccess("请先配置API");
+          // return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
+        } else {
+          this.getList()
+          this.$modal.msgSuccess(JSON.stringify(response));
+          this.pullLoading = false
+        }
+
+      })
+
+
     },
     handleReturnedConfirm(row){
       returnedConfirm(row.id).then(response => {

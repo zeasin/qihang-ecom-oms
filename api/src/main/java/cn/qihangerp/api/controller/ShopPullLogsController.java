@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/oms-api/shop")
+@RequestMapping("/shop")
 public class ShopPullLogsController extends BaseController {
     private final OShopPullLogsService pullLogsService;
 

@@ -35,13 +35,6 @@ export function pullOrderDetail(data) {
   })
 }
 
-export function pushOms(data) {
-  return request({
-    url: '/tao/order/push_oms',
-    method: 'post',
-    data: data
-  })
-}
 // 确认订单
 export function confirmOrder(data) {
   return request({

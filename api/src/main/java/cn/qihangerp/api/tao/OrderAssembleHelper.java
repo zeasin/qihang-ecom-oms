@@ -1,8 +1,8 @@
 package cn.qihangerp.api.tao;
 
 
-import cn.qihangerp.module.open.tao.domain.TaoOrder;
-import cn.qihangerp.module.open.tao.domain.TaoOrderItem;
+import cn.qihangerp.model.entity.TaoOrder;
+import cn.qihangerp.model.entity.TaoOrderItem;
 import cn.qihangerp.open.tao.response.TaoOrderListResponse;
 import org.springframework.util.StringUtils;
 
@@ -74,34 +74,34 @@ public class OrderAssembleHelper {
             orderItem.setTitle(item.getTitle());
                 orderItem.setTid(Long.parseLong(trade.getTid()));
                 orderItem.setOid(Long.parseLong(item.getOid()));
-                orderItem.setTotalFee(StringUtils.hasText(item.getTotal_fee()) ? BigDecimal.valueOf(Double.parseDouble(item.getTotal_fee())): BigDecimal.valueOf(0));
-                orderItem.setDiscountFee(StringUtils.hasText(item.getDiscount_fee()) ? BigDecimal.valueOf(Double.parseDouble(item.getDiscount_fee())): BigDecimal.valueOf(0));
-                orderItem.setAdjustFee(StringUtils.hasText(item.getAdjust_fee()) ?BigDecimal.valueOf(Double.parseDouble(item.getAdjust_fee())): BigDecimal.valueOf(0));
-                orderItem.setDivideOrderFee( StringUtils.hasText(item.getDivide_order_fee()) ? Double.parseDouble(item.getDivide_order_fee()):null);
-                orderItem.setPartMjzDiscount(StringUtils.hasText(item.getPart_mjz_discount()) ? Double.parseDouble(item.getPart_mjz_discount()):0.0);
+                orderItem.setTotalFee(StringUtils.hasText(item.getTotalFee()) ? BigDecimal.valueOf(Double.parseDouble(item.getTotalFee())): BigDecimal.valueOf(0));
+                orderItem.setDiscountFee(StringUtils.hasText(item.getDiscountFee()) ? BigDecimal.valueOf(Double.parseDouble(item.getDiscountFee())): BigDecimal.valueOf(0));
+                orderItem.setAdjustFee(StringUtils.hasText(item.getAdjustFee()) ?BigDecimal.valueOf(Double.parseDouble(item.getAdjustFee())): BigDecimal.valueOf(0));
+                orderItem.setDivideOrderFee( StringUtils.hasText(item.getDivideOrderFee()) ? Double.parseDouble(item.getDivideOrderFee()):null);
+                orderItem.setPartMjzDiscount(StringUtils.hasText(item.getPartMjzDiscount()) ? Double.parseDouble(item.getPartMjzDiscount()):0.0);
                 orderItem.setPayment(StringUtils.hasText(item.getPayment()) ? Double.parseDouble(item.getPayment()):0.0);
                 orderItem.setPrice(StringUtils.hasText(item.getPrice()) ? BigDecimal.valueOf(Double.parseDouble(item.getPrice())): BigDecimal.valueOf(0));
-                orderItem.setPicPath(item.getPic_path());
-                orderItem.setNumIid(item.getNum_iid());
-                orderItem.setSkuId(item.getSku_id());
+                orderItem.setPicPath(item.getPicPath());
+                orderItem.setNumIid(Long.parseLong(item.getNumIid()));
+                orderItem.setSkuId(item.getSkuId());
 //                orderItem.setOuterIid(item.getOuterIid());
-                orderItem.setOuterSkuId(item.getOuter_sku_id());
-                orderItem.setSkuPropertiesName(item.getSku_properties_name());
+                orderItem.setOuterSkuId(item.getOuterSkuId());
+                orderItem.setSkuPropertiesName(item.getSkuPropertiesName());
 //                orderItem.setItemMealId(item.getItemMealId() == null ? "" : item.getItemMealId() + "");
 //                orderItem.setItemMealName(item.getItemMealName());
                 orderItem.setNum(item.getNum());
-                orderItem.setRefundStatus(item.getRefund_status());
+                orderItem.setRefundStatus(item.getRefundStatus());
                 orderItem.setStatus(item.getStatus());
 //                orderItem.setBuyerRate(item.getBuyerRate() + "");
 //                orderItem.setSellerRate(item.getSellerRate() + "");
 //                orderItem.setRefundId(item.getRefundId());
-                orderItem.setSellerType(item.getSeller_type());
+                orderItem.setSellerType("");
                 orderItem.setCid(item.getCid());
-                orderItem.setEndTime(item.getEnd_time());
-                orderItem.setConsignTime(item.getConsign_time());
-                orderItem.setShippingType(item.getShipping_type());
-                orderItem.setLogisticsCompany(item.getLogistics_company());
-                orderItem.setInvoiceNo(item.getInvoice_no());
+                orderItem.setEndTime(item.getEndTime());
+                orderItem.setConsignTime(item.getConsignTime());
+                orderItem.setShippingType("");
+                orderItem.setLogisticsCompany(item.getLogisticsCompany());
+                orderItem.setInvoiceNo(item.getLogisticsCode());
 
             items.add(orderItem);
         }

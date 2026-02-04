@@ -17,16 +17,6 @@ export function getOrder(id) {
   })
 }
 
-
-
-export function pushOms(data) {
-  return request({
-    url: '/dou/order/push_oms',
-    method: 'post',
-    data: data
-  })
-}
-
 // 接口拉取订单
 export function pullOrder(data) {
   return request({

@@ -1,8 +1,8 @@
 package cn.qihangerp.api.jd.controller;
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.open.jd.domain.JdOrder;
-import cn.qihangerp.module.open.jd.service.JdOrderService;
+import cn.qihangerp.model.entity.JdOrder;
+import cn.qihangerp.module.service.JdOrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

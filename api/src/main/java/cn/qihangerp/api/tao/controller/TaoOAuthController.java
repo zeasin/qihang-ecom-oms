@@ -3,7 +3,7 @@ package cn.qihangerp.api.tao.controller;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.utils.StringUtils;
 import cn.qihangerp.model.entity.OShopPlatform;
-import cn.qihangerp.module.open.tao.domain.bo.TaoTokenSaveBo;
+import cn.qihangerp.model.bo.TaoTokenSaveBo;
 import cn.qihangerp.module.service.OShopPlatformService;
 import cn.qihangerp.module.service.OShopService;
 import jakarta.servlet.http.HttpServletRequest;

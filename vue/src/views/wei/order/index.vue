@@ -20,9 +20,9 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="下单日期" prop="orderCreateTime">
+      <el-form-item label="下单日期" prop="startTime">
         <el-date-picker clearable
-          v-model="queryParams.orderCreateTime"
+          v-model="queryParams.startTime"
           type="date"
           value-format="yyyy-MM-dd"
           placeholder="请选择订单创建时间">
@@ -54,16 +54,7 @@
           @click="handlePull"
         >API拉取订单</el-button>
       </el-col>
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="primary"-->
-<!--          plain-->
-<!--          icon="el-icon-refresh"-->
-<!--          size="mini"-->
-<!--          :disabled="multiple"-->
-<!--          @click="handlePushOms"-->
-<!--        >重新推送选中订单到订单库</el-button>-->
-<!--      </el-col>-->
+
 
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -154,7 +145,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="收件人信息" align="center" prop="userName" >
+      <el-table-column label="收件人信息" align="left" prop="userName" >
         <template slot-scope="scope">
           <span>{{scope.row.userName}}</span><br />
           <span> {{scope.row.provinceName}} {{scope.row.cityName}} {{scope.row.countyName}}
@@ -171,11 +162,17 @@
           <el-tag v-if="scope.row.status === 20 " size="small">待发货</el-tag>
           <el-tag v-if="scope.row.status === 30 " size="small">待收货</el-tag>
           <el-tag v-if="scope.row.status === 100 " size="small">完成</el-tag>
-          <br/>
-          <el-tag style="margin-top: 5px" type="warning" v-if="scope.row.auditStatus === 0 " size="small">待确认</el-tag>
+          <el-tag v-if="scope.row.status === 200 " size="small">全部商品售后之后，订单取消</el-tag>
+          <el-tag v-if="scope.row.status === 250 " size="small">未付款用户主动取消或超时未付款订单自动取消</el-tag>
+
         </template>
       </el-table-column>
-<!--      <el-table-column label="快递单号" align="center" prop="logisticsCode" />-->
+      <el-table-column label="确认状态" align="center" prop="auditStatus" >
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.auditStatus === 0" type="warning"  style="margin-bottom: 6px;">待确认</el-tag>
+          <el-tag v-if="scope.row.auditStatus === 1" style="margin-bottom: 6px;">已确认</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button style="padding-right: 6px;padding-left: 6px"
@@ -322,7 +319,7 @@
 <script>
 
 import { listShop } from "@/api/shop/shop";
-import {listOrder,getOrder,pushOms,pullOrder,pullOrderDetail,confirmOrder} from "@/api/wei/order";
+import {listOrder,getOrder,pullOrder,pullOrderDetail,confirmOrder} from "@/api/wei/order";
 import Clipboard from "clipboard";
 import {pcaTextArr} from "element-china-area-data";
 export default {
@@ -349,7 +346,8 @@ export default {
         pageNum: 1,
         pageSize: 10,
         shopId: null,
-        tid: null,
+        orderId: null,
+        orderCreateTime: null,
         status: null
       },
       isAudit:false,
@@ -359,6 +357,8 @@ export default {
       pcaTextArr,
       // 表单参数
       form: {
+        id:null,
+        provinces:null
       },
       rules: {
         userName: [{ required: true, message: "收件人姓名不能为空", trigger: "blur" }],
@@ -451,19 +451,25 @@ export default {
       this.multiple = !selection.length
     },
     handlePull() {
-      if(this.queryParams.shopId){
-        this.pullLoading = true
-        pullOrder({shopId:this.queryParams.shopId}).then(response => {
-          console.log('拉取订单接口返回=====',response)
-            this.$modal.msgSuccess(JSON.stringify(response));
-            this.pullLoading = false
-            this.getList()
-        })
-      }else{
-        this.$modal.msgSuccess("请先选择店铺");
+      if (!this.queryParams.shopId) {
+        this.$modal.msgError("请先选择店铺");
+        return
       }
-
-      // this.$modal.msgSuccess("请先配置API");
+      if (!this.queryParams.startTime) {
+        this.$modal.msgError("请选择下单时间")
+        return
+      }
+      this.pullLoading = true
+      pullOrder({ shopId: this.queryParams.shopId, orderDate: this.queryParams.orderCreateTime }).then(response => {
+        console.log('拉取订单接口返回=====', response)
+        this.pullLoading = false
+        if (response.code === 200) {
+          this.$modal.msgSuccess(JSON.stringify(response));
+          this.getList()
+        } else {
+          this.$modal.msgError(response.msg);
+        }
+      })
     },
     handlePullUpdate(row) {
       // 接口拉取订单并更新
@@ -485,15 +491,7 @@ export default {
         this.isAudit = false
       });
     },
-    handlePushOms(row) {
-      const ids = row.id || this.ids;
-      this.$modal.confirm('是否批量重新推送订单？').then(function() {
-        return pushOms({ids:ids});
-      }).then(() => {
-        // this.getList();
-        this.$modal.msgSuccess("推送成功");
-      }).catch(() => {});
-    },
+
     handleConfirm(row) {
       this.reset();
       const id = row.id || this.ids

@@ -18,15 +18,6 @@ export function getOrder(id) {
 }
 
 
-
-export function pushOms(data) {
-  return request({
-    url: '/pdd/order/push_oms',
-    method: 'post',
-    data: data
-  })
-}
-
 // 接口拉取拼多多订单
 export function pullOrder(data) {
   return request({

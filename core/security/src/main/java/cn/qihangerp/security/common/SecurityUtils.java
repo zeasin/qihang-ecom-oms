@@ -1,10 +1,8 @@
 package cn.qihangerp.security.common;
 
-
-
+import cn.qihangerp.security.LoginUser;
 import cn.qihangerp.common.ServiceException;
 import cn.qihangerp.common.enums.HttpStatus;
-import cn.qihangerp.security.LoginUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

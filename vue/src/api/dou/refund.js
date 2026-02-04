@@ -18,10 +18,4 @@ export function pullRefund(data) {
   })
 }
 
-export function pushOms(data) {
-  return request({
-    url: '/dou/refund/push_oms',
-    method: 'post',
-    data: data
-  })
-}
+

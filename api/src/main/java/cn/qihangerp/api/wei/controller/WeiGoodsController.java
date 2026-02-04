@@ -2,8 +2,8 @@ package cn.qihangerp.api.wei.controller;
 
 import cn.qihangerp.common.*;
 import cn.qihangerp.domain.bo.LinkErpGoodsSkuBo;
-import cn.qihangerp.module.open.wei.domain.OmsWeiGoodsSku;
-import cn.qihangerp.module.open.wei.service.OmsWeiGoodsSkuService;
+import cn.qihangerp.model.entity.OmsWeiGoodsSku;
+import cn.qihangerp.module.service.OmsWeiGoodsSkuService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;

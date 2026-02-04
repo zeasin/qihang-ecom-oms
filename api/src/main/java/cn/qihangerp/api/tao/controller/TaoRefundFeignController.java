@@ -1,8 +1,8 @@
 package cn.qihangerp.api.tao.controller;
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.open.tao.domain.TaoRefund;
-import cn.qihangerp.module.open.tao.service.TaoRefundService;
+import cn.qihangerp.model.entity.TaoRefund;
+import cn.qihangerp.module.service.TaoRefundService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

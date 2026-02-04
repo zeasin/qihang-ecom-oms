@@ -7,7 +7,6 @@
       <goods-pdd v-if="item.id === 300"></goods-pdd>
       <goods-dou v-if="item.id === 400"></goods-dou>
       <goods-wei v-if="item.id === 500"></goods-wei>
-      <goods-offline v-if="item.id === 999"></goods-offline>
     </el-tab-pane>
     </el-tabs>
 <!--    <el-tabs v-model="activeName" @tab-click="handleClick">-->
@@ -37,13 +36,12 @@ import GoodsJd  from "@/views/jd/goods/index";
 import GoodsDou  from "@/views/dou/goods/index";
 import GoodsPdd  from "@/views/pdd/goods/index";
 import GoodsWei  from "@/views/wei/goods/index";
-import GoodsOffline from "@/views/offline/goods/index"
 import {listPlatform} from "@/api/shop/shop";
 
 export default {
   name: "Goods",
   components:{
-    GoodsTao,GoodsJd,GoodsDou,GoodsPdd,GoodsOffline,GoodsWei },
+    GoodsTao,GoodsJd,GoodsDou,GoodsPdd,GoodsWei },
   data() {
     return {
       activeName: '',

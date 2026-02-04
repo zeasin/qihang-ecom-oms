@@ -11,8 +11,8 @@ import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.mq.MqUtils;
 import cn.qihangerp.model.entity.OShopPullLasttime;
 import cn.qihangerp.model.entity.OShopPullLogs;
-import cn.qihangerp.module.open.tao.domain.TaoRefund;
-import cn.qihangerp.module.open.tao.service.TaoRefundService;
+import cn.qihangerp.model.entity.TaoRefund;
+import cn.qihangerp.module.service.TaoRefundService;
 import cn.qihangerp.module.service.OShopPullLasttimeService;
 import cn.qihangerp.module.service.OShopPullLogsService;
 import cn.qihangerp.open.common.ApiResultVo;
@@ -22,6 +22,7 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,7 +30,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @AllArgsConstructor
 @RestController
@@ -41,6 +45,10 @@ public class TaoRefundApiController {
     private final MqUtils mqUtils;
     private final OShopPullLogsService pullLogsService;
     private final OShopPullLasttimeService pullLasttimeService;
+    private final String DATE_PATTERN =
+            "^(?:(?:(?:\\d{4}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|1\\d|2[0-8]))|(?:(?:(?:\\d{2}(?:0[48]|[2468][048]|[13579][26])|(?:(?:0[48]|[2468][048]|[13579][26])00))-0?2-29))$)|(?:(?:(?:\\d{4}-(?:0?[13578]|1[02]))-(?:0?[1-9]|[12]\\d|30))$)|(?:(?:(?:\\d{4}-0?[13-9]|1[0-2])-(?:0?[1-9]|[1-2]\\d|30))$)|(?:(?:(?:\\d{2}(?:0[48]|[13579][26]|[2468][048])|(?:(?:0[48]|[13579][26]|[2468][048])00))-0?2-29))$)$";
+    private final Pattern DATE_FORMAT = Pattern.compile(DATE_PATTERN);
+
     /**
      * 更新退货订单
      *
@@ -55,6 +63,16 @@ public class TaoRefundApiController {
 //            return new ApiResult<>(EnumResultVo.ParamsError.getIndex(), "参数错误，没有店铺Id");
             return AjaxResult.error(HttpStatus.PARAMS_ERROR,  "参数错误，没有店铺Id");
         }
+        if(StringUtils.isEmpty(taoRequest.getUpdateTime())) return AjaxResult.error("参数错误，没有更新时间");
+        else  {
+            // 判断时间格式
+            Matcher matcher = DATE_FORMAT.matcher(taoRequest.getUpdateTime());
+            boolean b = matcher.find();
+            if (!b) {
+                return AjaxResult.error("更新日期格式错误");
+            }
+        }
+
         Date currDateTime = new Date();
         long beginTime = System.currentTimeMillis();
 
@@ -70,29 +88,32 @@ public class TaoRefundApiController {
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
 
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         // 获取最后更新时间
         LocalDateTime startTime = null;
         LocalDateTime  endTime = null;
-        OShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(taoRequest.getShopId(), "REFUND");
-        if(lasttime == null){
-            endTime = LocalDateTime.now();
-            startTime = endTime.minusDays(1);
-        }else{
-            startTime = lasttime.getLasttime().minusHours(1);//取上次结束一个小时前
-            Duration duration = Duration.between(startTime, LocalDateTime.now());
-            long hours = duration.toHours();
-            if (hours > 24) {
-                // 大于24小时，只取24小时
-                endTime = startTime.plusHours(24);
-            } else {
-                endTime = LocalDateTime.now();
-            }
-//            endTime = startTime.plusDays(1);//取24小时
-//            if(endTime.isAfter(LocalDateTime.now())){
+        // 将时间字符串转换为 LocalDateTime
+        startTime = LocalDateTime.parse(taoRequest.getUpdateTime() + " 00:00:01", formatter);
+        endTime = LocalDateTime.parse(taoRequest.getUpdateTime() + " 23:59:59", formatter);
+//        OShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(taoRequest.getShopId(), "REFUND");
+//        if(lasttime == null){
+//            endTime = LocalDateTime.now();
+//            startTime = endTime.minusDays(1);
+//        }else{
+//            startTime = lasttime.getLasttime().minusHours(1);//取上次结束一个小时前
+//            Duration duration = Duration.between(startTime, LocalDateTime.now());
+//            long hours = duration.toHours();
+//            if (hours > 24) {
+//                // 大于24小时，只取24小时
+//                endTime = startTime.plusHours(24);
+//            } else {
 //                endTime = LocalDateTime.now();
 //            }
-        }
+////            endTime = startTime.plusDays(1);//取24小时
+////            if(endTime.isAfter(LocalDateTime.now())){
+////                endTime = LocalDateTime.now();
+////            }
+//        }
 //        Long pageSize = 100l;
 //        Long pageIndex = 1l;
 
@@ -132,25 +153,25 @@ public class TaoRefundApiController {
                 totalError++;
             }
         }
-        if(totalError ==0) {
-            if (lasttime == null) {
-                // 新增
-                OShopPullLasttime insertLasttime = new OShopPullLasttime();
-                insertLasttime.setShopId(taoRequest.getShopId());
-                insertLasttime.setCreateTime(new Date());
-                insertLasttime.setLasttime(endTime);
-                insertLasttime.setPullType("REFUND");
-                pullLasttimeService.save(insertLasttime);
-
-            } else {
-                // 修改
-                OShopPullLasttime updateLasttime = new OShopPullLasttime();
-                updateLasttime.setId(lasttime.getId());
-                updateLasttime.setUpdateTime(new Date());
-                updateLasttime.setLasttime(endTime);
-                pullLasttimeService.updateById(updateLasttime);
-            }
-        }
+//        if(totalError ==0) {
+//            if (lasttime == null) {
+//                // 新增
+//                OShopPullLasttime insertLasttime = new OShopPullLasttime();
+//                insertLasttime.setShopId(taoRequest.getShopId());
+//                insertLasttime.setCreateTime(new Date());
+//                insertLasttime.setLasttime(endTime);
+//                insertLasttime.setPullType("REFUND");
+//                pullLasttimeService.save(insertLasttime);
+//
+//            } else {
+//                // 修改
+//                OShopPullLasttime updateLasttime = new OShopPullLasttime();
+//                updateLasttime.setId(lasttime.getId());
+//                updateLasttime.setUpdateTime(new Date());
+//                updateLasttime.setLasttime(endTime);
+//                pullLasttimeService.updateById(updateLasttime);
+//            }
+//        }
         String msg = "成功，总共找到：" + upResult.getTotalRecords() + "条订单，新增：" + insertSuccess + "条，添加错误：" + totalError + "条，更新：" + hasExistOrder + "条";
         OShopPullLogs logs = new OShopPullLogs();
         logs.setShopType(EnumShopType.TAO.getIndex());

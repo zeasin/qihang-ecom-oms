@@ -4,11 +4,11 @@ import cn.qihangerp.common.config.RedisCache;
 import cn.qihangerp.common.constant.CacheConstants;
 import cn.qihangerp.common.utils.IdUtils;
 import cn.qihangerp.common.utils.StringUtils;
+import cn.qihangerp.security.LoginUser;
 import cn.qihangerp.security.common.Constants;
 import cn.qihangerp.security.utils.AddressUtils;
 import cn.qihangerp.security.utils.IpUtils;
 import cn.qihangerp.security.utils.ServletUtils;
-
 import eu.bitwalker.useragentutils.UserAgent;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

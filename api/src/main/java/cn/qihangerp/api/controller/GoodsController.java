@@ -1,12 +1,12 @@
 package cn.qihangerp.api.controller;
 
 import cn.qihangerp.common.*;
+import cn.qihangerp.model.bo.GoodsAddBo;
 import cn.qihangerp.model.entity.OGoods;
 import cn.qihangerp.model.entity.OGoodsSku;
 import cn.qihangerp.model.vo.GoodsSpecListVo;
-import cn.qihangerp.module.goods.domain.bo.GoodsAddBo;
-import cn.qihangerp.module.goods.service.OGoodsService;
-import cn.qihangerp.module.goods.service.OGoodsSkuService;
+import cn.qihangerp.module.service.OGoodsService;
+import cn.qihangerp.module.service.OGoodsSkuService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

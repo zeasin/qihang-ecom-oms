@@ -36,11 +36,3 @@ export function pullOrderDetail(data) {
   })
 }
 
-
-export function pushOms(data) {
-  return request({
-    url: '/jd/order/push_oms',
-    method: 'post',
-    data: data
-  })
-}

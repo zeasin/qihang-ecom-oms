@@ -330,9 +330,10 @@ export default {
       });
     if(this.$route.query.status){
       this.queryParams.status = this.$route.query.status
-    }else {
-      this.queryParams.status = '0'
     }
+    // else {
+    //   this.queryParams.status = '0'
+    // }
     this.getList();
   },
   methods: {

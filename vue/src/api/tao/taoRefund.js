@@ -25,10 +25,4 @@ export function pullRefundDetail(data) {
   })
 }
 
-export function pushOms(data) {
-  return request({
-    url: '/tao/refund/push_oms',
-    method: 'post',
-    data: data
-  })
-}
+

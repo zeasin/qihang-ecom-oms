@@ -7,7 +7,6 @@
         <refund-pdd v-if="item.id === 300"></refund-pdd>
         <refund-dou v-if="item.id === 400"></refund-dou>
         <refund-wei v-if="item.id === 500"></refund-wei>
-        <after-sale-offline v-if="item.id === 999"></after-sale-offline>
       </el-tab-pane>
     </el-tabs>
 <!--    <el-tabs v-model="activeName" @tab-click="handleClick">-->
@@ -38,14 +37,13 @@ import RefundJd  from "@/views/jd/refund/index";
 import RefundDou from "@/views/dou/refund/index.vue";
 import RefundPdd from "@/views/pdd/refund/index.vue";
 import RefundWei from "@/views/wei/refund/index.vue"
-import AfterSaleOffline from "@/views/offline/aftersale/index.vue"
 import {listPlatform} from "@/api/shop/shop";
 
 
 export default {
   name: "refund",
   components:{
-    RefundPdd, RefundDou, RefundTao,RefundJd,AfterSaleOffline,RefundWei},
+    RefundPdd, RefundDou, RefundTao,RefundJd,RefundWei},
   data() {
     return {
       activeName: '',

@@ -40,7 +40,12 @@
 
         </el-select>
       </el-form-item>
-
+      <el-form-item label="申请时间" prop="createTime">
+        <el-date-picker clearable  @change="handleQuery"
+                        v-model="queryParams.createTime" value-format="yyyy-MM-dd"
+                        type="date" placeholder="售后申请时间">
+        </el-date-picker>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -51,23 +56,14 @@
       <el-col :span="1.5">
         <el-button
           :loading="pullLoading"
-          type="danger"
+          type="success"
           plain
           icon="el-icon-download"
           size="mini"
           @click="handlePull"
         >API拉取新退款</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-refresh"
-          size="mini"
-          :disabled="multiple"
-          @click="handlePushOms"
-        >手动将选中退款推送到售后中心</el-button>
-      </el-col>
+
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -95,18 +91,18 @@
       </el-table-column>
       <el-table-column label="订单号" align="center" prop="relatedId" />
       <el-table-column label="商品" prop="orderProductName" ></el-table-column>
-      <el-table-column label="退款金额" prop="refundAmount" >
+      <el-table-column label="退款金额" prop="refundAmount" width="100">
           <template slot-scope="scope">
             <span>{{ amountFormatter(null,null,scope.row.refundAmount/100,0) }}</span>
           </template>
       </el-table-column>
-      <el-table-column label="订单金额" prop="orderPayAmount" >
+      <el-table-column label="订单金额" prop="orderPayAmount"  width="100">
         <template slot-scope="scope">
           <span>{{ amountFormatter(null,null,scope.row.orderPayAmount/100,0) }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="售后数量" prop="aftersaleNum" ></el-table-column>
+      <el-table-column label="售后数量" prop="aftersaleNum"  width="80"></el-table-column>
 
 
       <el-table-column label="退款状态" align="center" prop="refundStatus" >
@@ -124,25 +120,19 @@
           <span>{{ parseTime(scope.row.applyTime) }}</span>
         </template>
       </el-table-column>
-<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
-<!--        <template slot-scope="scope">-->
-<!--          <el-button-->
-<!--          v-if="scope.row.auditStatus === 0 && scope.row.afterSalesType === 1 "-->
-<!--            size="mini"-->
-<!--            type="text"-->
-<!--            icon="el-icon-edit"-->
-<!--            @click="handleConfirm(scope.row)"-->
-<!--            v-hasPermi="['tao:taoRefund:edit']"-->
-<!--          >退货确认</el-button>-->
-<!--          &lt;!&ndash; <el-button-->
-<!--            size="mini"-->
-<!--            type="text"-->
-<!--            icon="el-icon-delete"-->
-<!--            @click="handleDelete(scope.row)"-->
-<!--            v-hasPermi="['tao:taoRefund:remove']"-->
-<!--          >删除</el-button> &ndash;&gt;-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="100">
+        <template slot-scope="scope">
+          <el-button
+          v-if="scope.row.auditStatus === 0 "
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleConfirm(scope.row)"
+            v-hasPermi="['tao:taoRefund:edit']"
+          >售后处理</el-button>
+
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination
@@ -167,6 +157,7 @@ export default {
     return {
       // 遮罩层
       loading: true,
+      pullLoading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -190,7 +181,7 @@ export default {
         pageSize: 10,
         refundId: null,
         afterSalesType: null,
-        tid: null,
+        createTime: null,
         oid: null,
 
       },
@@ -269,46 +260,46 @@ export default {
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
-    handlePushOms(row) {
-      const ids = row.aftersaleId || this.ids;
-      this.$modal.confirm('是否手动推送到OMS？').then(function() {
-        return pushOms({ids:ids});
-      }).then(() => {
-        // this.getList();
-        this.$modal.msgSuccess("推送成功");
-      }).catch(() => {});
-    },
+
     handlePull() {
-      if(this.queryParams.shopId){
-        this.pullLoading = true
-        pullRefund({shopId:this.queryParams.shopId,updType:0}).then(response => {
-          console.log('拉取淘宝订单接口返回=====', response)
-          if (response.code === 1401) {
-            MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', {
-              confirmButtonText: '前往授权',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }).then(() => {
-              this.$router.push({path: "/shop/shop_list", query: {type: 3}})
-              // isRelogin.show = false;
-              // store.dispatch('LogOut').then(() => {
-              // location.href = response.data.tokenRequestUrl+'?shopId='+this.queryParams.shopId
-              // })
-            }).catch(() => {
-              isRelogin.show = false;
-            });
-
-            // return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
-          } else {
-            this.$modal.msgSuccess(JSON.stringify(response));
-            this.getList();
-
-          }
-          this.pullLoading = false
-        })
-      }else{
-        this.$modal.msgSuccess("请先选择店铺");
+      if (!this.queryParams.shopId) {
+        this.$modal.msgError("请先选择店铺");
+        return
       }
+      if (!this.queryParams.createTime) {
+        this.$modal.msgError("请选择售后申请时间")
+        return
+      }
+      this.pullLoading = true
+      pullRefund({
+        shopId: this.queryParams.shopId,
+        updType: 0,
+        createTime: this.queryParams.createTime
+      }).then(response => {
+        console.log('拉取DOU售后接口返回=====', response)
+        if (response.code === 1401) {
+          MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', {
+            confirmButtonText: '前往授权',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$router.push({ path: "/shop/shop_list", query: { type: 3 } })
+            // isRelogin.show = false;
+            // store.dispatch('LogOut').then(() => {
+            // location.href = response.data.tokenRequestUrl+'?shopId='+this.queryParams.shopId
+            // })
+          }).catch(() => {
+            isRelogin.show = false;
+          });
+
+          // return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
+        } else {
+          this.$modal.msgSuccess(JSON.stringify(response));
+          this.getList();
+
+        }
+        this.pullLoading = false
+      })
 
       // this.$modal.msgSuccess("请先配置API");
     }

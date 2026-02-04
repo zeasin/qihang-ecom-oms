@@ -17,6 +17,7 @@
             :label="item.name"
             :value="item.id">
           </el-option>
+          <el-option label="其他" value="999"></el-option>
         </el-select>
       </el-form-item>
 
@@ -64,7 +65,8 @@
       <el-table-column label="店铺名" align="center" prop="name" />
       <el-table-column label="平台" align="center" prop="type" >
         <template slot-scope="scope">
-          <el-tag >{{typeList.find(x=>x.id === scope.row.type)?typeList.find(x=>x.id === scope.row.type).name:''}}</el-tag>
+          <el-tag v-if="scope.row.type==999">其他</el-tag>
+          <el-tag v-else>{{typeList.find(x=>x.id === scope.row.type)?typeList.find(x=>x.id === scope.row.type).name:''}}</el-tag>
         </template>
       </el-table-column>
        <el-table-column label="店铺ID" align="center" prop="sellerId" />
@@ -111,7 +113,7 @@
           >删除</el-button>
           </el-row>
                       <el-button
-                        v-if="scope.row.type===100 || scope.row.type===200 || scope.row.type===280 || scope.row.type===300"
+                        v-if="scope.row.type!==999"
                         type="success"
                         plain
                         icon="el-icon-refresh"
@@ -132,7 +134,7 @@
 
     <!-- 添加或修改店铺对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="店铺名" prop="name">
           <el-input v-model="form.name" placeholder="请输入店铺名" />
         </el-form-item>
@@ -144,6 +146,7 @@
               :label="item.name"
               :value="item.id">
             </el-option>
+            <el-option label="其他" value="999"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="卖家Id" prop="sellerId">
@@ -154,6 +157,9 @@
         </el-form-item>
         <el-form-item label="appSecret" prop="appSecret" v-if="form.type===500">
           <el-input v-model="form.appSecret" placeholder="请输入appSecret" />
+        </el-form-item>
+        <el-form-item label="Token" prop="accessToken">
+          <el-input type="textarea" v-model="form.accessToken" placeholder="请输入AccessToken" />
         </el-form-item>
         <el-form-item label="描述" prop="remark">
           <el-input type="textarea" v-model="form.remark" placeholder="请输入描述" />
@@ -206,6 +212,7 @@ import { listShop,listPlatform, getShop, delShop, addShop, updateShop } from "@/
 import {getJdOAuthUrl, getJdToken} from "@/api/jd/shop";
 import {getTaoOAuthUrl,saveSessionKey} from "@/api/tao/shop_api";
 import {getOAuthUrl,getPddToken} from "@/api/pdd/shopApi";
+import {updateDouToken} from "@/api/dou/shop";
 
 export default {
   name: "Shop",
@@ -263,8 +270,18 @@ export default {
   created() {
     listPlatform().then(res => {
       this.typeList = res.rows;
+      this.getList();
     })
-    this.getList();
+
+  },
+  mounted() {
+    if(this.$route.query.type){
+      // listPlatform({status:0}).then(res => {
+      //   this.typeList = res.rows;
+      this.queryParams.type = parseInt(this.$route.query.type)
+      this.getList()
+      // })
+    }
   },
   methods: {
     /** 查询店铺列表 */
@@ -341,6 +358,18 @@ export default {
           this.tokenForm.shopId = row.id
           this.tokenForm.shopType = row.type
         })
+      }else if(row.type===400){
+        updateDouToken({shopId:row.id}).then(resp=>{
+          if(resp.code === 200){
+            this.$modal.msgSuccess("Token更新成功")
+            this.getList()
+          }else{
+            this.$modal.msgError(resp.msg)
+          }
+
+        })
+      }else{
+        this.$modal.msgError('暂时不支持')
       }
 
     },

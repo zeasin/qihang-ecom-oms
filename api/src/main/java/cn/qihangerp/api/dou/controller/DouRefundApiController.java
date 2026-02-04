@@ -11,8 +11,8 @@ import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.mq.MqUtils;
 import cn.qihangerp.model.entity.OShopPullLasttime;
 import cn.qihangerp.model.entity.OShopPullLogs;
-import cn.qihangerp.module.open.dou.domain.DouRefund;
-import cn.qihangerp.module.open.dou.service.DouRefundService;
+import cn.qihangerp.model.entity.DouRefund;
+import cn.qihangerp.module.service.DouRefundService;
 import cn.qihangerp.module.service.OShopPullLasttimeService;
 import cn.qihangerp.module.service.OShopPullLogsService;
 
@@ -24,6 +24,7 @@ import cn.qihangerp.open.dou.model.Token;
 import cn.qihangerp.open.dou.model.after.AfterSale;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -62,6 +63,8 @@ public class DouRefundApiController {
         if (req.getShopId() == null || req.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }
+        if(StringUtils.isBlank(req.getCreateTime())) return AjaxResult.error("缺少参数：createTime");
+
         Date currDateTime = new Date();
         Long currTimeMillis = System.currentTimeMillis();
 
@@ -74,41 +77,40 @@ public class DouRefundApiController {
         String appSecret = checkResult.getData().getAppSecret();
         Long douShopId = checkResult.getData().getSellerId();
         String accessToken = checkResult.getData().getAccessToken();
-
-        // 取当前时间30分钟前
-//        LocalDateTime endTime = LocalDateTime.now();
-//        LocalDateTime startTime = endTime.minus(60*24, ChronoUnit.MINUTES);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         // 获取最后更新时间
         LocalDateTime startTime = null;
         LocalDateTime  endTime = null;
-        OShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(req.getShopId(), "REFUND");
-        if(lasttime == null){
-            endTime = LocalDateTime.now();
-            startTime = endTime.minusDays(1);
-        }else {
-            startTime = lasttime.getLasttime().minusHours(1);//取上次结束一个小时前
-            Duration duration = Duration.between(startTime, LocalDateTime.now());
-            long hours = duration.toHours();
-            if (hours > 24) {
-                // 大于24小时，只取24小时
-                endTime = startTime.plusHours(24);
-            } else {
-                endTime = LocalDateTime.now();
-            }
-//            endTime = startTime.plusDays(1);//取24小时
-//            if(endTime.isAfter(LocalDateTime.now())){
+//        OShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(req.getShopId(), "REFUND");
+//        if(lasttime == null){
+//            endTime = LocalDateTime.now();
+//            startTime = endTime.minusDays(1);
+//        }else {
+//            startTime = lasttime.getLasttime().minusHours(1);//取上次结束一个小时前
+//            Duration duration = Duration.between(startTime, LocalDateTime.now());
+//            long hours = duration.toHours();
+//            if (hours > 24) {
+//                // 大于24小时，只取24小时
+//                endTime = startTime.plusHours(24);
+//            } else {
 //                endTime = LocalDateTime.now();
 //            }
-        }
-        String pullParams = "{startTime:"+startTime+",endTime:"+endTime+"}";
+////            endTime = startTime.plusDays(1);//取24小时
+////            if(endTime.isAfter(LocalDateTime.now())){
+////                endTime = LocalDateTime.now();
+////            }
+//        }
+        startTime = LocalDateTime.parse(req.getCreateTime() + " 00:00:01", formatter);
+        endTime = LocalDateTime.parse(req.getCreateTime() + " 23:59:59", formatter);
+        String pullParams = "{startTime:"+startTime.format(formatter)+",endTime:"+endTime.format(formatter)+"}";
         ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret,checkResult.getData().getSellerId());
         if(token.getCode()==0) {
             accessToken = token.getData().getAccessToken();
         }else{
             return AjaxResult.error(token.getMsg());
         }
-        String startTimeStr = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        String endTimeStr = endTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//        String startTimeStr = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//        String endTimeStr = endTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         Long startTimestamp = startTime.toEpochSecond(ZoneOffset.ofHours(8));
         Long endTimestamp = endTime.toEpochSecond(ZoneOffset.ofHours(8));
 
@@ -172,26 +174,26 @@ public class DouRefundApiController {
                 totalError++;
             }
         }
-        if(totalError == 0) {
-            if (lasttime == null) {
-                // 新增
-                OShopPullLasttime insertLasttime = new OShopPullLasttime();
-                insertLasttime.setShopId(req.getShopId());
-                insertLasttime.setCreateTime(new Date());
-                insertLasttime.setLasttime(endTime);
-                insertLasttime.setPullType("REFUND");
-                pullLasttimeService.save(insertLasttime);
+//        if(totalError == 0) {
+//            if (lasttime == null) {
+//                // 新增
+//                OShopPullLasttime insertLasttime = new OShopPullLasttime();
+//                insertLasttime.setShopId(req.getShopId());
+//                insertLasttime.setCreateTime(new Date());
+//                insertLasttime.setLasttime(endTime);
+//                insertLasttime.setPullType("REFUND");
+//                pullLasttimeService.save(insertLasttime);
+//
+//            } else {
+//                // 修改
+//                OShopPullLasttime updateLasttime = new OShopPullLasttime();
+//                updateLasttime.setId(lasttime.getId());
+//                updateLasttime.setUpdateTime(new Date());
+//                updateLasttime.setLasttime(endTime);
+//                pullLasttimeService.updateById(updateLasttime);
+//            }
+//        }
 
-            } else {
-                // 修改
-                OShopPullLasttime updateLasttime = new OShopPullLasttime();
-                updateLasttime.setId(lasttime.getId());
-                updateLasttime.setUpdateTime(new Date());
-                updateLasttime.setLasttime(endTime);
-                pullLasttimeService.updateById(updateLasttime);
-            }
-        }
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         OShopPullLogs logs = new OShopPullLogs();
         logs.setShopType(EnumShopType.DOU.getIndex());
         logs.setShopId(req.getShopId());
@@ -203,7 +205,7 @@ public class DouRefundApiController {
         logs.setDuration(System.currentTimeMillis() - currTimeMillis);
         pullLogsService.save(logs);
 
-        String msg = "成功{startTime:"+startTime.format(df)+",endTime:"+endTime.format(df)+"}总共找到：" + resultVo.getTotalRecords() + "条，新增：" + insertSuccess + "条，添加错误：" + totalError + "条，更新：" + hasExistOrder + "条";
+        String msg = "成功{startTime:"+startTime.format(formatter)+",endTime:"+endTime.format(formatter)+"}总共找到：" + resultVo.getTotalRecords() + "条，新增：" + insertSuccess + "条，添加错误：" + totalError + "条，更新：" + hasExistOrder + "条";
         log.info("/**************主动更新DOU退款：END：" + msg + "****************/");
         return AjaxResult.success(msg);
     }

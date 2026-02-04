@@ -1,8 +1,8 @@
 package cn.qihangerp.api.wei.controller.feign;
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.open.wei.domain.OmsWeiOrder;
-import cn.qihangerp.module.open.wei.service.OmsWeiOrderService;
+import cn.qihangerp.model.entity.OmsWeiOrder;
+import cn.qihangerp.module.service.OmsWeiOrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

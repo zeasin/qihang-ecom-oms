@@ -2,7 +2,7 @@ package cn.qihangerp.api.dou.controller;
 
 import cn.qihangerp.api.dou.DouApiCommon;
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.open.dou.service.DouOrderService;
+import cn.qihangerp.module.service.DouOrderService;
 import cn.qihangerp.open.dou.DouRequest;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;

@@ -10,20 +10,10 @@ export function list(query) {
 }
 
 // 新增补发
-export function addShipAgain(data) {
+export function addHandle (data) {
   return request({
-    url: '/afterSale/shipAgain',
+    url: '/afterSale/addHandle',
     method: 'post',
     data: data
   })
 }
-
-// 完成
-export function shipAgainComplete(id) {
-  return request({
-    url: '/afterSale/shipAgain/complete/'+id,
-    method: 'put'
-  })
-}
-
-

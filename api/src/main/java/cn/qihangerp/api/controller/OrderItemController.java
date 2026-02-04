@@ -1,14 +1,12 @@
 package cn.qihangerp.api.controller;
 
-
-
 import cn.qihangerp.api.request.OrderItemSpecIdUpdateBo;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.module.order.domain.bo.OrderItemListBo;
-import cn.qihangerp.module.order.service.OOrderItemService;
-import cn.qihangerp.module.order.service.OOrderService;
+import cn.qihangerp.model.bo.OrderItemListBo;
+import cn.qihangerp.module.service.OOrderItemService;
+import cn.qihangerp.module.service.OOrderService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

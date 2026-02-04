@@ -9,10 +9,10 @@ import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.mq.MqMessage;
 import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.mq.MqUtils;
-import cn.qihangerp.module.open.tao.domain.TaoRefund;
-import cn.qihangerp.module.open.tao.domain.bo.TaoOrderPushBo;
-import cn.qihangerp.module.open.tao.domain.bo.TaoRefundBo;
-import cn.qihangerp.module.open.tao.service.TaoRefundService;
+import cn.qihangerp.model.entity.TaoRefund;
+import cn.qihangerp.model.bo.TaoOrderPushBo;
+import cn.qihangerp.model.bo.TaoRefundBo;
+import cn.qihangerp.module.service.TaoRefundService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -30,15 +30,4 @@ public class TaoRefundController extends BaseController {
         return getDataTable(result);
     }
 
-    @PostMapping("/push_oms")
-    @ResponseBody
-    public AjaxResult pushOms(@RequestBody TaoOrderPushBo bo) {
-        // TODO:需要优化消息格式
-        if(bo!=null && bo.getIds()!=null) {
-            for(String id: bo.getIds()) {
-                mqUtils.sendApiMessage(MqMessage.build(EnumShopType.TAO, MqType.REFUND_MESSAGE, id));
-            }
-        }
-        return success();
-    }
 }

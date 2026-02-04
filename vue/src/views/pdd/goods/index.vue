@@ -37,12 +37,12 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="是否关联" prop="hasLink">
-        <el-select v-model="queryParams.hasLink" placeholder="是否关联" clearable @change="handleQuery">
-          <el-option label="未关联" value="0"></el-option>
-          <el-option label="已关联" value="1"></el-option>
-        </el-select>
-      </el-form-item>
+<!--      <el-form-item label="是否关联" prop="hasLink">-->
+<!--        <el-select v-model="queryParams.hasLink" placeholder="是否关联" clearable @change="handleQuery">-->
+<!--          <el-option label="未关联" value="0"></el-option>-->
+<!--          <el-option label="已关联" value="1"></el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -68,19 +68,15 @@
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
 <!--      <el-table-column label="平台商品ID" align="center" prop="goodsId" />-->
-      <el-table-column label="平台SKU ID" align="left" prop="skuId" >
+      <el-table-column label="平台SKU ID" align="left" prop="skuId" width="160">
         <template slot-scope="scope">
           {{scope.row.skuId}} <br/>
           <el-tag>{{ shopList.find(x=>x.id === scope.row.shopId) ? shopList.find(x=>x.id === scope.row.shopId).name : '' }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="商家编码" align="center" prop="outerId" />
-      <el-table-column label="标题" align="center" prop="goodsName" />
-      <el-table-column label="图片" align="center" prop="thumbUrl" width="100">
-        <template slot-scope="scope">
-          <image-preview :src="scope.row.thumbUrl" :width="50" :height="50"/>
-        </template>
-      </el-table-column>
+      <el-table-column label="商家编码" align="center" prop="outerId" width="160"/>
+      <el-table-column label="标题" align="left" prop="goodsName" />
+
 
 <!--      <el-table-column label="店铺" align="center" prop="categoryId" >-->
 <!--        <template slot-scope="scope">-->

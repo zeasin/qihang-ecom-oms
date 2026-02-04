@@ -36,9 +36,10 @@ export function pullOrderDetail(data) {
   })
 }
 
-export function pushOms(data) {
+// 确认订单
+export function confirmOrder(data) {
   return request({
-    url: '/wei/order/push_oms',
+    url: '/wei/order/confirmOrder',
     method: 'post',
     data: data
   })

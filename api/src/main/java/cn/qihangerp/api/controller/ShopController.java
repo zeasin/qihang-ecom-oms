@@ -11,6 +11,7 @@ import cn.qihangerp.module.service.OShopService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -69,7 +70,10 @@ public class ShopController extends BaseController {
     @PutMapping("/shop")
     public AjaxResult edit(@RequestBody OShop shop)
     {
-//        if(shop.getId()==null) return AjaxResult.error("缺少参数：id");
+        if(shop.getId()==null) return AjaxResult.error("缺少参数：id");
+        if(StringUtils.hasText(shop.getAccessToken())){
+            shop.setApiStatus(1);
+        }
         shop.setModifyOn(System.currentTimeMillis() /1000);
         shopService.updateShopById(shop);
 //        try{

@@ -5,7 +5,7 @@ import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.model.entity.OGoodsSupplier;
-import cn.qihangerp.module.goods.service.OGoodsSupplierService;
+import cn.qihangerp.module.service.OGoodsSupplierService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

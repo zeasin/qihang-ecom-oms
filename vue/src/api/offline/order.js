@@ -26,10 +26,12 @@ export function addOrder(data) {
   })
 }
 
-export function pushOms(data) {
+// 确认抖店订单
+export function confirmOrder(data) {
   return request({
-    url: '/offline_order/push_oms',
+    url: '/offline_order/confirmOrder',
     method: 'post',
     data: data
   })
 }
+

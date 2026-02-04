@@ -2,7 +2,7 @@ package cn.qihangerp.api.tao.controller;
 
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.open.tao.domain.bo.TaoOrderShipBo;
+import cn.qihangerp.model.bo.TaoOrderShipBo;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;

@@ -1,33 +1,20 @@
 package cn.qihangerp.api.wei.controller;
 
-import cn.qihangerp.api.wei.PullRequest;
 import cn.qihangerp.api.wei.WeiApiCommon;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.EnumShopType;
-import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.model.entity.OLogisticsCompany;
 import cn.qihangerp.model.entity.OShop;
-import cn.qihangerp.module.open.wei.domain.OmsWeiGoods;
-import cn.qihangerp.module.open.wei.domain.OmsWeiGoodsSku;
-import cn.qihangerp.module.open.wei.service.OmsWeiGoodsService;
 import cn.qihangerp.module.service.OLogisticsCompanyService;
 import cn.qihangerp.module.service.OShopService;
-import cn.qihangerp.open.common.ApiResultVo;
-import cn.qihangerp.open.wei.WeiGoodsApiService;
 import cn.qihangerp.open.wei.WeiLogisticsApiHelper;
-import cn.qihangerp.open.wei.model.Product;
-import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j

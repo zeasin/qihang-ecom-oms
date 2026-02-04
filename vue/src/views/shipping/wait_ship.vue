@@ -175,7 +175,7 @@
 
 
     <!-- 打包发货对话框 -->
-    <el-dialog title="打包发货" :visible.sync="shipOpen" width="1100px" append-to-body>
+    <el-dialog title="打包发货" :visible.sync="shipOpen" width="1100px" append-to-body :close-on-click-modal="false">
 
       <el-form ref="form" :model="form" :rules="rules" label-width="80px" >
         <el-descriptions title="订单信息">
@@ -222,7 +222,7 @@
         </el-descriptions>
 
         <el-divider content-position="center">商品明细</el-divider>
-        <el-table :data="form.itemVoList"  style="margin-bottom: 10px;">
+        <el-table :data="form.itemList"  style="margin-bottom: 10px;">
           <!-- <el-table-column type="selection" width="50" align="center" /> -->
           <el-table-column label="序号" align="center" type="index" width="50"/>
 
@@ -279,7 +279,7 @@
     </el-dialog>
 
     <!-- 分配给供应商发货对话框 -->
-    <el-dialog title="分配给供应商发货" :visible.sync="allocateShipmentOpen" width="1100px" append-to-body>
+    <el-dialog title="分配给供应商发货" :visible.sync="allocateShipmentOpen" width="1100px" append-to-body :close-on-click-modal="false">
 
       <el-form ref="form" :model="form" :rules="rules" label-width="80px" >
         <el-descriptions title="订单信息">
@@ -306,7 +306,7 @@
         </el-descriptions>
 
         <el-divider content-position="center">商品明细</el-divider>
-        <el-table :data="form.itemVoList"  style="margin-bottom: 10px;">
+        <el-table :data="form.itemList"  style="margin-bottom: 10px;">
           <!-- <el-table-column type="selection" width="50" align="center" /> -->
           <el-table-column label="序号" align="center" type="index" width="50"/>
 
@@ -322,6 +322,12 @@
           <el-table-column label="数量" prop="quantity" width="50"></el-table-column>
           <!-- <el-table-column label="商品金额" prop="itemAmount"></el-table-column> -->
         </el-table>
+        <el-form-item label="供应商" prop="supplierId">
+          <el-select v-model="form.supplierId" filterable  placeholder="请选择供应商名称">
+            <el-option v-for="item in supplierList" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="收件人" prop="receiverName">
           <el-input v-model="form.receiverName" placeholder="请输入收件人" style="width:300px" />
         </el-form-item>
@@ -360,6 +366,7 @@ import {listShop} from "@/api/shop/shop";
 import {listLogisticsStatus} from "@/api/shipping/logistics";
 import {amountFormatter, parseTime} from "@/utils/zhijian";
 import {getDicts} from "@/api/system/dict/data";
+import { listSupplier } from '@/api/goods/supplier'
 
 export default {
   name: "ShipmentWait",
@@ -373,6 +380,7 @@ export default {
       shopList: [],
       orderList: [],
       logisticsList: [],
+      supplierList: [],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -413,7 +421,7 @@ export default {
         shippingCompany: [{ required: true, message: '不能为空' }],
         packageAmount: [{ required: true, message: '不能为空' }],
         shippingCost: [{ required: true, message: '不能为空' }],
-        // shippingMan: [{ required: true, message: '不能为空' }],
+        supplierId: [{ required: true, message: '不能为空' }],
         receiverName: [{ required: true, message: '不能为空' }],
         receiverMobile: [{ required: true, message: '不能为空' }],
         address: [{ required: true, message: '不能为空' }],
@@ -509,6 +517,9 @@ export default {
         this.form.packageAmount=0.0
         this.allocateShipmentOpen = true;
         // this.detailTitle = "订单详情";
+        listSupplier({pageNum: 1, pageSize: 100}).then(resp=>{
+          this.supplierList = resp.rows
+        })
       });
     },
     // 手动发货按钮

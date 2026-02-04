@@ -7,7 +7,7 @@
         <order-pdd v-if="item.id === 300"></order-pdd>
         <order-dou v-if="item.id === 400"></order-dou>
         <order-wei v-if="item.id === 500"></order-wei>
-        <order-offline v-if="item.id === 999"></order-offline>
+<!--        <order-offline v-if="item.id === 999"></order-offline>-->
       </el-tab-pane>
 <!--      <el-tab-pane label="天猫" name="taoOrder">-->
 <!--        <order-tao></order-tao>-->
@@ -36,11 +36,10 @@ import OrderJd  from "@/views/jd/order/index";
 import OrderDou  from "@/views/dou/order/index";
 import OrderPdd  from "@/views/pdd/order/index";
 import OrderWei  from "@/views/wei/order/index";
-import OrderOffline  from "@/views/offline/order/index";
 import {listPlatform} from "@/api/shop/shop";
 export default {
   name: "Order",
-  components:{OrderTao,OrderJd,OrderDou,OrderPdd,OrderWei,OrderOffline},
+  components:{OrderTao,OrderJd,OrderDou,OrderPdd,OrderWei},
   data() {
     return {
       activeName: '',

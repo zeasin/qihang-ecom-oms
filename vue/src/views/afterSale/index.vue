@@ -79,15 +79,15 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="primary"-->
-<!--          plain-->
-<!--          icon="el-icon-plus"-->
-<!--          size="mini"-->
-<!--          @click="handleAdd"-->
-<!--        >手动处理售后</el-button>-->
-<!--      </el-col>-->
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAdd"
+        >手动处理售后</el-button>
+      </el-col>
 <!--      <el-col :span="1.5">-->
 <!--        <el-button-->
 <!--          type="danger"-->
@@ -115,7 +115,7 @@
         </template>
       </el-table-column>
       <el-table-column label="源订单号" align="left" prop="orderNum" width="150px"/>
-      <el-table-column label="退货类型" align="center" prop="type" >
+      <el-table-column label="售后类型" align="center" prop="type" >
         <template slot-scope="scope">
           <el-tag size="small" v-if="scope.row.type === 0">无需处理</el-tag>
           <el-tag size="small" v-if="scope.row.type === 10">退货</el-tag>
@@ -151,13 +151,13 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
-           v-if="scope.row.status === 1"
+            v-if="scope.row.status === 0"
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['api:returned:edit']"
-          >确认完成</el-button>
+          >确认处理</el-button>
+
         </template>
       </el-table-column>
     </el-table>
@@ -172,16 +172,17 @@
 
     <!-- 添加或修改退换货对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="140px">
         <el-form-item label="店铺" prop="shopId">
           <el-select v-model="form.shopId" filterable r placeholder="搜索店铺" >
             <el-option v-for="item in shopList" :key="item.id" :label="item.name" :value="item.id">
               <span style="float: left">{{ item.name }}</span>
-              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 1">淘宝天猫</span>
-              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 2">京东</span>
-              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 3">抖店</span>
-              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 4">拼多多</span>
-              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 5">视频号小店</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 100">淘宝天猫</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 200">京东</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 400">抖店</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 300">拼多多</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 500">微信小店</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 999">其他</span>
             </el-option>
           </el-select>
         </el-form-item>
@@ -191,50 +192,71 @@
         <el-form-item label="源订单号" prop="orderId">
           <el-input v-model="form.orderId" placeholder="请输入源订单号" />
         </el-form-item>
-        <el-form-item label="子订单id" prop="subOrderId">
-          <el-input v-model="form.subOrderId" placeholder="请输入订单id" />
+        <el-form-item label="售后类型" prop="type">
+          <el-select v-model="form.type" placeholder="请选择类型" clearable @change="handleQuery">
+            <el-option label="退货" value="10" ></el-option>
+            <el-option label="换货" value="20" ></el-option>
+            <el-option label="维修" value="30" ></el-option>
+            <el-option label="补发" value="80" ></el-option>
+            <el-option label="订单拦截" value="99" ></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="平台商品id" prop="productId">
-          <el-input v-model="form.productId" placeholder="请输入平台商品id" />
-        </el-form-item>
-        <el-form-item label="平台skuId" prop="skuId">
+<!--        <el-form-item label="子订单id" prop="subOrderId">-->
+<!--          <el-input v-model="form.subOrderId" placeholder="请输入订单id" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="平台商品id" prop="productId">-->
+<!--          <el-input v-model="form.productId" placeholder="请输入平台商品id" />-->
+<!--        </el-form-item>-->
+        <el-form-item label="平台SkuId" prop="skuId">
           <el-input v-model="form.skuId" placeholder="请输入平台skuId" />
         </el-form-item>
-        <el-form-item label="Sku编码" prop="skuCode">
-          <el-input v-model="form.skuCode" placeholder="请输入Sku编码" />
+<!--        <el-form-item label="Sku编码" prop="skuCode">-->
+<!--          <el-input v-model="form.skuCode" placeholder="请输入Sku编码" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="ERP商品ID" prop="erpGoodsId">-->
+<!--          <el-input v-model="form.erpGoodsId" placeholder="请输入ERP商品id" />-->
+<!--        </el-form-item>-->
+        <el-form-item label="ERP商品SkuId" prop="erpSkuId">
+          <el-input v-model="form.erpSkuId" placeholder="请输入ERP商品SkuId" />
         </el-form-item>
-        <el-form-item label="ERP商品id" prop="erpGoodsId">
-          <el-input v-model="form.erpGoodsId" placeholder="请输入ERP商品id" />
+<!--        <el-form-item label="商品名称" prop="title">-->
+<!--          <el-input v-model="form.title" placeholder="请输入商品名称" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="商品SKU信息" prop="skuInfo">-->
+<!--          <el-input v-model="form.skuInfo" placeholder="请输入商品SKU信息" />-->
+<!--        </el-form-item>-->
+        <el-form-item label="售后数量" prop="count">
+          <el-input v-model="form.count" placeholder="请输入售后数量" />
         </el-form-item>
-        <el-form-item label="ERP商品skuId" prop="erpSkuId">
-          <el-input v-model="form.erpSkuId" placeholder="请输入ERP商品skuId" />
+        <el-form-item label="订单是否发货" prop="hasGoodsSend">
+          <el-select v-model="form.hasGoodsSend" placeholder="是否已发货" >
+            <el-option label="未发货" value="0"></el-option>
+            <el-option label="已发货" value="1"></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="商品名称" prop="title">
-          <el-input v-model="form.title" placeholder="请输入商品名称" />
+        <el-form-item label="货物是否需要退回" prop="hasGoodsReturn">
+          <el-select v-model="form.hasGoodsReturn" placeholder="货物是否需要退回" >
+            <el-option label="无需退回" value="0"></el-option>
+            <el-option label="需要退回" value="1"></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="商品SKU信息" prop="skuInfo">
-          <el-input v-model="form.skuInfo" placeholder="请输入商品SKU信息" />
-        </el-form-item>
-        <el-form-item label="数量" prop="count">
-          <el-input v-model="form.count" placeholder="请输入数量" />
-        </el-form-item>
-        <el-form-item label="发货物流公司" prop="shipCompany">
-          <el-input v-model="form.shipCompany" placeholder="请输入发货物流公司" />
-        </el-form-item>
-        <el-form-item label="发货物流单号" prop="shipWaybillCode">
+<!--        <el-form-item label="退回物流公司" prop="shipCompany">-->
+<!--          <el-input v-model="form.shipCompany" placeholder="请输入发货物流公司" />-->
+<!--        </el-form-item>-->
+        <el-form-item label="退回物流单号" prop="shipWaybillCode" v-if="form.hasGoodsReturn==1">
           <el-input v-model="form.shipWaybillCode" placeholder="请输入发货物流单号" />
         </el-form-item>
-        <el-form-item label="收货人" prop="receiverName">
+        <el-form-item label="收货人" prop="receiverName" v-if="form.type == 20||form.type == 30||form.type == 80">
           <el-input v-model="form.receiverName" placeholder="请输入收货人" />
         </el-form-item>
-        <el-form-item label="收货人手机号" prop="receiverTel">
+        <el-form-item label="收货人手机号" prop="receiverTel" v-if="form.type == 20||form.type == 30||form.type == 80">
           <el-input v-model="form.receiverTel" placeholder="请输入收货人手机号" />
         </el-form-item>
-        <el-form-item label="收货地址" prop="receiverAddress">
+        <el-form-item label="收货地址" prop="receiverAddress" v-if="form.type == 20||form.type == 30||form.type == 80">
           <el-input v-model="form.receiverAddress" placeholder="请输入收货地址" />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" placeholder="请输入备注" />
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入备注" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -246,7 +268,7 @@
 </template>
 
 <script>
-import {list, addShipAgain, shipAgainComplete} from "@/api/refund/after_sale";
+import {list, addHandle} from "@/api/refund/after_sale";
 import {listShop} from "@/api/shop/shop";
 
 export default {
@@ -282,22 +304,26 @@ export default {
         status: null,
       },
       // 表单参数
-      form: {},
+      form: {
+        type:null,
+        hasGoodsReturn:null,
+      },
       // 表单校验
       rules: {
         shopId: [{ required: true, message: "请选择店铺", trigger: "change" }],
         afterSaleOrderId: [{ required: true, message: "不能为空", trigger: "blur" }],
         orderId: [{ required: true, message: "订单号不能为空", trigger: "blur" }],
-        erpGoodsId: [{ required: true, message: "不能为空", trigger: "blur" }],
+        type: [{ required: true, message: "请选择售后类型", trigger: "blur" }],
+        skuId: [{ required: true, message: "不能为空", trigger: "blur" }],
         erpSkuId: [{ required: true, message: "不能为空", trigger: "change" }],
-        skuInfo: [{ required: true, message: "不能为空", trigger: "change" }],
-        title: [{ required: true, message: "不能为空", trigger: "change" }],
         count: [{ required: true, message: "不能为空", trigger: "change" }],
-        shipCompany: [{ required: true, message: "不能为空", trigger: "change" }],
+        hasGoodsSend: [{ required: true, message: "不能为空", trigger: "change" }],
+        hasGoodsReturn: [{ required: true, message: "不能为空", trigger: "change" }],
+        // shipCompany: [{ required: true, message: "不能为空", trigger: "change" }],
         shipWaybillCode: [{ required: true, message: "不能为空", trigger: "change" }],
-        receiverName: [{ required: true, message: "不能为空", trigger: "change" }],
-        receiverTel: [{ required: true, message: "不能为空", trigger: "change" }],
-        receiverAddress: [{ required: true, message: "不能为空", trigger: "change" }],
+        // receiverName: [{ required: true, message: "不能为空", trigger: "change" }],
+        // receiverTel: [{ required: true, message: "不能为空", trigger: "change" }],
+        // receiverAddress: [{ required: true, message: "不能为空", trigger: "change" }],
       }
     };
   },
@@ -346,7 +372,7 @@ export default {
     handleAdd(){
       this.reset()
       this.open=true
-      this.title="手动添加补发信息"
+      this.title="手动添加售后处理"
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -361,8 +387,8 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          addShipAgain(this.form).then(response => {
-            this.$modal.msgSuccess("补发成功");
+          addHandle(this.form).then(response => {
+            this.$modal.msgSuccess("售后处理成功");
             this.open = false;
             this.getList();
           });

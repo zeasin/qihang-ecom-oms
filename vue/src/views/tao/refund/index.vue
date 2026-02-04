@@ -37,24 +37,12 @@
           <el-option label="其他" value="OTHERS"> </el-option>
         </el-select>
       </el-form-item>
-<!--      <el-form-item label="申请时间" prop="created">-->
-<!--        <el-date-picker clearable-->
-<!--          v-model="queryParams.created"-->
-<!--          type="date"-->
-<!--          value-format="yyyy-MM-dd"-->
-<!--          placeholder="请选择退款申请时间">-->
-<!--        </el-date-picker>-->
-<!--      </el-form-item>-->
-
-<!--      <el-form-item label="物流单号" prop="logisticsCode">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.logisticsCode"-->
-<!--          placeholder="请输入物流单号"-->
-<!--          clearable-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-
+      <el-form-item label="更新时间" prop="updateTime">
+        <el-date-picker clearable  @change="handleQuery"
+                        v-model="queryParams.updateTime" value-format="yyyy-MM-dd"
+                        type="date" placeholder="售后更新时间">
+        </el-date-picker>
+      </el-form-item>
 
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -66,23 +54,14 @@
       <el-col :span="1.5">
         <el-button
           :loading="pullLoading"
-          type="danger"
+          type="success"
           plain
           icon="el-icon-download"
           size="mini"
           @click="handlePull"
         >API拉取新退款</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-refresh"
-          size="mini"
-          :disabled="multiple"
-          @click="handlePushOms"
-        >手动将选中退款推送到售后中心</el-button>
-      </el-col>
+
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -251,6 +230,7 @@ export default {
         pageSize: 10,
         refundId: null,
         afterSalesType: null,
+        updateTime: null,
         tid: null,
         oid: null
       },
@@ -322,19 +302,18 @@ export default {
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
-    handlePushOms(row) {
-      const ids = row.id || this.ids;
-      this.$modal.confirm('是否手动推送到OMS？').then(function() {
-        return pushOms({ids:ids});
-      }).then(() => {
-        // this.getList();
-        this.$modal.msgSuccess("推送成功");
-      }).catch(() => {});
-    },
+
     handlePull() {
-      if(this.queryParams.shopId){
+      if (!this.queryParams.shopId) {
+        this.$modal.msgError("请先选择店铺");
+        return
+      }
+      if (!this.queryParams.updateTime) {
+        this.$modal.msgError("请选择售后更新时间")
+        return
+      }
         this.pullLoading = true
-        pullRefund({shopId:this.queryParams.shopId,updType:0}).then(response => {
+        pullRefund({shopId:this.queryParams.shopId,updType:0,updateTime:this.queryParams.updateTime}).then(response => {
           console.log('拉取淘宝订单接口返回=====',response)
           if(response.code === 1401) {
             MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', { confirmButtonText: '前往授权', cancelButtonText: '取消', type: 'warning' }).then(() => {
@@ -354,9 +333,7 @@ export default {
           }
           this.pullLoading = false
         })
-      }else{
-        this.$modal.msgSuccess("请先选择店铺");
-      }
+
 
       // this.$modal.msgSuccess("请先配置API");
     },

@@ -2,7 +2,7 @@ package cn.qihangerp.api.controller.sys;
 
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.domain.SysConfig;
+import cn.qihangerp.model.entity.SysConfig;
 import cn.qihangerp.module.service.SysConfigService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;

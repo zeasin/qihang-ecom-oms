@@ -246,7 +246,7 @@
         <el-form-item label="商品图片地址" prop="image">
           <image-upload v-model="form.image"/>
         </el-form-item>
-        <el-form-item label="商品编号" prop="number">
+        <el-form-item label="商品编号" prop="goodsNum">
           <el-input v-model="form.goodsNum" placeholder="请输入商品编号" />
         </el-form-item>
         <!--        <el-form-item label="单位名称" prop="unitName">-->

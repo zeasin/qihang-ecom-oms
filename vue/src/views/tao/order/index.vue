@@ -19,13 +19,10 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="下单时间" prop="orderTime">
-        <el-date-picker clearable
-                        v-model="orderTime" value-format="yyyy-MM-dd"
-                        type="daterange"
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期">
+      <el-form-item label="下单时间" prop="startTime">
+        <el-date-picker clearable @change="handleQuery"
+                        v-model="queryParams.startTime" value-format="yyyy-MM-dd"
+                        type="date" placeholder="下单时间">
         </el-date-picker>
       </el-form-item>
 <!--      <el-form-item label="下单日期" prop="orderCreateTime">-->
@@ -73,16 +70,7 @@
 <!--          @click="handlePullDetailByTid"-->
 <!--        >API拉取单个订单</el-button>-->
 <!--      </el-col>-->
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="primary"-->
-<!--          plain-->
-<!--          icon="el-icon-top-right"-->
-<!--          size="mini"-->
-<!--          :disabled="multiple"-->
-<!--          @click="handlePushOms"-->
-<!--        >重新推送选中订单到订单库</el-button>-->
-<!--      </el-col>-->
+
 <!--      <el-col :span="1.5">-->
 <!--        <el-button-->
 <!--          type="danger"-->
@@ -184,6 +172,12 @@
           <el-tag v-if="scope.row.status === 'TRADE_CLOSED'">交易自动关闭</el-tag>
           <el-tag v-if="scope.row.status === 'TRADE_CLOSED_BY_TAOBAO'">关闭交易</el-tag>
           <el-tag v-if="scope.row.status === 'PAID_FORBID_CONSIGN'">禁止发货</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="确认状态" align="center" prop="auditStatus" >
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.auditStatus === 0" type="warning" style="margin-bottom: 6px;">待确认</el-tag>
+          <el-tag v-if="scope.row.auditStatus === 1" style="margin-bottom: 6px;">已确认</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -331,7 +325,7 @@
 </template>
 
 <script>
-import {listOrder, pullOrder, getOrder, pushOms, pullOrderDetail,confirmOrder} from "@/api/tao/order";
+import {listOrder, pullOrder, getOrder, pullOrderDetail,confirmOrder} from "@/api/tao/order";
 import { listShop } from "@/api/shop/shop";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "../../../utils/request";
@@ -419,8 +413,10 @@ export default {
         this.queryParams.startTime = this.orderTime[0]
         this.queryParams.endTime = this.orderTime[1]
       }else {
-        this.queryParams.startTime = null
-        this.queryParams.endTime = null
+        if(!this.queryParams.startTime) {
+          this.queryParams.startTime = null
+          this.queryParams.endTime = null
+        }
       }
       this.loading = true;
       listOrder(this.queryParams).then(response => {
@@ -475,9 +471,16 @@ export default {
       }
     },
     handlePull() {
-      if(this.queryParams.shopId){
+      if (!this.queryParams.shopId) {
+        this.$modal.msgError("请先选择店铺");
+        return
+      }
+      if (!this.queryParams.startTime) {
+        this.$modal.msgError("请选择下单时间")
+        return
+      }
         this.pullLoading = true
-        pullOrder({shopId:this.queryParams.shopId,updType:0}).then(response => {
+        pullOrder({shopId:this.queryParams.shopId,updType:0,orderDate: this.queryParams.startTime}).then(response => {
           console.log('拉取淘宝订单接口返回=====',response)
           if(response.code === 1401) {
               MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', { confirmButtonText: '前往授权', cancelButtonText: '取消', type: 'warning' }).then(() => {
@@ -491,14 +494,15 @@ export default {
               });
 
             // return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
-          }else{
+          }else if(response.code === 200){
             this.$modal.msgSuccess(JSON.stringify(response));
+            this.getList()
+          }else{
+            this.$modal.msgError(response.msg);
           }
           this.pullLoading = false
         })
-      }else{
-        this.$modal.msgSuccess("请先选择店铺");
-      }
+
 
       // this.$modal.msgSuccess("请先配置API");
     },
@@ -535,15 +539,7 @@ export default {
         }
       });
     },
-    handlePushOms(row) {
-      const ids = row.id || this.ids;
-      this.$modal.confirm('是否手动推送到系统？').then(function() {
-        return pushOms({ids:ids});
-      }).then(() => {
-        // this.getList();
-        this.$modal.msgSuccess("推送成功");
-      }).catch(() => {});
-    },
+
     handleConfirm(row) {
       this.reset();
       const id = row.id || this.ids

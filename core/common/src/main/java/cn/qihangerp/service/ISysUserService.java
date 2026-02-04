@@ -1,6 +1,5 @@
 package cn.qihangerp.service;
 
-
 import cn.qihangerp.domain.SysUser;
 
 import java.util.List;

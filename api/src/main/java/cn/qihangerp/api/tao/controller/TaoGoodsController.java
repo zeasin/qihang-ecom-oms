@@ -2,11 +2,11 @@ package cn.qihangerp.api.tao.controller;
 
 import cn.qihangerp.common.*;
 import cn.qihangerp.domain.bo.LinkErpGoodsSkuBo;
-import cn.qihangerp.module.open.tao.domain.TaoGoods;
-import cn.qihangerp.module.open.tao.domain.TaoGoodsSku;
-import cn.qihangerp.module.open.tao.domain.bo.TaoGoodsBo;
-import cn.qihangerp.module.open.tao.service.TaoGoodsService;
-import cn.qihangerp.module.open.tao.service.TaoGoodsSkuService;
+import cn.qihangerp.model.entity.TaoGoods;
+import cn.qihangerp.model.entity.TaoGoodsSku;
+import cn.qihangerp.model.bo.TaoGoodsBo;
+import cn.qihangerp.module.service.TaoGoodsService;
+import cn.qihangerp.module.service.TaoGoodsSkuService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;

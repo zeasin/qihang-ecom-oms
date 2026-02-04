@@ -17,12 +17,6 @@ export function getReturned(id) {
   })
 }
 
-export function pushRefundToErp(id) {
-  return request({
-    url: '/refund/pushErp/' + id,
-    method: 'post'
-  })
-}
 
 export function refundProcessing(data) {
   return request({

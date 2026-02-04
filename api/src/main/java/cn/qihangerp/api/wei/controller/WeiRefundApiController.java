@@ -6,8 +6,8 @@ import cn.qihangerp.api.wei.WeiApiCommon;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.HttpStatus;
-import cn.qihangerp.module.open.wei.domain.OmsWeiRefund;
-import cn.qihangerp.module.open.wei.service.OmsWeiRefundService;
+import cn.qihangerp.model.entity.OmsWeiRefund;
+import cn.qihangerp.module.service.OmsWeiRefundService;
 
 import cn.qihangerp.open.common.ApiResultVo;
 
@@ -16,12 +16,14 @@ import cn.qihangerp.open.wei.model.AfterSaleOrder;
 import cn.qihangerp.security.common.BaseController;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @RequestMapping("/wei/refund")
@@ -32,15 +34,15 @@ public class WeiRefundApiController extends BaseController {
     private final OmsWeiRefundService refundService;
 
     @RequestMapping(value = "/pull_list", method = RequestMethod.POST)
-    public AjaxResult pullList(@RequestBody PullRequest params) throws Exception {
-        if (params.getShopId() == null || params.getShopId() <= 0) {
+    public AjaxResult pullList(@RequestBody PullRequest req) throws Exception {
+        if (req.getShopId() == null || req.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }
-
+        if(StringUtils.isBlank(req.getCreateTime())) return AjaxResult.error("缺少参数：createTime");
         Date currDateTime = new Date();
         long beginTime = System.currentTimeMillis();
 
-        var checkResult = apiCommon.checkBefore(params.getShopId());
+        var checkResult = apiCommon.checkBefore(req.getShopId());
         if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
             return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(),checkResult.getData());
         }
@@ -49,9 +51,11 @@ public class WeiRefundApiController extends BaseController {
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         // 获取最后更新时间
-        LocalDateTime endTime = LocalDateTime.now();
-        LocalDateTime startTime = endTime.minusDays(1);
+        LocalDateTime startTime = LocalDateTime.parse(req.getCreateTime() + " 00:00:01", formatter);
+        LocalDateTime endTime = LocalDateTime.parse(req.getCreateTime() + " 23:59:59", formatter);
+        String pullParams = "{startTime:"+startTime.format(formatter)+",endTime:"+endTime.format(formatter)+"}";
 
         int insertSuccess = 0;//新增成功的订单
         int totalError = 0;
@@ -67,7 +71,7 @@ public class WeiRefundApiController extends BaseController {
                     OmsWeiRefund refund = new OmsWeiRefund();
                     refund.setOrderId(refundInfo.getOrder_id());
                     refund.setAfterSaleOrderId(refundInfo.getAfter_sale_order_id());
-                    refund.setShopId(params.getShopId());
+                    refund.setShopId(req.getShopId());
                     refund.setStatus(refundInfo.getStatus());
                     refund.setOpenid(refundInfo.getOpenid());
                     refund.setUnionid(refundInfo.getUnionid());
@@ -90,7 +94,7 @@ public class WeiRefundApiController extends BaseController {
                     refund.setRefundResp(JSONObject.toJSONString(refundInfo.getRefund_resp()));
                     refund.setDetails(JSONObject.toJSONString(refundInfo.getDetails()));
 
-                    var result = refundService.saveRefund(params.getShopId(), refund);
+                    var result = refundService.saveRefund(req.getShopId(), refund);
                     if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
                         //已经存在
 //                        kafkaTemplate.send(MqType.REFUND_MQ, JSONObject.toJSONString(MqMessage.build(EnumShopType.DOU, MqType.REFUND_MESSAGE,refund.getAfterSaleOrderId())));

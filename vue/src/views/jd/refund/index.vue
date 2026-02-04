@@ -37,7 +37,12 @@
 <!--          <el-option label="补发商品" value="80"> </el-option>-->
         </el-select>
       </el-form-item>
-
+      <el-form-item label="申请时间" prop="createTime">
+        <el-date-picker clearable  @change="handleQuery"
+                        v-model="queryParams.createTime" value-format="yyyy-MM-dd"
+                        type="date" placeholder="售后申请时间">
+        </el-date-picker>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -48,23 +53,14 @@
       <el-col :span="1.5">
         <el-button
           :loading="pullLoading"
-          type="danger"
+          type="success"
           plain
           icon="el-icon-download"
           size="mini"
           @click="handlePull"
-        >API拉取新退款</el-button>
+        >API拉取新售后</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-refresh"
-          size="mini"
-          :disabled="multiple"
-          @click="handlePushOms"
-        >手动将选中退款推送到售后中心</el-button>
-      </el-col>
+
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -225,13 +221,11 @@ export default {
         pageSize: 10,
         refundId: null,
         afterSalesType: null,
-        tid: null,
-        oid: null,
-        refundFee: null,
+        customerExpect: null,
+        createTime: null,
         orderStatus: null,
         status: null,
         goodStatus: null,
-        num: null,
         hasGoodReturn: null,
       },
       // 表单参数
@@ -306,46 +300,50 @@ export default {
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
-    handlePushOms(row) {
-      const ids = row.id || this.ids;
-      this.$modal.confirm('是否手动推送到OMS？').then(function() {
-        return pushOms({ids:ids});
-      }).then(() => {
-        // this.getList();
-        this.$modal.msgSuccess("推送成功");
-      }).catch(() => {});
-    },
+
     handlePull() {
-      if(this.queryParams.shopId){
-        this.pullLoading = true
-        pullRefund({shopId:this.queryParams.shopId,updType:0}).then(response => {
-          console.log('拉取jd订单接口返回=====',response)
-          if(response.code === 200){
-              this.$modal.msgSuccess(JSON.stringify(response));
-              this.pullLoading = false
-            this.getList()
-          }
-          else if(response.code === 1401) {
-            MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', { confirmButtonText: '前往授权', cancelButtonText: '取消', type: 'warning' }).then(() => {
-              this.$router.push({path:"/shop/shop_list",query:{type:2}})
-              // isRelogin.show = false;
-              // store.dispatch('LogOut').then(() => {
-              // location.href = response.data.tokenRequestUrl+'?shopId='+this.queryParams.shopId
-              // })
-            }).catch(() => {
-              isRelogin.show = false;
-            });
-
-            // return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
-          }else{
-            this.$modal.msgError(JSON.stringify(response));
-            this.pullLoading = false
-          }
-
-        })
-      }else{
-        this.$modal.msgSuccess("请先选择店铺");
+      if (!this.queryParams.shopId) {
+        this.$modal.msgError("请先选择店铺");
+        return
       }
+      if (!this.queryParams.createTime) {
+        this.$modal.msgError("请选择售后申请时间")
+        return
+      }
+      this.pullLoading = true
+      pullRefund({
+        shopId: this.queryParams.shopId,
+        updType: 0,
+        createTime: this.queryParams.createTime
+      }).then(response => {
+        console.log('拉取jd订单接口返回=====', response)
+        if (response.code === 200) {
+          this.$modal.msgSuccess(JSON.stringify(response));
+          this.pullLoading = false
+          this.getList()
+        } else if (response.code === 1401) {
+          MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', {
+            confirmButtonText: '前往授权',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$router.push({path: "/shop/shop_list", query: {type: 2}})
+            // isRelogin.show = false;
+            // store.dispatch('LogOut').then(() => {
+            // location.href = response.data.tokenRequestUrl+'?shopId='+this.queryParams.shopId
+            // })
+          }).catch(() => {
+            isRelogin.show = false;
+          });
+
+          // return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
+        } else {
+          this.$modal.msgError(JSON.stringify(response));
+          this.pullLoading = false
+        }
+
+      })
+
 
       // this.$modal.msgSuccess("请先配置API");
     },

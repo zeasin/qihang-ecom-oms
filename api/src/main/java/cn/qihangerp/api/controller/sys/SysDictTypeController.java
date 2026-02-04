@@ -2,7 +2,7 @@ package cn.qihangerp.api.controller.sys;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.module.domain.SysDictType;
+import cn.qihangerp.model.entity.SysDictType;
 import cn.qihangerp.module.service.ISysDictTypeService;
 import cn.qihangerp.security.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;

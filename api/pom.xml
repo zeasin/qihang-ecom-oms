@@ -98,91 +98,15 @@
             <artifactId>security</artifactId>
             <version>1.0</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>cn.qihangerp.microservices</groupId>-->
-<!--            <artifactId>sys-api</artifactId>-->
-<!--            <version>1.0.6</version>-->
-<!--        </dependency>-->
         <dependency>
-            <groupId>cn.qihangerp.service</groupId>
-            <artifactId>goods</artifactId>
-            <version>1.10.6</version>
-        </dependency>
-<!--        -->
-<!--        <dependency>-->
-<!--            <groupId>cn.qihangerp.microservices</groupId>-->
-<!--            <artifactId>goods-api</artifactId>-->
-<!--            <version>1.0.6</version>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>cn.qihangerp.service</groupId>
-            <artifactId>order</artifactId>
-            <version>1.10.6</version>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>cn.qihangerp.microservices</groupId>-->
-<!--            <artifactId>order-api</artifactId>-->
-<!--            <version>1.0.6</version>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>cn.qihangerp.service</groupId>
-            <artifactId>tao</artifactId>
-            <version>1.10.6</version>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>cn.qihangerp.microservices</groupId>-->
-<!--            <artifactId>tao-api</artifactId>-->
-<!--            <version>1.0.6</version>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>cn.qihangerp.service</groupId>
-            <artifactId>jd</artifactId>
-            <version>1.10.6</version>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>cn.qihangerp.microservices</groupId>-->
-<!--            <artifactId>jd-api</artifactId>-->
-<!--            <version>1.0.6</version>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>cn.qihangerp.service</groupId>
-            <artifactId>pdd</artifactId>
-            <version>1.10.6</version>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>cn.qihangerp.microservices</groupId>-->
-<!--            <artifactId>pdd-api</artifactId>-->
-<!--            <version>1.0.6</version>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>cn.qihangerp.service</groupId>
-            <artifactId>dou</artifactId>
-            <version>1.10.6</version>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>cn.qihangerp.microservices</groupId>-->
-<!--            <artifactId>dou-api</artifactId>-->
-<!--            <version>1.0.6</version>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>cn.qihangerp.service</groupId>
-            <artifactId>wei</artifactId>
-            <version>1.10.6</version>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>cn.qihangerp.microservices</groupId>-->
-<!--            <artifactId>wei-api</artifactId>-->
-<!--            <version>1.0.6</version>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>cn.qihangerp.service</groupId>
-            <artifactId>sys</artifactId>
-            <version>1.10.6</version>
+            <groupId>cn.qihangerp.model</groupId>
+            <artifactId>model</artifactId>
+            <version>2.1.16</version>
         </dependency>
         <dependency>
             <groupId>cn.qihangerp.service</groupId>
-            <artifactId>shop</artifactId>
-            <version>1.10.6</version>
+            <artifactId>service</artifactId>
+            <version>2.0.6</version>
         </dependency>
         <dependency>
             <groupId>com.qiniu</groupId>
@@ -194,7 +118,7 @@
             <artifactId>open-sdk</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/open-sdk-2.1.7.jar</systemPath>
+            <systemPath>${project.basedir}/libs/open-sdk-2.1.11.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>

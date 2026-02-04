@@ -9,10 +9,10 @@ import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.mq.MqMessage;
 import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.mq.MqUtils;
-import cn.qihangerp.module.open.jd.domain.JdOrder;
-import cn.qihangerp.module.open.jd.domain.bo.JdOrderBo;
-import cn.qihangerp.module.open.jd.domain.bo.JdOrderPushBo;
-import cn.qihangerp.module.open.jd.service.JdOrderService;
+import cn.qihangerp.model.entity.JdOrder;
+import cn.qihangerp.model.bo.JdOrderBo;
+import cn.qihangerp.model.bo.JdOrderPushBo;
+import cn.qihangerp.module.service.JdOrderService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -29,15 +29,5 @@ public class JdOrderController extends BaseController {
 
         return getDataTable(result);
     }
-    @PostMapping("/push_oms")
-    @ResponseBody
-    public AjaxResult pushOms(@RequestBody JdOrderPushBo bo) {
-        // TODO:需要优化消息格式
-        if(bo!=null && bo.getIds()!=null) {
-            for(String id: bo.getIds()) {
-                mqUtils.sendApiMessage(MqMessage.build(EnumShopType.JD, MqType.ORDER_MESSAGE, id));
-            }
-        }
-        return success();
-    }
+
 }

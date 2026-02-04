@@ -9,10 +9,10 @@ import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.mq.MqMessage;
 import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.mq.MqUtils;
-import cn.qihangerp.module.open.dou.domain.DouRefund;
-import cn.qihangerp.module.open.dou.domain.bo.DouOrderPushBo;
-import cn.qihangerp.module.open.dou.domain.bo.DouRefundBo;
-import cn.qihangerp.module.open.dou.service.DouRefundService;
+import cn.qihangerp.model.entity.DouRefund;
+import cn.qihangerp.model.bo.DouOrderPushBo;
+import cn.qihangerp.model.bo.DouRefundBo;
+import cn.qihangerp.module.service.DouRefundService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -30,15 +30,5 @@ public class DouRefundController extends BaseController {
         return getDataTable(result);
     }
 
-    @PostMapping("/push_oms")
-    @ResponseBody
-    public AjaxResult pushOms(@RequestBody DouOrderPushBo bo) {
-        // TODO:需要优化消息格式
-        if(bo!=null && bo.getIds()!=null) {
-            for(String id: bo.getIds()) {
-                mqUtils.sendApiMessage(MqMessage.build(EnumShopType.DOU, MqType.REFUND_MESSAGE, id));
-            }
-        }
-        return success();
-    }
+
 }

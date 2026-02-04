@@ -1,18 +1,16 @@
 package cn.qihangerp.api.pdd.controller;
 
 
-import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.common.PageQuery;
-import cn.qihangerp.common.PageResult;
-import cn.qihangerp.common.TableDataInfo;
+import cn.qihangerp.common.*;
 import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.mq.MqMessage;
 import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.mq.MqUtils;
-import cn.qihangerp.module.open.pdd.domain.PddRefund;
-import cn.qihangerp.module.open.pdd.domain.bo.PddOrderPushBo;
-import cn.qihangerp.module.open.pdd.domain.bo.PddRefundBo;
-import cn.qihangerp.module.open.pdd.service.PddRefundService;
+import cn.qihangerp.model.bo.RefundProcessingBo;
+import cn.qihangerp.model.entity.PddRefund;
+import cn.qihangerp.model.bo.PddOrderPushBo;
+import cn.qihangerp.model.bo.PddRefundBo;
+import cn.qihangerp.module.service.PddRefundService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -29,16 +27,16 @@ public class PddRefundController extends BaseController {
 
         return getDataTable(result);
     }
-
-    @PostMapping("/push_oms")
-    @ResponseBody
-    public AjaxResult pushOms(@RequestBody PddOrderPushBo bo) {
-        // TODO:需要优化消息格式
-        if(bo!=null && bo.getIds()!=null) {
-            for(String id: bo.getIds()) {
-                mqUtils.sendApiMessage(MqMessage.build(EnumShopType.PDD, MqType.REFUND_MESSAGE, id));
-            }
-        }
-        return success();
+    /**
+     *
+     * @param bo
+     * @return
+     */
+    @PostMapping("/handle")
+    public AjaxResult handle(@RequestBody RefundProcessingBo bo ) {
+        if (bo.getRefundId() == null) return AjaxResult.error(500, "缺少参数refundId");
+        ResultVo<Long> resultVo = refundService.refundHandle(bo,getUsername());
+        if(resultVo.getCode() == 0) return success();
+        else return AjaxResult.error(resultVo.getMsg());
     }
 }

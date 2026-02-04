@@ -19,13 +19,10 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="下单时间" prop="orderTime">
-        <el-date-picker clearable
-                        v-model="orderTime" value-format="yyyy-MM-dd"
-                        type="daterange"
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期">
+      <el-form-item label="下单时间" prop="startTime">
+        <el-date-picker clearable @change="handleQuery"
+                        v-model="queryParams.startTime" value-format="yyyy-MM-dd"
+                        type="date" placeholder="下单时间">
         </el-date-picker>
       </el-form-item>
 
@@ -60,17 +57,6 @@
           size="mini"
           @click="handlePull"
         >API拉取订单</el-button>
-      </el-col>
-
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-refresh"
-          size="mini"
-          :disabled="multiple"
-          @click="handlePushOms"
-        >重新推送选中订单到订单库</el-button>
       </el-col>
 
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -172,8 +158,12 @@
           <el-tag size="small" v-if="scope.row.orderStatus === 3"> 已发货</el-tag>
           <el-tag size="small" v-if="scope.row.orderStatus === 4"> 已取消</el-tag>
           <el-tag size="small" v-if="scope.row.orderStatus === 5"> 已完成</el-tag>
-
-
+        </template>
+      </el-table-column>
+      <el-table-column label="确认状态" align="center" prop="auditStatus" >
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.auditStatus === 0" type="warning" style="margin-bottom: 6px;">待确认</el-tag>
+          <el-tag v-if="scope.row.auditStatus === 1" style="margin-bottom: 6px;">已确认</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -322,7 +312,7 @@
 </template>
 
 <script>
-import {listOrder, pullOrder, getOrder, pushOms, pullOrderDetail,confirmOrder} from "@/api/dou/order";
+import {listOrder, pullOrder, getOrder, pullOrderDetail,confirmOrder} from "@/api/dou/order";
 import { listShop } from "@/api/shop/shop";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "../../../utils/request";
@@ -410,8 +400,11 @@ export default {
         this.queryParams.startTime = this.orderTime[0]
         this.queryParams.endTime = this.orderTime[1]
       }else {
-        this.queryParams.startTime = null
-        this.queryParams.endTime = null
+        if(!this.queryParams.startTime){
+          this.queryParams.startTime = null
+          this.queryParams.endTime = null
+        }
+
       }
       this.loading = true;
       listOrder(this.queryParams).then(response => {
@@ -465,34 +458,40 @@ export default {
       this.multiple = !selection.length
     },
     handlePull() {
-      if(this.queryParams.shopId){
-        this.pullLoading = true
-        pullOrder({shopId:this.queryParams.shopId,updType:0}).then(response => {
-          console.log('拉取dou订单接口返回=====',response)
-          if(response.code === 1401) {
-              MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', { confirmButtonText: '前往授权', cancelButtonText: '取消', type: 'warning' }).then(() => {
-                this.$router.push({path:"/shop/shop_list",query:{type:3}})
-                // isRelogin.show = false;
-                // store.dispatch('LogOut').then(() => {
-                // location.href = response.data.tokenRequestUrl+'?shopId='+this.queryParams.shopId
-                // })
-              }).catch(() => {
-                isRelogin.show = false;
-              });
-
-            // return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
-          }else{
-            this.$modal.msgSuccess(JSON.stringify(response));
-            this.getList()
-            this.pullLoading = false
-          }
-          this.pullLoading = false
-        })
-      }else{
-        this.$modal.msgSuccess("请先选择店铺");
+      if (!this.queryParams.shopId) {
+        this.$modal.msgError("请先选择店铺");
+        return
       }
+      if (!this.queryParams.startTime) {
+        this.$modal.msgError("请选择下单时间")
+        return
+      }
+      this.pullLoading = true
+      pullOrder({ shopId: this.queryParams.shopId, updType: 0,orderDate: this.queryParams.startTime }).then(response => {
+        console.log('拉取dou订单接口返回=====', response)
+        if (response.code === 1401) {
+          MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', {
+            confirmButtonText: '前往授权',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$router.push({ path: "/shop/shop_list", query: { type: 400 } })
+            // isRelogin.show = false;
+            // store.dispatch('LogOut').then(() => {
+            // location.href = response.data.tokenRequestUrl+'?shopId='+this.queryParams.shopId
+            // })
+          }).catch(() => {
+            isRelogin.show = false;
+          });
 
-      // this.$modal.msgSuccess("请先配置API");
+          // return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
+        } else {
+          this.$modal.msgSuccess(JSON.stringify(response));
+          this.getList()
+          this.pullLoading = false
+        }
+        this.pullLoading = false
+      })
     },
     handlePullUpdate(row) {
       // 接口拉取订单并更新
@@ -523,15 +522,7 @@ export default {
         }
       });
     },
-    handlePushOms(row) {
-      const ids = row.id || this.ids;
-      this.$modal.confirm('是否手动推送到系统？').then(function() {
-        return pushOms({ids:ids});
-      }).then(() => {
-        // this.getList();
-        this.$modal.msgSuccess("推送成功");
-      }).catch(() => {});
-    },
+
     handleConfirm(row) {
       this.reset();
       const id = row.id || this.ids

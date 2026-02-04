@@ -4,10 +4,9 @@ import cn.qihangerp.api.request.ShipOrderItemSkuIdUpdateBo;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.module.order.domain.bo.ShipStockOutByOrder;
-import cn.qihangerp.module.order.domain.bo.ShipStockUpBo;
-import cn.qihangerp.module.order.service.OOrderShipListItemService;
-import cn.qihangerp.module.order.service.OOrderShipListService;
+import cn.qihangerp.model.bo.ShipStockUpBo;
+import cn.qihangerp.module.service.OOrderShipListItemService;
+import cn.qihangerp.module.service.OOrderShipListService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -79,7 +78,7 @@ public class ShipStockupController  extends BaseController {
 //    }
 
     @PostMapping("/stock_up_complete_by_order")
-    public AjaxResult stock_up_completeByOrder(@RequestBody ShipStockOutByOrder bo)
+    public AjaxResult stock_up_completeByOrder(@RequestBody cn.qihangerp.model.bo.ShipStockOutByOrder bo)
     {
         if(bo.getShipOrderId()==null || bo.getShipOrderId()==0) return AjaxResult.error("缺少参数：shipOrderId");
 

@@ -1,8 +1,8 @@
 package cn.qihangerp.api.dou.controller;
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.open.dou.domain.DouRefund;
-import cn.qihangerp.module.open.dou.service.DouRefundService;
+import cn.qihangerp.model.entity.DouRefund;
+import cn.qihangerp.module.service.DouRefundService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

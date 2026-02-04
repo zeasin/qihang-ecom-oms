@@ -32,32 +32,33 @@
     <el-table v-loading="loading" :data="lists" >
 <!--      <el-table-column type="selection" width="55" align="center" />-->
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
-      <el-table-column label="店铺" align="center" prop="shopId" >
+      <el-table-column label="店铺" align="center" prop="shopId" width="180">
         <template slot-scope="scope">
           <span>{{ shopList.find(x=>x.id === scope.row.shopId).name  }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="平台" align="center" prop="shopType" >
+      <el-table-column label="平台" align="center" prop="shopType" width="120">
         <template slot-scope="scope">
-          <el-tag size="small" v-if="scope.row.shopType === 1">天猫</el-tag>
-          <el-tag size="small" v-if="scope.row.shopType === 2">京东</el-tag>
-          <el-tag size="small" v-if="scope.row.shopType === 3">抖店</el-tag>
-          <el-tag size="small" v-if="scope.row.shopType === 4">拼多多</el-tag>
+          <el-tag size="small" v-if="scope.row.shopType === 100">天猫</el-tag>
+          <el-tag size="small" v-if="scope.row.shopType === 200">京东POP</el-tag>
+          <el-tag size="small" v-if="scope.row.shopType === 400">抖店</el-tag>
+          <el-tag size="small" v-if="scope.row.shopType === 500">微信小店</el-tag>
+          <el-tag size="small" v-if="scope.row.shopType === 300">拼多多</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="类型" align="center" prop="pullType" >
+      <el-table-column label="类型" align="center" prop="pullType" width="120">
         <template slot-scope="scope">
           <el-tag size="small" v-if="scope.row.pullType === 'GOODS'">拉取商品</el-tag>
           <el-tag size="small" v-if="scope.row.pullType === 'ORDER'">拉取订单</el-tag>
           <el-tag size="small" v-if="scope.row.pullType === 'REFUND'">拉取退款</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="方式" align="center" prop="pullWay" />
+      <el-table-column label="方式" align="center" prop="pullWay" width="120"/>
 
       <el-table-column label="参数" align="center" prop="pullParams" />
       <el-table-column label="结果" align="center" prop="pullResult" />
-      <el-table-column label="耗时（ms）" align="center" prop="duration" />
-      <el-table-column label="时间" align="center" prop="pullTime" >
+      <el-table-column label="耗时（ms）" align="center" prop="duration" width="120"/>
+      <el-table-column label="时间" align="center" prop="pullTime" width="180">
         <template slot-scope="scope">
           {{ parseTime(scope.row.pullTime) }}
         </template>

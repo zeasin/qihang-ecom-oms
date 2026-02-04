@@ -32,7 +32,7 @@
             <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 100">淘宝天猫</span>
             <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 300">拼多多</span>
             <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 400">抖店</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 999">线下渠道</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 999">其他</span>
           </el-option>
         </el-select>
       </el-form-item>

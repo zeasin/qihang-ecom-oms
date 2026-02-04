@@ -1,11 +1,11 @@
 package cn.qihangerp.api.controller;
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.goods.service.OGoodsInventoryService;
+import cn.qihangerp.module.service.OGoodsInventoryService;
 import cn.qihangerp.model.vo.SalesDailyVo;
 import cn.qihangerp.model.vo.SalesTopSkuVo;
-import cn.qihangerp.module.order.service.OOrderItemService;
-import cn.qihangerp.module.order.service.OOrderService;
+import cn.qihangerp.module.service.OOrderItemService;
+import cn.qihangerp.module.service.OOrderService;
 import cn.qihangerp.module.service.OShopService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;

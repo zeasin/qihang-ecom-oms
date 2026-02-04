@@ -8,11 +8,11 @@ import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.mq.MqMessage;
 import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.mq.MqUtils;
-import cn.qihangerp.module.open.pdd.domain.PddOrder;
-import cn.qihangerp.module.open.pdd.domain.bo.PddOrderBo;
-import cn.qihangerp.module.open.pdd.domain.bo.PddOrderConfirmBo;
-import cn.qihangerp.module.open.pdd.domain.bo.PddOrderPushBo;
-import cn.qihangerp.module.open.pdd.service.PddOrderService;
+import cn.qihangerp.model.entity.PddOrder;
+import cn.qihangerp.model.bo.PddOrderBo;
+import cn.qihangerp.model.bo.PddOrderConfirmBo;
+import cn.qihangerp.model.bo.PddOrderPushBo;
+import cn.qihangerp.module.service.PddOrderService;
 import cn.qihangerp.security.common.BaseController;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
@@ -42,22 +42,7 @@ public class PddOrderController extends BaseController {
         return success(orderService.queryDetailById(id));
     }
 
-    /**
-     * 手动推送到系统
-     * @param bo
-     * @return
-     */
-    @PostMapping("/push_oms")
-    @ResponseBody
-    public AjaxResult pushOms(@RequestBody PddOrderPushBo bo) {
-        // TODO:需要优化消息格式
-        if(bo!=null && bo.getIds()!=null) {
-            for(String id: bo.getIds()) {
-                mqUtils.sendApiMessage(MqMessage.build(EnumShopType.PDD, MqType.ORDER_MESSAGE, id));
-            }
-        }
-        return success();
-    }
+
 
     @PostMapping("/confirmOrder")
     public AjaxResult confirmOrder(@RequestBody PddOrderConfirmBo bo) {

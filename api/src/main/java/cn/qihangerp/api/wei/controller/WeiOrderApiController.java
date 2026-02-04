@@ -1,15 +1,16 @@
 package cn.qihangerp.api.wei.controller;
 
-
-
 import cn.qihangerp.api.wei.PullRequest;
 import cn.qihangerp.api.wei.WeiApiCommon;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
+import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.enums.HttpStatus;
-import cn.qihangerp.module.open.wei.domain.OmsWeiOrder;
-import cn.qihangerp.module.open.wei.domain.OmsWeiOrderItem;
-import cn.qihangerp.module.open.wei.service.OmsWeiOrderService;
+import cn.qihangerp.model.entity.OShopPullLogs;
+import cn.qihangerp.model.entity.OmsWeiOrder;
+import cn.qihangerp.model.entity.OmsWeiOrderItem;
+import cn.qihangerp.module.service.OShopPullLogsService;
+import cn.qihangerp.module.service.OmsWeiOrderService;
 
 import cn.qihangerp.open.common.ApiResultVo;
 
@@ -19,21 +20,34 @@ import cn.qihangerp.open.wei.model.OrderDetailDeliverInfoAddress;
 import cn.qihangerp.security.common.BaseController;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+@Slf4j
 @RequestMapping("/wei/order")
 @RestController
 @AllArgsConstructor
 public class WeiOrderApiController extends BaseController {
     private final WeiApiCommon apiCommon;
     private final OmsWeiOrderService weiOrderService;
+    private final OShopPullLogsService pullLogsService;
+
+    private final String DATE_PATTERN =
+            "^(?:(?:(?:\\d{4}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|1\\d|2[0-8]))|(?:(?:(?:\\d{2}(?:0[48]|[2468][048]|[13579][26])|(?:(?:0[48]|[2468][048]|[13579][26])00))-0?2-29))$)|(?:(?:(?:\\d{4}-(?:0?[13578]|1[02]))-(?:0?[1-9]|[12]\\d|30))$)|(?:(?:(?:\\d{4}-0?[13-9]|1[0-2])-(?:0?[1-9]|[1-2]\\d|30))$)|(?:(?:(?:\\d{2}(?:0[48]|[13579][26]|[2468][048])|(?:(?:0[48]|[13579][26]|[2468][048])00))-0?2-29))$)$";
+    private final Pattern DATE_FORMAT = Pattern.compile(DATE_PATTERN);
 
     /**
      * 拉取订单
@@ -45,6 +59,18 @@ public class WeiOrderApiController extends BaseController {
         if (params.getShopId() == null || params.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }
+        if (StringUtils.isEmpty(params.getOrderDate())) {
+            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有下单日期");
+        }
+
+        // 判断时间格式
+        Matcher matcher = DATE_FORMAT.matcher(params.getOrderDate());
+        boolean b = matcher.find();
+        if (!b) {
+            return AjaxResult.error("下单日期格式错误");
+        }
+        Date currDateTime = new Date();
+        long beginTime = System.currentTimeMillis();
 
         var checkResult = apiCommon.checkBefore(params.getShopId());
         if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
@@ -54,101 +80,132 @@ public class WeiOrderApiController extends BaseController {
         String accessToken = checkResult.getData().getAccessToken();
 //        String appKey = checkResult.getData().getAppKey();
 //        String appSecret = checkResult.getData().getAppSecret();
-        LocalDateTime  endTime = LocalDateTime.now();
-        LocalDateTime startTime = endTime.minusHours(1);
-        ApiResultVo<Order> orderApiResultVo = WeiOrderApiHelper.pullOrderList(startTime, endTime, accessToken,1,100);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime startTime = LocalDateTime.parse(params.getOrderDate() + " 00:00:01", formatter);
+        LocalDateTime endTime = LocalDateTime.parse(params.getOrderDate() + " 23:59:59", formatter);
+        ApiResultVo<Order> orderApiResultVo = WeiOrderApiHelper.pullOrderList(startTime, endTime, accessToken, 1, 100);
 
+        String pullParams = "{startTime:" + params.getOrderDate() + " 00:00:01" + ",endTime:" + params.getOrderDate() + " 23:59:59" + "}";
+
+        Long startTimestamp = startTime.toEpochSecond(ZoneOffset.ofHours(8));
+        Long endTimestamp = endTime.toEpochSecond(ZoneOffset.ofHours(8));
+
+        log.info("=======开始拉取WEI订单。" + pullParams);
+        if (orderApiResultVo.getCode() != 0) {
+            OShopPullLogs logs = new OShopPullLogs();
+            logs.setShopId(params.getShopId());
+            logs.setShopType(EnumShopType.WEI.getIndex());
+            logs.setPullType("ORDER");
+            logs.setPullWay("主动拉取订单");
+            logs.setPullParams(pullParams);
+            logs.setPullResult(orderApiResultVo.getMsg());
+            logs.setPullTime(currDateTime);
+            logs.setDuration(System.currentTimeMillis() - beginTime);
+            pullLogsService.save(logs);
+            return AjaxResult.error(orderApiResultVo.getCode(), orderApiResultVo.getMsg());
+        }
 //        ApiResultVo<Order> apiResultVo = OrderApiHelper.pullOrderList(startTime, endTime, accessToken);
         int insertSuccess = 0;//新增成功的订单
         int totalError = 0;
         int hasExistOrder = 0;//已存在的订单数
-        if(orderApiResultVo.getCode() == 0){
-            if(orderApiResultVo.getList()!=null) {
-                // 拉取到了数据 拉取详情
-                for (var orderInfo : orderApiResultVo.getList()) {
+        if (orderApiResultVo.getList() != null) {
+            // 拉取到了数据 拉取详情
+            for (var orderInfo : orderApiResultVo.getList()) {
 
-                    OmsWeiOrder order = new OmsWeiOrder();
-                    order.setOrderId(orderInfo.getOrder_id());
-                    order.setShopId(params.getShopId());
-                    order.setOpenid(orderInfo.getOpenid());
-                    order.setCreateTime(orderInfo.getCreate_time());
-                    order.setUpdateTime(orderInfo.getUpdate_time());
-                    order.setUnionid(orderInfo.getUnionid());
-                    order.setStatus(orderInfo.getStatus());
-                    order.setAftersaleDetail(JSONObject.toJSONString(orderInfo.getAftersale_detail()));
-                    order.setPayInfo(JSONObject.toJSONString(orderInfo.getOrder_detail().getPay_info()));
-                    order.setProductPrice(orderInfo.getOrder_detail().getPrice_info().getInteger("product_price"));
-                    order.setOrderPrice(orderInfo.getOrder_detail().getPrice_info().getInteger("order_price"));
-                    order.setFreight(orderInfo.getOrder_detail().getPrice_info().getInteger("freight"));
-                    order.setDiscountedPrice(orderInfo.getOrder_detail().getPrice_info().getInteger("discounted_price"));
+                OmsWeiOrder order = new OmsWeiOrder();
+                order.setOrderId(orderInfo.getOrder_id());
+                order.setShopId(params.getShopId());
+                order.setOpenid(orderInfo.getOpenid());
+                order.setCreateTime(orderInfo.getCreate_time());
+                order.setUpdateTime(orderInfo.getUpdate_time());
+                order.setUnionid(orderInfo.getUnionid());
+                order.setStatus(orderInfo.getStatus());
+                order.setAftersaleDetail(JSONObject.toJSONString(orderInfo.getAftersale_detail()));
+                order.setPayInfo(JSONObject.toJSONString(orderInfo.getOrder_detail().getPay_info()));
+                order.setProductPrice(orderInfo.getOrder_detail().getPrice_info().getInteger("product_price"));
+                order.setOrderPrice(orderInfo.getOrder_detail().getPrice_info().getInteger("order_price"));
+                order.setFreight(orderInfo.getOrder_detail().getPrice_info().getInteger("freight"));
+                order.setDiscountedPrice(orderInfo.getOrder_detail().getPrice_info().getInteger("discounted_price"));
 
-                    var addressInfo = orderInfo.getOrder_detail().getDelivery_info().getAddress_info();
-                    order.setUserName(addressInfo.getUser_name());
-                    order.setPostalCode(addressInfo.getPostal_code());
-                    order.setProvinceName(addressInfo.getProvince_name());
-                    order.setCityName(addressInfo.getCity_name());
-                    order.setCountyName(addressInfo.getCounty_name());
-                    order.setDetailInfo(addressInfo.getDetail_info());
-                    order.setTelNumber(addressInfo.getTel_number());
-                    order.setHouseNumber(addressInfo.getHouse_number());
-                    order.setVirtualOrderTelNumber(addressInfo.getVirtual_order_tel_number());
-                    order.setTelNumberExtInfo(JSONObject.toJSONString(addressInfo.getTel_number_ext_info()));
-                    order.setUseTelNumber(addressInfo.getUse_tel_number());
-                    order.setHashCode(addressInfo.getHash_code());
+                var addressInfo = orderInfo.getOrder_detail().getDelivery_info().getAddress_info();
+                order.setUserName(addressInfo.getUser_name());
+                order.setPostalCode(addressInfo.getPostal_code());
+                order.setProvinceName(addressInfo.getProvince_name());
+                order.setCityName(addressInfo.getCity_name());
+                order.setCountyName(addressInfo.getCounty_name());
+                order.setDetailInfo(addressInfo.getDetail_info());
+                order.setTelNumber(addressInfo.getTel_number());
+                order.setHouseNumber(addressInfo.getHouse_number());
+                order.setVirtualOrderTelNumber(addressInfo.getVirtual_order_tel_number());
+                order.setTelNumberExtInfo(JSONObject.toJSONString(addressInfo.getTel_number_ext_info()));
+                order.setUseTelNumber(addressInfo.getUse_tel_number());
+                order.setHashCode(addressInfo.getHash_code());
 
-                    order.setDeliveryProductInfo(JSONObject.toJSONString(orderInfo.getOrder_detail().getDelivery_info().getDelivery_product_info()));
+                order.setDeliveryProductInfo(JSONObject.toJSONString(orderInfo.getOrder_detail().getDelivery_info().getDelivery_product_info()));
 
-                    order.setShipDoneTime(orderInfo.getOrder_detail().getDelivery_info().getShip_done_time());
-                    order.setEwaybillOrderCode(orderInfo.getOrder_detail().getDelivery_info().getEwaybill_order_code());
+                order.setShipDoneTime(orderInfo.getOrder_detail().getDelivery_info().getShip_done_time());
+                order.setEwaybillOrderCode(orderInfo.getOrder_detail().getDelivery_info().getEwaybill_order_code());
 
-                    order.setSettleInfo(JSONObject.toJSONString(orderInfo.getOrder_detail().getSettle_info()));
+                order.setSettleInfo(JSONObject.toJSONString(orderInfo.getOrder_detail().getSettle_info()));
 
-                    List<OmsWeiOrderItem> itemList = new ArrayList<>();
-                    for (var item:orderInfo.getOrder_detail().getProduct_infos()) {
-                        OmsWeiOrderItem oi = new OmsWeiOrderItem();
-                        oi.setOrderId(order.getOrderId());
-                        oi.setShopId(params.getShopId());
-                        oi.setProductId(item.getProduct_id());
-                        oi.setSkuId(item.getSku_id());
-                        oi.setThumbImg(item.getThumb_img());
-                        oi.setSkuCnt(item.getSku_cnt());
-                        oi.setSalePrice(item.getSale_price());
-                        oi.setTitle(item.getTitle());
-                        oi.setOnAftersaleSkuCnt(item.getOn_aftersale_sku_cnt());
-                        oi.setFinishAftersaleSkuCnt(item.getFinish_aftersale_sku_cnt());
-                        oi.setSkuCode(item.getSku_code());
-                        oi.setMarketPrice(item.getMarket_price());
-                        oi.setRealPrice(item.getReal_price());
-                        oi.setOutProductId(item.getOut_product_id());
-                        oi.setOutSkuId(item.getOut_sku_id());
-                        oi.setIsDiscounted(item.getIs_discounted() + "");
-                        oi.setEstimatePrice(item.getEstimate_price());
-                        oi.setIsChangePrice(item.getIs_change_price() + "");
-                        oi.setChangePrice(item.getChange_price());
-                        oi.setOutWarehouseId(item.getOut_warehouse_id());
-                        oi.setUseDeduction(item.getUse_deduction() + "");
+                List<OmsWeiOrderItem> itemList = new ArrayList<>();
+                for (var item : orderInfo.getOrder_detail().getProduct_infos()) {
+                    OmsWeiOrderItem oi = new OmsWeiOrderItem();
+                    oi.setOrderId(order.getOrderId());
+                    oi.setShopId(params.getShopId());
+                    oi.setProductId(item.getProduct_id());
+                    oi.setSkuId(item.getSku_id());
+                    oi.setThumbImg(item.getThumb_img());
+                    oi.setSkuCnt(item.getSku_cnt());
+                    oi.setSalePrice(item.getSale_price());
+                    oi.setTitle(item.getTitle());
+                    oi.setOnAftersaleSkuCnt(item.getOn_aftersale_sku_cnt());
+                    oi.setFinishAftersaleSkuCnt(item.getFinish_aftersale_sku_cnt());
+                    oi.setSkuCode(item.getSku_code());
+                    oi.setMarketPrice(item.getMarket_price());
+                    oi.setRealPrice(item.getReal_price());
+                    oi.setOutProductId(item.getOut_product_id());
+                    oi.setOutSkuId(item.getOut_sku_id());
+                    oi.setIsDiscounted(item.getIs_discounted() + "");
+                    oi.setEstimatePrice(item.getEstimate_price());
+                    oi.setIsChangePrice(item.getIs_change_price() + "");
+                    oi.setChangePrice(item.getChange_price());
+                    oi.setOutWarehouseId(item.getOut_warehouse_id());
+                    oi.setUseDeduction(item.getUse_deduction() + "");
 
-                        oi.setSkuAttrs(JSONObject.toJSONString(item.getSku_attrs()));
-                        oi.setSkuDeliverInfo(JSONObject.toJSONString(item.getSku_deliver_info()));
-                        oi.setExtraService(JSONObject.toJSONString(item.getExtra_service()));
-                        oi.setOrderProductCouponInfoList(JSONObject.toJSONString(item.getOrder_product_coupon_info_list()));
-                        itemList.add(oi);
-                    }
-                    order.setItems(itemList);
-                    var result = weiOrderService.saveOrder(params.getShopId(),order);
-                    if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
-                        //已经存在
-                        hasExistOrder++;
-                    } else if (result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
-                        insertSuccess++;
-                    } else {
-                        totalError++;
-                    }
+                    oi.setSkuAttrs(JSONObject.toJSONString(item.getSku_attrs()));
+                    oi.setSkuDeliverInfo(JSONObject.toJSONString(item.getSku_deliver_info()));
+                    oi.setExtraService(JSONObject.toJSONString(item.getExtra_service()));
+                    oi.setOrderProductCouponInfoList(JSONObject.toJSONString(item.getOrder_product_coupon_info_list()));
+                    itemList.add(oi);
+                }
+                order.setItems(itemList);
+                var result = weiOrderService.saveOrder(params.getShopId(), order);
+                if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
+                    //已经存在
+                    hasExistOrder++;
+                } else if (result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
+                    insertSuccess++;
+                } else {
+                    totalError++;
                 }
             }
         }
 
-        return AjaxResult.success();
+        OShopPullLogs logs = new OShopPullLogs();
+        logs.setShopType(EnumShopType.WEI.getIndex());
+        logs.setShopId(params.getShopId());
+        logs.setPullType("ORDER");
+        logs.setPullWay("主动拉取订单");
+        logs.setPullParams(pullParams);
+        logs.setPullResult("{insert:"+insertSuccess+",update:"+hasExistOrder+",fail:"+totalError+"}");
+        logs.setPullTime(currDateTime);
+        logs.setDuration(System.currentTimeMillis() - beginTime);
+        pullLogsService.save(logs);
+
+        String msg = "成功{startTime:"+startTime.format(formatter)+",endTime:"+endTime.format(formatter)+"} 新增：" + insertSuccess + "条，添加错误：" + totalError + "条，更新：" + hasExistOrder + "条";
+        log.info("=====更新WEI订单：END：" + msg);
+        return AjaxResult.success(msg);
     }
 
     /**

@@ -12,6 +12,13 @@
           <el-select v-model="form.shopId" filterable r placeholder="搜索店铺" >
           <el-option v-for="item in shopList" :key="item.id" :label="item.name" :value="item.id">
              <span style="float: left">{{ item.name }}</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 500">微信小店</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 200">京东POP</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 280">京东自营</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 100">淘宝天猫</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 300">拼多多</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 400">抖店</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 999">其他</span>
           </el-option>
         </el-select>
         </el-form-item>
@@ -75,7 +82,7 @@
                 :remote-method="searchSku" :loading="skuListLoading" @change="skuChanage(scope.row)">
                 <el-option v-for="item in skuList" :key="item.id"
                   :label="item.goodsName + ' ' + item.skuName +' - ' + item.skuCode"
-                  :value="item.id">
+                  :value="item.skuId">
                 </el-option>
               </el-select>
             </template>
@@ -141,11 +148,11 @@
 <!--        <el-form-item label="支付金额" prop="payAmount">-->
 <!--          <el-input v-model="form.payAmount" style="width: 220px;" placeholder="请输入支付金额，单位：元，支付金额=商品金额-折扣金额+邮费" />-->
 <!--        </el-form-item>-->
-<!--        <el-form-item label="支付时间" prop="payTime">-->
-<!--          <el-date-picker clearable v-model="form.payTime" type="date" style="width: 220px;" value-format="yyyy-MM-dd" placeholder="请选择支付日期">-->
-<!--        </el-date-picker>-->
+        <el-form-item label="下单时间" prop="orderDate">
+          <el-date-picker clearable v-model="form.orderDate" type="datetime" style="width: 220px;" value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择下单时间">
+        </el-date-picker>
 <!--          &lt;!&ndash; <el-input v-model="form.payTime" style="width: 220px;" placeholder="请输入支付时间" /> &ndash;&gt;-->
-<!--        </el-form-item>-->
+        </el-form-item>
       <el-form-item label="买家留言" prop="buyerMemo">
         <el-input v-model="form.buyerMemo" type="textarea" placeholder="请输入买家留言信息" />
       </el-form-item>
@@ -166,8 +173,7 @@
 </template>
 
 <script>
-import { searchSku } from "@/api/offline/goodsSku";
-// import { listShop } from "@/api/offline/shop";
+import { searchSku } from "@/api/goods/goods";
 import { addOrder } from "@/api/offline/order";
 import { listShop } from "@/api/shop/shop";
 import {
@@ -220,8 +226,9 @@ export default {
     };
   },
   created() {
-    this.form.orderDate = this.getDate()
-    listShop({type: 999}).then(response => {
+    this.form.orderDate = new Date();
+    // this.form.orderDate = this.getDate()
+    listShop({status: 1}).then(response => {
         this.shopList = response.rows;
       });
   },
@@ -337,10 +344,10 @@ export default {
     },
     skuChanage(row) {
       console.log('=====0000====',row)
-      const spec = this.skuList.find(x => x.id === row.skuId);
+      const spec = this.skuList.find(x => x.skuId === row.skuId);
       if (spec) {
         console.log('=======11111==', spec)
-        row.skuId = spec.id
+        row.skuId = spec.skuId
         row.salePrice = spec.salePrice
         // row.sku = spec.colorValue + ' ' + spec.sizeValue + ' ' + spec.styleValue
         row.skuName = spec.skuName
@@ -465,7 +472,7 @@ export default {
               this.$modal.msgSuccess("订单创建成功");
               // 调用全局挂载的方法,关闭当前标签页
               this.$store.dispatch("tagsView/delView", this.$route);
-              this.$router.push('/offline/order');
+              this.$router.push('/order/offline_order_list');
             });
 
         }else{
