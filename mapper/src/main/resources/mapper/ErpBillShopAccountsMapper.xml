@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.ErpBillShopAccountsMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.ErpBillShopAccounts">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="type" column="type" jdbcType="INTEGER"/>
+            <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
+            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+            <result property="tradeTime" column="trade_time" jdbcType="TIMESTAMP"/>
+            <result property="date" column="date" jdbcType="DATE"/>
+            <result property="amount" column="amount" jdbcType="DECIMAL"/>
+            <result property="usageScenario" column="usage_scenario" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,type,tenant_id,
+        shop_id,trade_time,date,
+        amount,usage_scenario,remark,
+        status,create_time,create_by,
+        update_time,update_by
+    </sql>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.ErpBillShipmentMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.ErpBillShipment">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="orderNum" column="order_num" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="INTEGER"/>
+            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+            <result property="supplierId" column="supplier_id" jdbcType="BIGINT"/>
+            <result property="supplierName" column="supplier_name" jdbcType="VARCHAR"/>
+            <result property="date" column="date" jdbcType="DATE"/>
+            <result property="shipCompany" column="ship_company" jdbcType="VARCHAR"/>
+            <result property="shipNo" column="ship_no" jdbcType="VARCHAR"/>
+            <result property="amount" column="amount" jdbcType="DECIMAL"/>
+            <result property="shipAmount" column="ship_amount" jdbcType="DECIMAL"/>
+            <result property="packageAmount" column="package_amount" jdbcType="DECIMAL"/>
+            <result property="goodsAmount" column="goods_amount" jdbcType="DECIMAL"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,order_num,shop_id,type,
+        supplier_id,supplier_name,date,
+        ship_company,ship_no,amount,package_amount,
+        ship_amount,goods_amount,remark,
+        status,create_time,create_by,
+        update_time,update_by,tenant_id
+    </sql>
+</mapper>

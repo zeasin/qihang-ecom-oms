@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.ErpBillShopOrderBillMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.ErpBillShopOrder">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+            <result property="shopType" column="shop_type" jdbcType="INTEGER"/>
+            <result property="tenantId" column="tenant_id" jdbcType="BIGINT"/>
+            <result property="orderId" column="order_id" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="INTEGER"/>
+            <result property="amount" column="amount" jdbcType="FLOAT"/>
+            <result property="bizTime" column="biz_time" jdbcType="TIMESTAMP"/>
+            <result property="bizType" column="biz_type" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="detail" column="detail" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,shop_id,shop_type,
+        tenant_id,order_id,type,
+        amount,biz_time,biz_type,
+        remark,detail,update_time,
+        create_time
+    </sql>
+</mapper>
