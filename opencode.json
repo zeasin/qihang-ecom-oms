@@ -1,0 +1,22 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions":  ["AGENTS.md","AGENTS_CN.md"],
+  "mcp": {
+    "java-analyzer": {
+      "type": "local",
+      "enabled": true,
+      "command": ["java-class-analyzer-mcp", "start"],
+      "environment": {
+        "NODE_ENV": "production",
+        "MAVEN_REPO": "E:/dev/apache-maven-3.9.6/repository",
+        "JAVA_HOME": "E:/dev/jdk-17.0.9"
+      }
+    },
+
+    "openmemory": {
+      "type": "remote",
+      "url": "http://localhost:8080/mcp",
+      "enabled": true
+    }
+  }
+}
