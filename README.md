@@ -52,7 +52,7 @@
 + 订单发货：处理待发货的订单，支持手动发货、分配给供应商发货。
   + 手动发货：手动填写物流单号进行发货，手动发货之后将进入备货出库中。
   + 供应商发货：分配给供应商发货，分配之后将进入备货出库中；
-  
+
 + 电子面单发货：支持快递打印、发货、补单等功能，开源版暂时不支持。
 + 备货出库：已发货、已分配给供应商发货、电子面单打印快递单完成都会加入备货清单，提供给仓库备货查询。备货单可以生成出库单。
   + 供应商备货支持手动填写物流单号，实现发货。
@@ -62,7 +62,7 @@
   + 快递公司管理：管理发货的快递公司（支持从平台拉取、支持手动添加）。
   + 电子面单账户设置：管理店铺开通的电子面单账户
 
-  
+
 #### 4、售后管理
 + 售后中心：聚合售后查询、详情、管理。
 + 店铺售后管理：售后API拉取、售后API更新、手动推送、售后操作（同意、备注）。
@@ -76,10 +76,6 @@
 
 
 ## 四、主要流程
-**启航电商ERP可以说是我多年电商行业从业经验积累的成果。**
-
-[听我吹牛请看](https://mp.weixin.qq.com/s/nPapuoQePVHHFm1hoJjSuw)
-
 
 
 ### 1 发货流程
@@ -208,27 +204,60 @@ location /prod-api/ {
 
 
 
-## 六、支持一下
+---
 
-**感谢大家的关注与支持！希望利用本人从事电商10余年的经验帮助到大家提升工作效率！**
+##### 💡 如果不想自己折腾？
 
-### 6.1 赠人玫瑰手留余香
-💖 如果觉得有用记得点个 Star⭐
+* **没有技术团队？** 启航电商ERP商业版提供一键部署 + 7x24小时技术支持
+* **申请不到 AppKey？** 商业版除了支持电商开放平台AppKey之外还集成了第三方API接口（使用第三方API无需自行申请Appkey）
+* **需要更多功能？** 商业版支持多商户、多仓库、AI智能分析
 
-<img src="docs/star.jpg" width="300px" />
+👉 **[启航电商ERP商业版帮助文档](https://gitee.com/qiliping/qihangerp-docs)** |
 
-### 6.2 一起交流
+---
 
-💖 欢迎一起交流！
+## 📦 启航电商开源生态
 
-+ 微信公众号
+启航电商旗下开源项目矩阵，所有项目共同指向统一商业版：
 
-   <img src="docs/微信公众号.jpg" width="300px" />
+| 项目 | 定位 | Gitee | GitHub |
+|:----|:----|:-----|:-------|
+| [启航电商ERP](https://gitee.com/qiliping/qihang-ecom-erp-open) | 电商业务中台底座（微服务） | [Gitee](https://gitee.com/qiliping/qihang-ecom-erp-open) | [GitHub](https://github.com/zeasin/qihang-ecom-erp-open) |
+| **OMS 订单中台 ⬅** | **轻量级订单管理** | [Gitee](https://gitee.com/qiliping/qihang-oms) | [GitHub](https://github.com/zeasin/qihang-ecom-oms) |
+| [库存账簿](https://gitee.com/qiliping/qihang-stock-books) | 极简进销存 | [Gitee](https://gitee.com/qiliping/qihang-stock-books) | [GitHub](https://github.com/zeasin/qihang-stock-books) |
+| [跨境ERP](https://gitee.com/qiliping/qihang-cb-erp) | 跨境电商 | [Gitee](https://gitee.com/qiliping/qihang-cb-erp) | [GitHub](https://github.com/zeasin/qihang-cb-erp) |
+| [SCM 供应链](https://gitee.com/qiliping/qihangerp-scm) | 多商户多供应商系统（已合并到商业版） | [Gitee](https://gitee.com/qiliping/qihangerp-scm) | [GitHub](https://github.com/zeasin/qihangerp-scm) |
+
+## 💼 商业版
+
+👉 **[启航电商ERP商业版功能预览](https://gitee.com/qiliping/qihangerp-docs)**
+
+👉 **了解更多？→** 电话/微信：15818590119
 
 
-### 6.3 捐助作者
-如果项目对您有帮忙，方便的话可以请作者吃个盒饭💖
 
-<img src="docs/微信收款码.jpg" width="300px" />
-<img src="docs/支付宝收款码.jpg" width="300px" />
+## 📱 关注我们
+
+|                   公众号：启航电商ERP                   |                   个人号：码农老齐                   |
+|:-----------------------------------------------:|:--------------------------------------------:|
+|                 产品动态·行业方案·客户案例                  |                技术实战·开源故事·创业心得                |
+| <img src="docs/wxmp_qherp.jpg" width="200px" /> | <img src="docs/wxmp_qi.jpg" width="200px" /> |
+
+
+**感谢关注！我希望将从事电商 10 余年的行业经验沉淀在代码中，帮助大家真正提升经营效率。**
+
+💖 如果项目对您有帮助，请点个 **Star ⭐** 给予鼓励！
+
+
+---
+
+## ☕ 捐助作者
+
+如果这个项目对您有用，欢迎请作者吃个盒饭，您的支持是项目持续更新的动力！
+
+|                      微信支付                       |                     支付宝                      |
+|:-----------------------------------------------:|:--------------------------------------------:|
+|                   捐赠随意，捐赠进交流群                   |                捐赠随意，捐赠进交流群                |
+| <img src="docs/微信收款码.jpg" width="200px" /> | <img src="docs/支付宝收款码.jpg" width="200px" /> |
+
 
