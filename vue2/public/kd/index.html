@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本果快查 - 有方大健康旗下产品</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23667eea'/%3E%3Ctext x='50' y='60' font-family='sans-serif' font-size='40' font-weight='bold' fill='white' text-anchor='middle'%3E🚚%3C/text%3E%3C/svg%3E">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-shipping-fast"></i> 本果快查</h1>
+                <p>有方大健康旗下产品 - 快速查询您的包裹物流信息</p>
+            </div>
+        </header>
+
+        <!-- 查询表单 -->
+        <div class="query-section">
+            <div class="query-form">
+                <h2>查询快递</h2>
+
+                <!-- 快递公司选择 -->
+                <div class="form-group">
+                    <label for="cpCode">
+                        <i class="fas fa-truck"></i>
+                        快递公司
+                    </label>
+                    <select id="cpCode" required>
+                        <option value="">请选择快递公司</option>
+                        <option value="SF">顺丰快递</option>
+                        <option value="YTO">圆通快递</option>
+                        <option value="ZTO">中通快递</option>
+                        <option value="YUNDA">韵达快递</option>
+                        <option value="YDKY">韵达快运</option>
+                        <option value="STO">申通快递</option>
+                        <option value="TTKDEX">天天快递</option>
+                        <option value="JD">京东快递</option>
+                        <option value="EMS">中国邮政快递</option>
+                    </select>
+                </div>
+
+                <!-- 运单号输入 -->
+                <div class="form-group">
+                    <label for="mailNo">
+                        <i class="fas fa-barcode"></i>
+                        快递单号
+                    </label>
+                    <input type="text" id="mailNo" placeholder="请输入快递单号" required>
+                </div>
+
+                <!-- 收件人手机号（可选） -->
+                <div class="form-group">
+                    <label for="tel">
+                        <i class="fas fa-phone"></i>
+                        收件人手机号 <span class="optional">(可选)</span>
+                    </label>
+                    <input type="tel" id="tel" placeholder="请输入手机号后四位或完整号码">
+                </div>
+
+                <!-- 排序方式 -->
+                <div class="form-group">
+                    <label for="orderType">
+                        <i class="fas fa-sort"></i>
+                        时间排序
+                    </label>
+                    <select id="orderType">
+                        <option value="asc">时间正序（最早到最新）</option>
+                        <option value="desc">时间倒序（最新到最早）</option>
+                    </select>
+                </div>
+
+                <!-- 查询按钮 -->
+                <button type="button" class="query-btn" onclick="queryExpress()">
+                    <i class="fas fa-search"></i>
+                    查询物流
+                </button>
+
+                <!-- 清除历史按钮 -->
+                <button type="button" class="clear-btn" onclick="clearQueryHistory()">
+                    <i class="fas fa-trash-alt"></i>
+                    清除历史
+                </button>
+            </div>
+        </div>
+
+        <!-- 加载状态 -->
+        <div class="loading" id="loading" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p>正在查询中...</p>
+        </div>
+
+        <!-- 查询结果 -->
+        <div class="result-section" id="resultSection" style="display: none;">
+            <div class="result-header">
+                <h3 id="companyName">物流信息</h3>
+                <div class="express-info">
+                    <span class="express-no" id="expressNo"></span>
+                    <span class="express-status" id="expressStatus"></span>
+                </div>
+                <div class="last-update" id="lastUpdate"></div>
+            </div>
+
+            <div class="timeline" id="timeline">
+                <!-- 物流轨迹将动态生成 -->
+            </div>
+        </div>
+
+        <!-- 错误提示 -->
+        <div class="error-message" id="errorMessage" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="errorText"></span>
+        </div>
+    </div>
+
+    <script>
+      // API配置
+      const API_CONFIG = {
+        url: 'https://eolink.o.apispace.com/wlgj1/paidtobuy_api/trace_search',
+        token: '3h8rhk2s4ruie4bh2tx2j5wrsxzhkyvl'
+      };
+
+      // 快递公司映射
+      const COMPANY_MAP = {
+        'SF': '顺丰快递',
+        'YTO': '圆通快递',
+        'ZTO': '中通快递',
+        'YUNDA': '韵达快递',
+        'YDKY': '韵达快运',
+        'STO': '申通快递',
+        'TTKDEX': '天天快递',
+        'JD': '京东快递',
+        'EMS': '中国邮政快递'
+      };
+
+      // 物流状态映射
+      const STATUS_MAP = {
+        'ACCEPT': '已揽收',
+        'TRANSPORT': '运输中',
+        'DELIVERING': '派送中',
+        'SIGN': '已签收',
+        'PROBLEM': '问题件',
+        'REJECT': '拒收',
+        'TIMEOUT': '超时'
+      };
+
+      // 状态描述映射
+      const STATUS_DESC_MAP = {
+        '已揽收': 'ACCEPT',
+        '运输中': 'TRANSPORT',
+        '派送中': 'DELIVERING',
+        '已签收': 'SIGN',
+        '问题件': 'PROBLEM',
+        '拒收': 'REJECT',
+        '超时': 'TIMEOUT'
+      };
+
+      /**
+       * 保存查询历史到本地存储
+       */
+      function saveQueryHistory(cpCode, mailNo, tel, orderType) {
+        const queryData = {
+          cpCode: cpCode,
+          mailNo: mailNo,
+          tel: tel,
+          orderType: orderType,
+          timestamp: new Date().getTime()
+        };
+        localStorage.setItem('expressQueryHistory', JSON.stringify(queryData));
+      }
+
+      /**
+       * 清除查询历史
+       */
+      function clearQueryHistory() {
+        try {
+          localStorage.removeItem('expressQueryHistory');
+          console.log('已清除查询历史');
+
+          // 清空表单
+          document.getElementById('cpCode').value = '';
+          document.getElementById('mailNo').value = '';
+          document.getElementById('tel').value = '';
+          document.getElementById('orderType').value = 'asc';
+          document.getElementById('mailNo').placeholder = '请输入快递单号';
+
+          // 隐藏结果区域
+          hideResult();
+          hideError();
+
+        } catch (error) {
+          console.error('清除查询历史失败:', error);
+        }
+      }
+
+      /**
+       * 从本地存储恢复查询历史
+       */
+      function restoreQueryHistory() {
+        try {
+          const stored = localStorage.getItem('expressQueryHistory');
+          if (stored) {
+            const queryData = JSON.parse(stored);
+
+            // 设置恢复历史标志，防止清空单号
+            window.isRestoringHistory = true;
+
+            // 恢复表单数据
+            if (queryData.cpCode) {
+              document.getElementById('cpCode').value = queryData.cpCode;
+            }
+            if (queryData.mailNo) {
+              document.getElementById('mailNo').value = queryData.mailNo;
+            }
+            if (queryData.tel) {
+              document.getElementById('tel').value = queryData.tel;
+            }
+            if (queryData.orderType) {
+              document.getElementById('orderType').value = queryData.orderType;
+            }
+
+            // 触发change事件以更新placeholder（在设置完所有值后）
+            if (queryData.cpCode) {
+              document.getElementById('cpCode').dispatchEvent(new Event('change'));
+            }
+
+            // 重置标志
+            setTimeout(() => {
+              window.isRestoringHistory = false;
+            }, 100);
+
+            console.log('已恢复查询历史:', queryData);
+          }
+        } catch (error) {
+          console.error('恢复查询历史失败:', error);
+        }
+      }
+
+      /**
+       * 查询快递信息
+       */
+      async function queryExpress() {
+        // 获取表单数据
+        const cpCode = document.getElementById('cpCode').value;
+        const mailNo = document.getElementById('mailNo').value.trim();
+        const tel = document.getElementById('tel').value.trim();
+        const orderType = document.getElementById('orderType').value;
+
+        // 验证必填字段
+        if (!cpCode) {
+          showError('请选择快递公司');
+          return;
+        }
+
+        if (!mailNo) {
+          showError('请输入快递单号');
+          return;
+        }
+
+        // 验证快递单号格式（基本验证）
+        if (mailNo.length < 8) {
+          showError('快递单号格式不正确');
+          return;
+        }
+
+        // 显示加载状态
+        showLoading();
+        hideError();
+        hideResult();
+
+        try {
+          // 构建请求数据
+          const requestData = {
+            cpCode: cpCode,
+            mailNo: mailNo,
+            orderType: orderType
+          };
+
+          // 如果输入了手机号，添加到请求中
+          if (tel) {
+            requestData.tel = tel;
+          }
+
+          console.log('发送请求:', requestData);
+
+          // 发送API请求
+          const response = await fetch(API_CONFIG.url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-APISpace-Token': API_CONFIG.token
+            },
+            body: JSON.stringify(requestData)
+          });
+
+          console.log('响应状态:', response.status);
+
+          if (!response.ok) {
+            throw new Error(`请求失败: ${response.status} ${response.statusText}`);
+          }
+
+          const data = await response.json();
+          console.log('响应数据:', data);
+
+          // 隐藏加载状态
+          hideLoading();
+
+          if (data.success && data.logisticsTrace) {
+            // 保存查询历史
+            saveQueryHistory(cpCode, mailNo, tel, orderType);
+
+            // 显示查询结果
+            displayResult(data.logisticsTrace);
+          } else {
+            showError(data.message || '查询失败，请检查快递单号是否正确');
+          }
+
+        } catch (error) {
+          console.error('查询错误:', error);
+          hideLoading();
+
+          if (error.name === 'TypeError' && error.message.includes('fetch')) {
+            showError('网络连接失败，请检查网络连接后重试');
+          } else if (error.message.includes('CORS')) {
+            showError('跨域请求被阻止，请联系管理员配置服务器');
+          } else {
+            showError(`查询失败: ${error.message}`);
+          }
+        }
+      }
+
+      /**
+       * 显示查询结果
+       * @param {Object} logisticsTrace 物流信息
+       */
+      function displayResult(logisticsTrace) {
+        const resultSection = document.getElementById('resultSection');
+        const companyName = document.getElementById('companyName');
+        const expressNo = document.getElementById('expressNo');
+        const expressStatus = document.getElementById('expressStatus');
+        const lastUpdate = document.getElementById('lastUpdate');
+        const timeline = document.getElementById('timeline');
+
+        // 设置基本信息
+        companyName.textContent = logisticsTrace.logisticsCompanyName || COMPANY_MAP[logisticsTrace.cpCode] || '未知快递公司';
+        expressNo.textContent = `运单号: ${logisticsTrace.mailNo}`;
+
+        // 设置状态
+        const statusText = logisticsTrace.logisticsStatusDesc || STATUS_MAP[logisticsTrace.logisticsStatus] || '未知状态';
+        expressStatus.textContent = statusText;
+        expressStatus.className = `express-status ${STATUS_DESC_MAP[statusText] || logisticsTrace.logisticsStatus || 'UNKNOWN'}`;
+
+        // 设置最后更新时间
+        if (logisticsTrace.theLastTime) {
+          lastUpdate.textContent = `最后更新: ${logisticsTrace.theLastTime}`;
+        }
+
+        // 生成时间轴
+        generateTimeline(logisticsTrace.logisticsTraceDetailList || [], timeline);
+
+        // 显示结果区域
+        resultSection.style.display = 'block';
+
+        // 平滑滚动到结果区域
+        resultSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+
+      /**
+       * 生成时间轴
+       * @param {Array} traceList 物流轨迹列表
+       * @param {HTMLElement} container 容器元素
+       */
+      function generateTimeline(traceList, container) {
+        container.innerHTML = '';
+
+        if (!traceList || traceList.length === 0) {
+          container.innerHTML = '<div class="timeline-item"><div class="timeline-desc">暂无物流信息</div></div>';
+          return;
+        }
+
+        traceList.forEach((trace, index) => {
+          const timelineItem = document.createElement('div');
+          timelineItem.className = 'timeline-item';
+
+          // 标记最新的一条记录
+          if (index === 0) {
+            timelineItem.classList.add('latest');
+          }
+
+          // 格式化时间
+          let timeStr = '';
+          if (trace.time) {
+            const date = new Date(trace.time);
+            timeStr = formatDateTime(date);
+          }
+
+          // 构建HTML
+          timelineItem.innerHTML = `
+            ${timeStr ? `<div class="timeline-time">${timeStr}</div>` : ''}
+            ${trace.areaName ? `<div class="timeline-location"><i class="fas fa-map-marker-alt"></i> ${trace.areaName}</div>` : ''}
+            <div class="timeline-desc">${trace.desc || '无描述信息'}</div>
+        `;
+
+          container.appendChild(timelineItem);
+        });
+      }
+
+      /**
+       * 格式化日期时间
+       * @param {Date} date 日期对象
+       * @returns {string} 格式化后的日期时间字符串
+       */
+      function formatDateTime(date) {
+        if (!date || isNaN(date.getTime())) {
+          return '';
+        }
+
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      }
+
+      /**
+       * 显示加载状态
+       */
+      function showLoading() {
+        document.getElementById('loading').style.display = 'block';
+      }
+
+      /**
+       * 隐藏加载状态
+       */
+      function hideLoading() {
+        document.getElementById('loading').style.display = 'none';
+      }
+
+      /**
+       * 显示错误信息
+       * @param {string} message 错误消息
+       */
+      function showError(message) {
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        errorText.textContent = message;
+        errorMessage.style.display = 'flex';
+
+        // 平滑滚动到错误信息
+        errorMessage.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }
+
+      /**
+       * 隐藏错误信息
+       */
+      function hideError() {
+        document.getElementById('errorMessage').style.display = 'none';
+      }
+
+      /**
+       * 隐藏查询结果
+       */
+      function hideResult() {
+        document.getElementById('resultSection').style.display = 'none';
+      }
+
+      /**
+       * 表单验证和用户体验增强
+       */
+      document.addEventListener('DOMContentLoaded', function() {
+        const mailNoInput = document.getElementById('mailNo');
+        const telInput = document.getElementById('tel');
+        const cpCodeSelect = document.getElementById('cpCode');
+
+        // 页面加载时恢复查询历史
+        restoreQueryHistory();
+
+        // 快递单号输入限制
+        mailNoInput.addEventListener('input', function(e) {
+          // 移除非数字和字母的字符
+          let value = e.target.value.replace(/[^a-zA-Z0-9]/g, '');
+          e.target.value = value.toUpperCase();
+        });
+
+        // 手机号输入限制
+        telInput.addEventListener('input', function(e) {
+          // 只允许数字
+          let value = e.target.value.replace(/[^0-9]/g, '');
+          e.target.value = value;
+        });
+
+        // 回车键查询
+        document.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            queryExpress();
+          }
+        });
+
+        // 快递公司选择时的自动建议和清空所有数据
+        cpCodeSelect.addEventListener('change', function(e) {
+          const selectedCode = e.target.value;
+
+          // 只有在用户手动切换时才清空数据（不是在恢复历史记录时）
+          if (!window.isRestoringHistory) {
+            // 清空所有输入字段
+            mailNoInput.value = '';
+            telInput.value = '';
+
+            // 隐藏之前的查询结果和错误信息
+            hideResult();
+            hideError();
+
+            console.log('切换快递公司，已清空所有数据');
+          }
+
+          if (selectedCode) {
+            // 根据选择的快递公司给出运单号格式提示
+            const suggestions = {
+              'SF': '请输入顺丰运单号（如：SF1234567890123）',
+              'YTO': '请输入圆通运单号（如：YT1234567890123）',
+              'ZTO': '请输入中通运单号（如：73570889383613）',
+              'YUNDA': '请输入韵达运单号（如：4310123456789）',
+              'YDKY': '请输入韵达快运单号（如：YDKY1234567890）',
+              'STO': '请输入申通运单号（如：STO1234567890123）',
+              'TTKDEX': '请输入天天快递运单号（如：TT1234567890）',
+              'JD': '请输入京东快递运单号（如：JD1234567890123）',
+              'EMS': '请输入邮政运单号（如：EA123456789CN）'
+            };
+
+            if (suggestions[selectedCode]) {
+              mailNoInput.placeholder = suggestions[selectedCode];
+            } else {
+              mailNoInput.placeholder = '请输入快递单号';
+            }
+          } else {
+            mailNoInput.placeholder = '请输入快递单号';
+          }
+        });
+      });
+
+      // 暴露全局函数
+      window.queryExpress = queryExpress;
+      window.clearQueryHistory = clearQueryHistory;
+
+    </script>
+</body>
+<style type="text/css">
+  /* 重置样式 */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', Microsoft YaHei, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* 头部样式 */
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+    color: white;
+  }
+
+  .header-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .header-content p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 20px;
+  }
+
+  .header-content i {
+    margin-right: 10px;
+    color: #ffd700;
+  }
+
+  /* 查询表单样式 */
+  .query-section {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+  }
+
+  .query-form h2 {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .query-form h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border-radius: 2px;
+  }
+
+  .form-group {
+    margin-bottom: 25px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 1rem;
+  }
+
+  .form-group label i {
+    margin-right: 8px;
+    color: #667eea;
+    width: 16px;
+  }
+
+  .optional {
+    font-weight: normal;
+    color: #999;
+    font-size: 0.9rem;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid #e1e5e9;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #fff;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .form-group input::placeholder {
+    color: #aaa;
+  }
+
+  /* 查询按钮 */
+  .query-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+  }
+
+  .query-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+  }
+
+  .query-btn:active {
+    transform: translateY(-1px);
+  }
+
+  .query-btn i {
+    margin-right: 10px;
+  }
+
+  /* 清除历史按钮 */
+  .clear-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+  }
+
+  .clear-btn:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+  }
+
+  .clear-btn:active {
+    transform: translateY(-1px);
+  }
+
+  .clear-btn i {
+    margin-right: 8px;
+  }
+
+  /* 加载状态 */
+  .loading {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+  }
+
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .loading p {
+    color: #666;
+    font-size: 1.1rem;
+  }
+
+  /* 查询结果样式 */
+  .result-section {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+  }
+
+  .result-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+  }
+
+  .result-header h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 15px;
+  }
+
+  .express-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+
+  .express-no {
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .express-status {
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .express-status.ACCEPT {
+    background: #fff3e0;
+    color: #f57c00;
+  }
+
+  .express-status.TRANSPORT {
+    background: #e8f5e8;
+    color: #388e3c;
+  }
+
+  .express-status.DELIVERING {
+    background: #e1f5fe;
+    color: #0277bd;
+  }
+
+  .express-status.SIGN {
+    background: #f3e5f5;
+    color: #7b1fa2;
+  }
+
+  .last-update {
+    color: #666;
+    font-size: 0.95rem;
+  }
+
+  /* 时间轴样式 */
+  .timeline {
+    position: relative;
+    padding-left: 30px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #667eea, #764ba2);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 25px;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+  }
+
+  .timeline-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -37px;
+    top: 25px;
+    width: 12px;
+    height: 12px;
+    background: #667eea;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 3px #667eea;
+  }
+
+  .timeline-item.latest::before {
+    background: #4caf50;
+    box-shadow: 0 0 0 3px #4caf50;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+    }
+  }
+
+  .timeline-time {
+    color: #667eea;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+  }
+
+  .timeline-location {
+    color: #999;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+
+  .timeline-desc {
+    color: #333;
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+
+  /* 错误提示 */
+  .error-message {
+    background: #ffebee;
+    color: #c62828;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 4px solid #c62828;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .error-message i {
+    font-size: 1.2rem;
+  }
+
+  /* 响应式设计 */
+  @media (max-width: 768px) {
+    .container {
+      padding: 15px;
+    }
+
+    .header-content h1 {
+      font-size: 2rem;
+    }
+
+    .query-section,
+    .result-section {
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    .query-form h2 {
+      font-size: 1.5rem;
+    }
+
+    .form-group input,
+    .form-group select {
+      padding: 12px 15px;
+    }
+
+    .query-btn {
+      padding: 15px;
+      font-size: 1rem;
+    }
+
+    .timeline {
+      padding-left: 25px;
+    }
+
+    .timeline::before {
+      left: 12px;
+    }
+
+    .timeline-item::before {
+      left: -31px;
+      width: 10px;
+      height: 10px;
+    }
+
+    .timeline-item {
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .express-info {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .container {
+      padding: 10px;
+    }
+
+    .header-content h1 {
+      font-size: 1.8rem;
+    }
+
+    .query-section,
+    .result-section {
+      padding: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .timeline-item {
+      padding: 12px;
+    }
+  }
+
+  /* 美化滚动条 */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #5a6fd8, #6a4190);
+  }
+
+</style>
+</html>

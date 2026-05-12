@@ -1,0 +1,47 @@
+import request from '@/utils/request'
+
+
+// 查询jd商品列表
+export function listGoods(query) {
+  return request({
+    url: '/api/oms-api/jd/goods/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询jd商品sku列表
+export function listGoodsSku(query) {
+  return request({
+    url: '/api/oms-api/jd/goods/skuList',
+    method: 'get',
+    params: query
+  })
+}
+
+
+export function getGoodsSku(id) {
+  return request({
+    url: '/api/oms-api/jd/goods/sku/'+id,
+    method: 'get',
+  })
+}
+
+
+export function linkErpGoodsSkuId(data) {
+  return request({
+    url: '/api/oms-api/jd/goods/sku/linkErp',
+    method: 'post',
+    data: data
+  })
+}
+
+// 接口拉取jd商品
+export function pullGoodsList(data) {
+  return request({
+    url: '/api/oms-api/jd/goods/pull_goods',
+    method: 'post',
+    data: data
+  })
+}
+
