@@ -33,7 +33,9 @@ import ScrollPane from './ScrollPane'
 
 function resolvePath(basePath, routePath) {
   if (!basePath || basePath === '/') {
-    return routePath || ''
+    // 确保路径以 / 开头，否则相对路径导航会出404
+    const path = routePath || ''
+    return path.startsWith('/') ? path : '/' + path
   }
   if (!routePath) {
     return basePath

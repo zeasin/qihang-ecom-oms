@@ -32,7 +32,8 @@ import FixiOSBug from './FixiOSBug'
 
 function resolvePath(basePath, routePath) {
   if (!basePath || basePath === '/') {
-    return routePath || ''
+    const path = routePath || ''
+    return path.startsWith('/') ? path : '/' + path
   }
   if (!routePath) {
     return basePath
