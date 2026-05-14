@@ -351,7 +351,7 @@ import { listMerchant } from '@/api/shop/merchant'
 import {amountFormatter, rowDataItemIndex} from '@/utils/zhijian'
 import {getInternalSystemConfig} from "@/api/third_system";
 import {getUserProfile} from "@/api/system/user";
-import {listPlatform} from "@/api/vms/shop";
+import {listPlatform} from "@/api/shop/shop";
 import PopupSkuList from "@/views/goods/PopupSkuList.vue";
 
 

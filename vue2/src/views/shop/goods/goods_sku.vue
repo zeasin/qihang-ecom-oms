@@ -205,7 +205,7 @@ import {listGoodsSku, linkErpGoodsSkuId, delGoodsSku, updateGoodsSku} from "@/ap
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
 import {getUserProfile} from "@/api/system/user";
-import {listPlatform} from "@/api/vms/shop";
+import {listPlatform} from "@/api/shop/shop";
 import PopupSkuList from "@/views/goods/PopupSkuList.vue";
 
 export default {
