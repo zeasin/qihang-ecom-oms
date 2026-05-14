@@ -220,13 +220,13 @@ location /prod-api/ {
 
 启航电商旗下开源项目矩阵，所有项目共同指向统一商业版：
 
-| 项目                                                         | 定位 | Gitee | GitHub |
-|:-----------------------------------------------------------|:----|:-----|:-------|
-| [启航电商ERP](https://gitee.com/qiliping/qihang-ecom-erp-open) | 电商业务中台底座（微服务） | [Gitee](https://gitee.com/qiliping/qihang-ecom-erp-open) | [GitHub](https://github.com/zeasin/qihang-ecom-erp-open) |
-| **OMS 订单中台 ⬅**                                             | **轻量级订单管理** | [Gitee](https://gitee.com/qiliping/qihang-oms) | [GitHub](https://github.com/zeasin/qihang-ecom-oms) |
+| 项目                                                         | 定位                            | Gitee | GitHub |
+|:-----------------------------------------------------------|:------------------------------|:-----|:-------|
+| [启航电商ERP](https://gitee.com/qiliping/qihang-ecom-erp-open) | 电商业务AI底座（微服务）                 | [Gitee](https://gitee.com/qiliping/qihang-ecom-erp-open) | [GitHub](https://github.com/zeasin/qihang-ecom-erp-open) |
+| **OMS 订单中台 ⬅**                                             | **轻量级订单管理**                   | [Gitee](https://gitee.com/qiliping/qihang-oms) | [GitHub](https://github.com/zeasin/qihang-ecom-oms) |
 | [跨境云仓WMS](https://gitee.com/qiliping/qihang-cloud-wms)     | 专为跨境云仓服务商打造 > 智能仓配，高效管理，一键无忧。 | [Gitee](https://gitee.com/qiliping/qihang-cloud-wms) | [GitHub](https://github.com/zeasin/qihang-cloud-wms) |
-| [跨境ERP](https://gitee.com/qiliping/qihang-cb-erp)          | 跨境电商 | [Gitee](https://gitee.com/qiliping/qihang-cb-erp) | [GitHub](https://github.com/zeasin/qihang-cb-erp) |
-| [SCM 供应链](https://gitee.com/qiliping/qihangerp-scm)        | 多商户多供应商系统（已合并到商业版） | [Gitee](https://gitee.com/qiliping/qihangerp-scm) | [GitHub](https://github.com/zeasin/qihangerp-scm) |
+| [跨境ERP](https://gitee.com/qiliping/qihang-cb-erp)          | 跨境电商                          | [Gitee](https://gitee.com/qiliping/qihang-cb-erp) | [GitHub](https://github.com/zeasin/qihang-cb-erp) |
+| [SCM 供应链](https://gitee.com/qiliping/qihangerp-scm)        | 多商户多供应商系统（已合并到商业版）            | [Gitee](https://gitee.com/qiliping/qihangerp-scm) | [GitHub](https://github.com/zeasin/qihangerp-scm) |
 
 ## 💼 商业版
 
