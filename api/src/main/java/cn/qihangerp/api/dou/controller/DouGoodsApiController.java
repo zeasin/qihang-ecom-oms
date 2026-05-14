@@ -60,7 +60,7 @@ public class DouGoodsApiController {
         String serverUrl = checkResult.getData().getServerUrl();
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
-        Long douShopId = checkResult.getData().getSellerId();
+//        Long douShopId = checkResult.getData().getSellerId();
         // 获取最后更新时间
         LocalDateTime startTime = null;
         LocalDateTime endTime = null;

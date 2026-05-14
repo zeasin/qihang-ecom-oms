@@ -50,7 +50,7 @@ public class JdApiCommon {
             return ResultVo.error(HttpStatus.PARAMS_ERROR, "第三方平台配置错误，没有找到ServerUrl");
         }
 
-        if(shop.getSellerId() == null || shop.getSellerId() <= 0) {
+        if (StringUtils.isEmpty(shop.getSellerId())  || shop.getSellerId().equals("0")) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR,  "第三方平台配置错误，没有找到SellerUserId");
         }
 

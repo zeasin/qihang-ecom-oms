@@ -26,7 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -222,10 +224,10 @@ public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
         order.setShopType(EnumShopType.DOU.getIndex());
         order.setShopId(douOrder.getSShopId());
 //        order.setShipType(confirmBo.getShipType());
-        order.setShipType(0);
+//        order.setShipType(0);
         order.setBuyerMemo(douOrder.getBuyerWords());
         order.setSellerMemo(douOrder.getSellerWords());
-        order.setRefundStatus(1);
+//        order.setRefundStatus(1);
         order.setOrderStatus(1);
         order.setGoodsAmount(douOrder.getOrderAmount()!=null?douOrder.getOrderAmount().doubleValue()/100:0.0);
         order.setPostFee(douOrder.getPostAmount()!=null?douOrder.getPostAmount().doubleValue()/100:0.0);
@@ -239,8 +241,13 @@ public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
         order.setProvince(confirmBo.getProvince());
         order.setCity(confirmBo.getCity());
         order.setTown(confirmBo.getTown());
-        order.setOrderTime(douOrder.getCreateTime()!=null?new Date(douOrder.getCreateTime()*1000):new Date());
-        order.setShipper(-1L);
+        try {
+            LocalDateTime orderTime = Instant.ofEpochMilli(douOrder.getCreateTime() * 1000)
+                    .atZone(ZoneId.of("Asia/Shanghai"))
+                    .toLocalDateTime();
+            order.setOrderTime(orderTime);
+        }catch (Exception e){}
+//        order.setShipper(-1L);
         order.setShipStatus(0);
         order.setCreateTime(new Date());
         order.setCreateBy("手动确认订单");
@@ -268,8 +275,7 @@ public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
             oOrderItem.setQuantity(item.getItemNum());
             oOrderItem.setRefundCount(0);
             oOrderItem.setRefundStatus(1);
-            oOrderItem.setShipper(-1L);
-            oOrderItem.setShipType(order.getShipType());
+
             oOrderItem.setShipStatus(0);
             oOrderItem.setCreateTime(new Date());
             oOrderItem.setCreateBy("手动确认订单");

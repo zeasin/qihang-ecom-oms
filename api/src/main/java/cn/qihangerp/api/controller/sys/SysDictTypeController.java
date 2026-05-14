@@ -18,7 +18,7 @@ import java.util.List;
  * @author qihang
  */
 @RestController
-@RequestMapping("/system/dict/type")
+@RequestMapping("/api/sys-api/system/dict/type")
 public class SysDictTypeController extends BaseController
 {
     @Autowired

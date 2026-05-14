@@ -54,7 +54,7 @@ public class DouLogisticsApiController {
 
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
-        Long douShopId = checkResult.getData().getSellerId();
+//        Long douShopId = checkResult.getData().getSellerId();
         String accessToken = checkResult.getData().getAccessToken();
 
         ApiResultVo<DouLogisticsCompany> resultVo = DouLogisticsApiHelper.getLogisticsCompanyList(appKey, appSecret, accessToken);

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -64,7 +65,7 @@ public class OShipmentItem implements Serializable {
     /**
      * 订单时间
      */
-    private Date orderTime;
+    private LocalDateTime orderTime;
 
     /**
      * 订单itemID（o_order_item外键）

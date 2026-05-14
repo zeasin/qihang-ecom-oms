@@ -1,10 +1,12 @@
 package cn.qihangerp.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 数据中心-店铺
@@ -41,17 +43,8 @@ public class OShop implements Serializable {
     /**
      * 状态（1正常2已删除）
      */
-    private Integer status;
-    /**
-     * 自动任务状态0关闭1开启
-     */
-    private Integer apiStatus;
+    private String status;
 
-    /**
-     * 更新时间
-     */
-    private Long modifyOn;
-    private Long createOn;
 
     /**
      * 描述
@@ -61,7 +54,13 @@ public class OShop implements Serializable {
     /**
      * 第三方平台店铺id，淘宝天猫开放平台使用
      */
-    private Long sellerId;
+    private String sellerId;
+    private String sellerNum;
+
+    /**
+     * 是否允许共享库存：0-否，1-是
+     */
+    private Integer allowInventoryShare;
 
     /**
      * Appkey
@@ -102,6 +101,52 @@ public class OShop implements Serializable {
      * 请求url
      */
     private String apiRequestUrl;
+    private String apiCallbackUrl;
+    /**
+     * api调用状态0未开启1已开启 11采用点三接口21采用吉客云接口
+     */
+    private Integer apiStatus;
+
+    private Long manageUserId;
+
+    private String province;
+    private String city;
+    private String district;
+    private String address;
+
+    private String contact;
+    private String phone;
+
+    /**
+     * 店铺分组
+     */
+    private Long shopGroupId;
+    private Long regionId;
+    private Long merchantId;
+    @TableField(exist = false)
+    private String merchantName;
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 创建人
+     */
+    private String createBy;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+
+    /**
+     * 更新人
+     */
+    private String updateBy;
+
+    @TableField(exist = false)
+    private Integer verifyUser;
 
     private static final long serialVersionUID = 1L;
 

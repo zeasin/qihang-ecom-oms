@@ -20,7 +20,7 @@ import java.util.List;
  * @author qihang
  */
 @RestController
-@RequestMapping("/system/dept")
+@RequestMapping("/api/sys-api/system/dept")
 public class SysDeptController extends BaseController
 {
     @Autowired

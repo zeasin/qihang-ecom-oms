@@ -1,5 +1,9 @@
 package cn.qihangerp.domain;
 
+
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -14,14 +18,17 @@ public class SysUser
     private static final long serialVersionUID = 1L;
 
     /** 用户ID */
+    @TableId
     private Long userId;
 
     /** 部门ID */
     private Long deptId;
 
+
     /** 用户账号 */
 
     private String userName;
+    private String userType;
 
     /** 用户昵称 */
     private String nickName;
@@ -54,12 +61,15 @@ public class SysUser
     private Date loginDate;
 
     /** 角色组 */
+    @TableField(exist = false)
     private Long[] roleIds;
 
     /** 岗位组 */
+    @TableField(exist = false)
     private Long[] postIds;
 
     /** 角色ID */
+    @TableField(exist = false)
     private Long roleId;
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
@@ -74,8 +84,9 @@ public class SysUser
     private String createBy;
     private String remark;
     /** 角色对象 */
+    @TableField(exist = false)
     private List<SysRole> roles;
-
+    @TableField(exist = false)
     private Map<String, Object> params;
 
     public Map<String, Object> getParams() {
@@ -90,6 +101,8 @@ public class SysUser
     {
 
     }
+
+
 
     public SysUser(Long userId)
     {
@@ -317,5 +330,13 @@ public class SysUser
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 }

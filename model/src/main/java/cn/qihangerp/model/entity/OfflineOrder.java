@@ -2,6 +2,7 @@ package cn.qihangerp.model.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -126,7 +127,7 @@ public class OfflineOrder implements Serializable {
     /**
      * 订单时间
      */
-    private Date orderTime;
+    private LocalDateTime orderTime;
 
     /**
      * 发货类型（0仓库发货；1供应商代发）

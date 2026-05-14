@@ -137,7 +137,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                 .eq(bo.getShopId()!=null,OOrder::getShopId,bo.getShopId())
                 .eq(bo.getShopType()!=null,OOrder::getShopType,bo.getShopType())
                 .eq(OOrder::getOrderStatus,1)
-                .eq(OOrder::getRefundStatus,1)
+//                .eq(OOrder::getRefundStatus,1)
                 .eq(OOrder::getShipStatus,0)//发货状态 0 待发货 1 已分配供应商发货 2全部发货
 //                .lt(ErpOrder::getShipType,2)//ship_type发货方式 0 自己发货1联合发货2供应商发货
                 .ge(org.springframework.util.StringUtils.hasText(bo.getStartTime()),OOrder::getOrderTime,bo.getStartTime())
@@ -232,7 +232,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
         OOrder erpOrder = orderMapper.selectById(shipBo.getId());
         if (erpOrder == null) {
             return ResultVo.error("找不到订单数据");
-        } else if (erpOrder.getOrderStatus().intValue() != 1 && erpOrder.getRefundStatus().intValue() != 1) {
+        } else if (erpOrder.getOrderStatus().intValue() != 1) {
             return ResultVo.error("订单状态不对，不允许发货");
         }
         if(erpOrder.getShipStatus()!=0){
@@ -355,7 +355,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             orderItemUpdate.setId( orderItem.getId());
             orderItemUpdate.setUpdateBy("手动发货");
             orderItemUpdate.setUpdateTime(new Date());
-            orderItemUpdate.setShipper(0L);
+//            orderItemUpdate.setShipper(0L);
             orderItemUpdate.setShipType(0);
             orderItemUpdate.setShipStatus(2);//发货状态 0 待发货 1 已分配供应商发货 2全部发货
             orderItemUpdate.setShipType(2);//发货方式1电子面单发货2手动发货
@@ -366,11 +366,11 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
         // 更新状态、发货方式
         OOrder update = new OOrder();
         update.setId(erpOrder.getId());
-        update.setShipper(0L);
-        update.setShipType(0);
+//        update.setShipper(0L);
+//        update.setShipType(0);
         update.setShipStatus(2);//发货状态 0 待发货 1 已分配供应商发货 2全部发货
         update.setOrderStatus(2);
-        update.setShipType(2);//发货方式1电子面单发货2手动发货
+//        update.setShipType(2);//发货方式1电子面单发货2手动发货
 
         update.setUpdateTime(new Date());
         update.setUpdateBy("手动发货");
@@ -394,7 +394,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
         OOrder erpOrder = orderMapper.selectById(shipBo.getId());
         if (erpOrder == null) {
             return ResultVo.error("找不到订单数据");
-        } else if (erpOrder.getOrderStatus().intValue() != 1 && erpOrder.getRefundStatus().intValue() != 1) {
+        } else if (erpOrder.getOrderStatus().intValue() != 1 ) {
             return ResultVo.error("订单状态不对，不允许分配发货");
         }
         if(erpOrder.getShipStatus()!=0){
@@ -562,7 +562,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                 orderItemUpdate.setUpdateBy("分配供应商发货");
                 orderItemUpdate.setUpdateTime(new Date());
                 orderItemUpdate.setShipStatus(1);//发货状态 0 待发货 1 已分配供应商发货 2全部发货
-                orderItemUpdate.setShipper(shipBo.getSupplierId());//发货人
+//                orderItemUpdate.setShipper(shipBo.getSupplierId());//发货人
                 orderItemUpdate.setShipType(2);//发货方式 0 自己发货1联合发货2供应商发货
                 orderItemMapper.updateById(orderItemUpdate);
             }
@@ -601,8 +601,8 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
         OOrder update = new OOrder();
         update.setId(erpOrder.getId());
         update.setShipStatus(1);//发货状态 0 待发货 1 已分配供应商发货 2全部发货
-        update.setShipper(shipBo.getSupplierId());//发货人
-        update.setShipType(2);//发货方式 0 自己发货1联合发货2供应商发货
+//        update.setShipper(shipBo.getSupplierId());//发货人
+//        update.setShipType(2);//发货方式 0 自己发货1联合发货2供应商发货
         update.setUpdateTime(new Date());
         update.setUpdateBy("分配供应商发货");
         orderMapper.updateById(update);
@@ -629,7 +629,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 
         // 更新子订单order_status字段值
         OOrderItem itemUpdate = new OOrderItem();
-        itemUpdate.setOrderStatus(11);
+//        itemUpdate.setOrderStatus(11);
         itemUpdate.setUpdateBy(update.getUpdateBy());
         itemUpdate.setUpdateTime(new Date());
         orderItemMapper.update(itemUpdate, new LambdaQueryWrapper<OOrderItem>().eq(OOrderItem::getOrderId, id));

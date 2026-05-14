@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @AllArgsConstructor
 @RestController
-@RequestMapping("/system/task")
+@RequestMapping("/api/sys-api/system/task")
 public class SysTaskController extends BaseController
 {
     private final SysTaskService taskService;

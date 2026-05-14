@@ -90,7 +90,7 @@ public class DouOrderApiController {
 
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
-        Long douShopId = checkResult.getData().getSellerId();
+//        Long douShopId = checkResult.getData().getSellerId();
         String accessToken = checkResult.getData().getAccessToken();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         // 获取最后更新时间

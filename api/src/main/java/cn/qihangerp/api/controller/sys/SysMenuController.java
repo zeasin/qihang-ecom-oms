@@ -20,7 +20,7 @@ import java.util.List;
  * @author qihang
  */
 @RestController
-@RequestMapping("/system/menu")
+@RequestMapping("/api/sys-api/system/menu")
 public class SysMenuController extends BaseController
 {
     @Autowired

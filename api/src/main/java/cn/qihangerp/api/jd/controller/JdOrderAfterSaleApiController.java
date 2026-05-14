@@ -68,7 +68,7 @@ public class JdOrderAfterSaleApiController {
         String serverUrl = checkResult.getData().getServerUrl();
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
-        Long sellerId = checkResult.getData().getSellerId();
+        Long sellerId = Long.parseLong(checkResult.getData().getSellerId());
 
 //        // 获取最后更新时间
 //        LocalDateTime startTime = null;

@@ -43,6 +43,10 @@ spring:
 qihangerp:
   # 验证码类型 math 数字计算 char 字符验证
   captchaType: math
+user:
+  password:
+    maxRetryCount: 5 #密码最大错误次数
+    lockTime: 10 #密码锁定时间（默认10分钟）
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/**/*Mapper.xml

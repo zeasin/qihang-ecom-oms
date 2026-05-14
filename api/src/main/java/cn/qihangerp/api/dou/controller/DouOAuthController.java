@@ -36,7 +36,7 @@ public class DouOAuthController {
         if (shop.getType() != EnumShopType.DOU.getIndex()) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "店铺不是抖店店铺");
         }
-        if (shop.getSellerId() == null || shop.getSellerId()<=0) {
+        if (StringUtils.isEmpty(shop.getSellerId())  || shop.getSellerId().equals("0")) {
             return AjaxResult.error("请设置抖店平台店铺ID（shopId）");
         }
         String appKey = shop.getAppKey();
@@ -54,7 +54,7 @@ public class DouOAuthController {
         if (!StringUtils.hasText(appSecret)) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "店铺配置错误，没有找到AppSecret");
         }
-        ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret, shop.getSellerId());
+        ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret, Long.parseLong(shop.getSellerId()));
         if(token.getCode()!=0) {
             return AjaxResult.error(ResultVoEnum.API_FAIL.getIndex(), token.getMsg());
         }else{

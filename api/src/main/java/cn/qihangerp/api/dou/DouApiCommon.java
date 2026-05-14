@@ -36,7 +36,7 @@ public class DouApiCommon {
         if (shop.getType() != EnumShopType.DOU.getIndex()) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR, "参数错误，店铺不是抖店店铺");
         }
-        if (shop.getSellerId() == null || shop.getSellerId()<=0) {
+        if (StringUtils.isEmpty(shop.getSellerId()) || shop.getSellerId().equals("0")) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR, "参数错误，请设置抖店平台店铺ID（shopId）");
         }
         String appKey = shop.getAppKey();
@@ -74,7 +74,7 @@ public class DouApiCommon {
         String accessToken = shop.getAccessToken();
 
         if (!StringUtils.hasText(shop.getAccessToken())) {
-            ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret, shop.getSellerId());
+            ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret, Long.parseLong(shop.getSellerId()));
             if(token.getCode()!=0) {
                 return ResultVo.error(ResultVoEnum.API_FAIL.getIndex(), token.getMsg(), params);
             }else{

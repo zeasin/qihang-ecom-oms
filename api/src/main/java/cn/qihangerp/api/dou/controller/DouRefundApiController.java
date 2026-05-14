@@ -75,7 +75,7 @@ public class DouRefundApiController {
 
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
-        Long douShopId = checkResult.getData().getSellerId();
+//        Long douShopId = checkResult.getData().getSellerId();
         String accessToken = checkResult.getData().getAccessToken();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         // 获取最后更新时间
@@ -103,7 +103,7 @@ public class DouRefundApiController {
         startTime = LocalDateTime.parse(req.getCreateTime() + " 00:00:01", formatter);
         endTime = LocalDateTime.parse(req.getCreateTime() + " 23:59:59", formatter);
         String pullParams = "{startTime:"+startTime.format(formatter)+",endTime:"+endTime.format(formatter)+"}";
-        ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret,checkResult.getData().getSellerId());
+        ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret,Long.parseLong(checkResult.getData().getSellerId()));
         if(token.getCode()==0) {
             accessToken = token.getData().getAccessToken();
         }else{

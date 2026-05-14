@@ -1,6 +1,7 @@
 package cn.qihangerp.security;
 
-import cn.qihangerp.domain.SysUser;import com.alibaba.fastjson2.annotation.JSONField;
+import cn.qihangerp.domain.vo.UserVo;
+import com.alibaba.fastjson2.annotation.JSONField;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -25,6 +26,8 @@ public class LoginUser implements UserDetails
      * 部门ID
      */
     private Long deptId;
+    // 用户身份 0管理员10供应商20商户30供应商40店铺
+    private Integer userIdentity;
 
     /**
      * 用户唯一标识
@@ -69,24 +72,33 @@ public class LoginUser implements UserDetails
     /**
      * 用户信息
      */
-    private SysUser user;
+    private UserVo userVo;
 
     public LoginUser()
     {
     }
 
-    public LoginUser(SysUser user, Set<String> permissions)
+    public LoginUser(UserVo userVo, Set<String> permissions)
     {
-        this.user = user;
+        this.userVo = userVo;
         this.permissions = permissions;
     }
 
-    public LoginUser(Long userId, Long deptId, SysUser user, Set<String> permissions)
+    public LoginUser(Long userId, Long deptId, Integer userIdentity, UserVo userVo, Set<String> permissions)
     {
         this.userId = userId;
+        this.userIdentity = userIdentity;
         this.deptId = deptId;
-        this.user = user;
+        this.userVo = userVo;
         this.permissions = permissions;
+    }
+
+    public Integer getUserIdentity() {
+        return userIdentity;
+    }
+
+    public void setUserIdentity(Integer userIdentity) {
+        this.userIdentity = userIdentity;
     }
 
     public Long getUserId()
@@ -123,13 +135,13 @@ public class LoginUser implements UserDetails
     @Override
     public String getPassword()
     {
-        return user.getPassword();
+        return userVo.getPassword();
     }
 
     @Override
     public String getUsername()
     {
-        return user.getUserName();
+        return userVo.getUserName();
     }
 
     /**
@@ -248,14 +260,14 @@ public class LoginUser implements UserDetails
         this.permissions = permissions;
     }
 
-    public SysUser getUser()
+    public UserVo getUser()
     {
-        return user;
+        return userVo;
     }
 
-    public void setUser(SysUser user)
+    public void setUser(UserVo userVo)
     {
-        this.user = user;
+        this.userVo = userVo;
     }
 
     @Override

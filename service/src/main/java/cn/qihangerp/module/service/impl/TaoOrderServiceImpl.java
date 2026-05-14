@@ -28,6 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -256,10 +258,10 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
         order.setShopType(EnumShopType.TAO.getIndex());
         order.setShopId(pddOrder.getShopId());
 //        order.setShipType(confirmBo.getShipType());
-        order.setShipType(0);
+//        order.setShipType(0);
         order.setBuyerMemo(pddOrder.getBuyerMemo());
         order.setSellerMemo(pddOrder.getSellerMemo());
-        order.setRefundStatus(1);
+//        order.setRefundStatus(1);
         order.setOrderStatus(1);
         order.setGoodsAmount(pddOrder.getTotalFee()!=null?pddOrder.getTotalFee():0.0);
         order.setPostFee(pddOrder.getPostFee()!=null?pddOrder.getPostFee().doubleValue():0.0);
@@ -273,8 +275,13 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
         order.setProvince(confirmBo.getProvince());
         order.setCity(confirmBo.getCity());
         order.setTown(confirmBo.getTown());
-        order.setOrderTime(StringUtils.hasText(pddOrder.getCreated())? DateUtils.dateTime("yyyy-MM-dd HH:mm:ss",pddOrder.getCreated()):new Date());
-        order.setShipper(-1L);
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime orderTime = LocalDateTime.parse(pddOrder.getCreated(), formatter);
+            order.setOrderTime(orderTime);
+        }catch (Exception e){}
+
+//        order.setShipper(-1L);
         order.setShipStatus(0);
         order.setCreateTime(new Date());
         order.setCreateBy("手动确认订单");
@@ -303,8 +310,8 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
 
             oOrderItem.setRefundCount(0);
             oOrderItem.setRefundStatus(1);
-            oOrderItem.setShipper(-1L);
-            oOrderItem.setShipType(order.getShipType());
+//            oOrderItem.setShipper(-1L);
+//            oOrderItem.setShipType(order.getShipType());
             oOrderItem.setShipStatus(0);
             oOrderItem.setCreateTime(new Date());
             oOrderItem.setCreateBy("手动确认订单");

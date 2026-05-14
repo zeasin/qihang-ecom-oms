@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * @author qihang
  */
 @RestController
-@RequestMapping("/system/user")
+@RequestMapping("/api/sys-api/system/user")
 public class SysUserController extends BaseController
 {
     @Autowired

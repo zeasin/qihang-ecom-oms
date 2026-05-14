@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,7 +45,7 @@ public class OShopServiceImpl extends ServiceImpl<OShopMapper, OShop>
 
     @Override
     public int insertShop(OShop shop) {
-        shop.setCreateOn(System.currentTimeMillis()/1000);
+        shop.setCreateTime(new Date());
         return mapper.insert(shop);
     }
 

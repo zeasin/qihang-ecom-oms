@@ -7,7 +7,7 @@ public class ShopApiParams {
     private String accessToken;
     private String redirectUri;
     private String serverUrl;
-    private Long sellerId;
+    private String sellerId;
 
     public String getAppKey() {
         return appKey;
@@ -49,11 +49,11 @@ public class ShopApiParams {
         this.serverUrl = serverUrl;
     }
 
-    public Long getSellerId() {
+    public String getSellerId() {
         return sellerId;
     }
 
-    public void setSellerId(Long sellerId) {
+    public void setSellerId(String sellerId) {
         this.sellerId = sellerId;
     }
 }

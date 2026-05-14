@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -156,7 +157,7 @@ public class OfflineOrderServiceImpl extends ServiceImpl<OfflineOrderMapper, Off
         order.setCity(bo.getCity());
         order.setTown(bo.getTown());
         order.setAddress(bo.getAddress());
-        order.setOrderTime(new Date());
+        order.setOrderTime(LocalDateTime.now());
         order.setCreateTime(new Date());
         order.setShipType(0);
         order.setCreateBy(createBy);
@@ -227,10 +228,10 @@ public class OfflineOrderServiceImpl extends ServiceImpl<OfflineOrderMapper, Off
         order.setOrderNum(offlineOrder.getOrderNum());
         order.setShopType(offlineOrder.getShopType());
         order.setShopId(offlineOrder.getShopId());
-        order.setShipType(0);
+//        order.setShipType(0);
         order.setBuyerMemo(offlineOrder.getBuyerMemo());
         order.setSellerMemo(offlineOrder.getSellerMemo());
-        order.setRefundStatus(offlineOrder.getRefundStatus());
+//        order.setRefundStatus(offlineOrder.getRefundStatus());
         order.setOrderStatus(offlineOrder.getOrderStatus());
         order.setGoodsAmount(offlineOrder.getGoodsAmount());
         order.setPostFee(offlineOrder.getPostFee());
@@ -245,7 +246,7 @@ public class OfflineOrderServiceImpl extends ServiceImpl<OfflineOrderMapper, Off
         order.setCity(orderConfirmBo.getCity());
         order.setTown(orderConfirmBo.getTown());
         order.setOrderTime(offlineOrder.getOrderTime());
-        order.setShipper(-1L);
+//        order.setShipper(-1L);
         order.setShipStatus(0);
         order.setCreateTime(new Date());
         order.setCreateBy("手动确认订单");
@@ -273,8 +274,8 @@ public class OfflineOrderServiceImpl extends ServiceImpl<OfflineOrderMapper, Off
             oOrderItem.setQuantity(item.getQuantity());
             oOrderItem.setRefundCount(item.getRefundCount());
             oOrderItem.setRefundStatus(item.getRefundStatus());
-            oOrderItem.setShipper(-1L);
-            oOrderItem.setShipType(order.getShipType());
+//            oOrderItem.setShipper(-1L);
+//            oOrderItem.setShipType(order.getShipType());
             oOrderItem.setShipStatus(0);
             oOrderItem.setCreateTime(new Date());
             oOrderItem.setCreateBy("手动确认订单");

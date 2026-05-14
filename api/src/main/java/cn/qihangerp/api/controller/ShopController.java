@@ -59,7 +59,8 @@ public class ShopController extends BaseController {
     @PostMapping("/shop")
     public AjaxResult add(@RequestBody OShop shop)
     {
-        shop.setModifyOn(System.currentTimeMillis()/1000);
+
+//        shop.setModifyOn(System.currentTimeMillis()/1000);
         return toAjax(shopService.insertShop(shop));
     }
 
@@ -74,7 +75,7 @@ public class ShopController extends BaseController {
         if(StringUtils.hasText(shop.getAccessToken())){
             shop.setApiStatus(1);
         }
-        shop.setModifyOn(System.currentTimeMillis() /1000);
+//        shop.setModifyOn(System.currentTimeMillis() /1000);
         shopService.updateShopById(shop);
 //        try{
 //            erpPushHelper.shopSave(shopService.getById(shop.getId()));

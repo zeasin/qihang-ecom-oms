@@ -1,8 +1,10 @@
 package cn.qihangerp.api.controller.sys;
 
 import cn.qihangerp.common.AjaxResult;
+import cn.qihangerp.common.PasswordValidator;
 import cn.qihangerp.common.utils.StringUtils;
 import cn.qihangerp.domain.SysUser;
+import cn.qihangerp.domain.vo.UserVo;
 import cn.qihangerp.security.LoginUser;
 import cn.qihangerp.security.TokenService;
 import cn.qihangerp.security.common.BaseController;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  * @author qihang
  */
 @RestController
-@RequestMapping("/system/user/profile")
+@RequestMapping("/api/sys-api/system/user/profile")
 public class SysProfileController extends BaseController
 {
     @Autowired
@@ -33,7 +35,9 @@ public class SysProfileController extends BaseController
     public AjaxResult profile()
     {
         LoginUser loginUser = getLoginUser();
-        SysUser user = loginUser.getUser();
+        UserVo userVo = loginUser.getUser();
+        SysUser user = userService.selectUserById(userVo.getUserId());
+
         AjaxResult ajax = AjaxResult.success(user);
         ajax.put("roleGroup", userService.selectUserRoleGroup(loginUser.getUsername()));
 //        ajax.put("postGroup", userService.selectUserPostGroup(loginUser.getUsername()));
@@ -47,8 +51,9 @@ public class SysProfileController extends BaseController
     public AjaxResult updateProfile(@RequestBody SysUser user)
     {
         LoginUser loginUser = getLoginUser();
-        SysUser sysUser = loginUser.getUser();
-        user.setUserName(sysUser.getUserName());
+        UserVo userVo = loginUser.getUser();
+//        SysUser sysUser = loginUser.getUser();
+        user.setUserName(userVo.getUserName());
         if (StringUtils.isNotEmpty(user.getPhonenumber()) && !userService.checkPhoneUnique(user))
         {
             return error("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
@@ -57,17 +62,16 @@ public class SysProfileController extends BaseController
         {
             return error("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在");
         }
-        user.setUserId(sysUser.getUserId());
+        user.setUserId(userVo.getUserId());
         user.setPassword(null);
         user.setAvatar(null);
         user.setDeptId(null);
         if (userService.updateUserProfile(user) > 0)
         {
             // 更新缓存用户信息
-            sysUser.setNickName(user.getNickName());
-            sysUser.setPhonenumber(user.getPhonenumber());
-            sysUser.setEmail(user.getEmail());
-            sysUser.setSex(user.getSex());
+            userVo.setNickName(user.getNickName());
+            userVo.setMobile(user.getPhonenumber());
+            userVo.setSex(user.getSex());
             tokenService.setLoginUser(loginUser);
             return success();
         }
@@ -83,6 +87,8 @@ public class SysProfileController extends BaseController
         LoginUser loginUser = getLoginUser();
         String userName = loginUser.getUsername();
         String password = loginUser.getPassword();
+        var b = PasswordValidator.validatePassword(userName, newPassword);
+        if(b.getCode()!=0) return AjaxResult.error(b.getMsg());
         if (!SecurityUtils.matchesPassword(oldPassword, password))
         {
             return error("修改密码失败，旧密码错误");
