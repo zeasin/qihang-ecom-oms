@@ -5,7 +5,7 @@
 <!--      <el-tab-pane label="本地仓商品库存" name="local" >-->
 <!--        <InventoryLocal></InventoryLocal>-->
 <!--      </el-tab-pane>-->
-      <el-tab-pane label="仓库库存" name="cloud" lazy>
+      <el-tab-pane label="仓库库存" name="cloud">
         <WarehouseGoodsStockList></WarehouseGoodsStockList>
       </el-tab-pane>
 <!--      <el-tab-pane label="京东云仓商品库存" name="jdcloud" lazy>-->
@@ -34,7 +34,7 @@ export default {
   components:{InventoryLocal,WarehouseGoodsStockList,InventoryMerchant},
   data() {
     return {
-      activeName: 'local',
+      activeName: 'cloud',
       userType:'00'
     };
   },

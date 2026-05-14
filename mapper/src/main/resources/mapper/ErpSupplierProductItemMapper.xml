@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.ErpSupplierProductItemMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.ErpSupplierProductItem">
+            <id property="id" column="id" />
+            <result property="supplierProductId" column="supplier_product_id" />
+            <result property="supplierId" column="supplier_id" />
+            <result property="skuCode" column="sku_code" />
+            <result property="productName" column="product_name" />
+            <result property="barCode" column="bar_code" />
+            <result property="colorId" column="color_id" />
+            <result property="colorValue" column="color_value" />
+            <result property="colorImage" column="color_image" />
+            <result property="sizeId" column="size_id" />
+            <result property="sizeValue" column="size_value" />
+            <result property="styleId" column="style_id" />
+            <result property="styleValue" column="style_value" />
+            <result property="standard" column="standard" />
+            <result property="brandNo" column="brand_no" />
+            <result property="brandName" column="brand_name" />
+            <result property="price" column="price" />
+            <result property="erpGoodsId" column="erp_goods_id" />
+            <result property="erpGoodsSkuId" column="erp_goods_sku_id" />
+            <result property="warehouseGoodsId" column="warehouse_goods_id" />
+            <result property="status" column="status" />
+            <result property="remark" column="remark" />
+            <result property="createBy" column="create_by" />
+            <result property="createTime" column="create_time" />
+            <result property="updateBy" column="update_by" />
+            <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,supplier_product_id,supplier_id,sku_code,product_name,bar_code,
+        color_id,color_value,color_image,size_id,size_value,warehouse_goods_id,
+        style_id,style_value,standard,brand_no,brand_name,
+        price,erp_goods_id,erp_goods_sku_id,status,remark,
+        create_by,create_time,update_by,update_time
+    </sql>
+</mapper>

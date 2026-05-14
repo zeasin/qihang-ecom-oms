@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.ErpSupplierProductMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.ErpSupplierProduct">
+            <id property="id" column="id" />
+            <result property="supplierId" column="supplier_id" />
+            <result property="productName" column="product_name" />
+            <result property="imageUrl" column="image_url" />
+            <result property="productNum" column="product_num" />
+            <result property="categoryId" column="category_id" />
+            <result property="brandId" column="brand_id" />
+            <result property="unitName" column="unit_name" />
+            <result property="length" column="length" />
+            <result property="width" column="width" />
+            <result property="height" column="height" />
+            <result property="weight" column="weight" />
+            <result property="status" column="status" />
+            <result property="erpGoodsId" column="erp_goods_id" />
+            <result property="merchantId" column="merchant_id" />
+            <result property="remark" column="remark" />
+            <result property="createBy" column="create_by" />
+            <result property="createTime" column="create_time" />
+            <result property="updateBy" column="update_by" />
+            <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,supplier_id,product_name,image_url,product_num,category_id,
+        brand_id,unit_name,length,width,height,
+        weight,status,erp_goods_id,merchant_id,remark,
+        create_by,create_time,update_by,update_time
+    </sql>
+</mapper>

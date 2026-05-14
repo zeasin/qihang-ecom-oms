@@ -21,7 +21,7 @@ import java.util.List;
  */
 @AllArgsConstructor
 @RestController
-@RequestMapping("/shop")
+@RequestMapping("/api/oms-api/shop")
 public class ShopPlatformController extends BaseController {
     private final OShopService shopService;
     private final OShopPlatformService shopPlatformService;
