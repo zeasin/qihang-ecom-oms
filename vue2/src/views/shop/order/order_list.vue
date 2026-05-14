@@ -345,7 +345,7 @@ import {MessageBox} from "element-ui";
 import {listShopOrder, pullOrder, orderConfirm, pullOrderDetail} from "@/api/shop/order";
 import Clipboard from "clipboard";
 import {getUserProfile} from "@/api/system/user";
-import { listMerchant } from '@/api/shop/merchant'
+import { listAllMerchant } from '@/api/shop/merchant'
 import {getShopListData} from "@/utils/shopUtils";
 
 export default {
@@ -420,8 +420,8 @@ export default {
         console.log('===总部');
         this.isMerchant = false
         this.isShop = false
-        listMerchant({ }).then(resp => {
-          this.merchantList = resp.rows
+        listAllMerchant({ }).then(resp => {
+          this.merchantList = resp.data
           if (this.merchantList.length > 0) {
             if (this.merchantId) this.queryParams.merchantId = parseInt(this.merchantId);
             else this.queryParams.merchantId = this.merchantList[0].id

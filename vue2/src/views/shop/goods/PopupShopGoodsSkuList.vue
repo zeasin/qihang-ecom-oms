@@ -123,7 +123,7 @@
 </template>
 <script>
 import {listGoodsSku} from "@/api/shop/goods";
-import { listMerchant } from '@/api/shop/merchant'
+import { listAllMerchant } from '@/api/shop/merchant'
 import { amountFormatter } from '../../../utils/zhijian'
 
 export default {

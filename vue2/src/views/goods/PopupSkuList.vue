@@ -145,7 +145,7 @@
 </template>
 <script>
 import {listGoodsSpec} from "@/api/goods/goodsSpec";
-import { listMerchant } from '@/api/shop/merchant'
+import { listAllMerchant } from '@/api/shop/merchant'
 import {getUserProfile} from "@/api/system/user";
 
 export default {
@@ -194,8 +194,8 @@ export default {
         console.log('===总部');
         this.isMerchant = false;
         this.isShop = false;
-        listMerchant({ }).then(resp => {
-          this.merchantList = resp.rows
+        listAllMerchant({ }).then(resp => {
+          this.merchantList = resp.data
           this.getList()
         })
       } else if (res.data.userType == 20) {
@@ -219,24 +219,12 @@ export default {
         this.getList()
       }
     })
-
-    // listMerchant({ }).then(resp => {
-    //   this.merchantList = resp.rows
-    //   if (this.merchantList.length > 0) {
-    //     this.queryParams.merchantId = ''
-    //     this.queryParams.merchantId = this.merchantList[0].id
-    //   }
-    //   if(resp.rows.length === 1&&resp.rows[0].id>0) {
-    //     this.isMerchant = true;
-    //   }
-    //   this.getList()
-    // })
   },
   methods: {
     // 打开弹出框
     openDialog() {
-      listMerchant({pageNum:1,pageSize:100}).then(resp=>{
-        this.merchantList = resp.rows
+      listAllMerchant({pageNum:1,pageSize:100}).then(resp=>{
+        this.merchantList = resp.data
         // if(this.merchantId){
         //   this.queryParams.merchantId = this.merchantId
         // }

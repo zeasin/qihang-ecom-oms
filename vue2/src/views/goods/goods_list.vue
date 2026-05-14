@@ -482,8 +482,8 @@ import { listCategory } from "@/api/goods/category";
 import {getToken} from "@/utils/auth";
 import {listSupplier} from "@/api/goods/supplier";
 import { listBrand } from '@/api/goods/brand'
-import { listMerchant,pushGoodsToMerchant } from '@/api/shop/merchant'
-import { shareSupplier } from '@/api/jd/ewaybill'
+import { listAllMerchant,pushGoodsToMerchant } from '@/api/shop/merchant'
+
 import {parseTime} from "../../utils/zhijian";
 import { limitDecimalLength, numberToString, stringToNumber } from "../../utils/numberInput";
 export default {
@@ -565,8 +565,8 @@ export default {
     listBrand({pageNum: 1, pageSize: 100}).then(resp=>{
       this.brandList = resp.rows
     })
-    listMerchant({pageNum:1,pageSize:100}).then(resp=>{
-      this.merchantList = resp.rows
+    listAllMerchant({pageNum:1,pageSize:100}).then(resp=>{
+      this.merchantList = resp.data
       if(resp.rows && resp.rows.length>0){
         this.queryParams.merchantId = resp.rows[0].id
       }

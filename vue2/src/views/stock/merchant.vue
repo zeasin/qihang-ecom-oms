@@ -150,7 +150,7 @@
 
 <script>
 import { listGoodsInventory, getGoodsInventory } from "@/api/goods/goodsInventory";
-import { listMerchant } from '@/api/shop/merchant'
+import {listAllMerchant} from '@/api/shop/merchant'
 
 export default {
   name: "GoodsInventory",
@@ -221,8 +221,8 @@ export default {
     };
   },
   created() {
-    listMerchant({pageNum:1,pageSize:100}).then(resp=>{
-      this.merchantList = resp.rows
+    listAllMerchant({pageNum:1,pageSize:100}).then(resp=>{
+      this.merchantList = resp.data
       this.getList()
     })
   },

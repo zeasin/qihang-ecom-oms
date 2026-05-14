@@ -347,9 +347,8 @@ import {
 } from "@/api/shop/goods";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
-import { listMerchant } from '@/api/shop/merchant'
+import { listAllMerchant } from '@/api/shop/merchant'
 import {amountFormatter, rowDataItemIndex} from '@/utils/zhijian'
-import {getInternalSystemConfig} from "@/api/third_system";
 import {getUserProfile} from "@/api/system/user";
 import {listPlatform} from "@/api/shop/shop";
 import PopupSkuList from "@/views/goods/PopupSkuList.vue";
@@ -467,8 +466,8 @@ export default {
         this.isMerchant = false
         this.isShop = false
 
-        listMerchant({}).then(resp => {
-          this.merchantList = resp.rows
+        listAllMerchant({}).then(resp => {
+          this.merchantList = resp.data
           if (this.merchantList.length > 0) {
             this.queryParams.merchantId = this.merchantList[0].id
           }
@@ -510,26 +509,20 @@ export default {
     })
   },
   created() {
-    getInternalSystemConfig(400).then(response => {
-      if (response.data) {
-        this.diansanConfig = true;
-      }
+    listAllMerchant({ pageNum: 1, pageSize: 100 }).then(resp => {
+      this.merchantList = resp.data
     })
-
-    // listMerchant({ pageNum: 1, pageSize: 100 }).then(resp => {
-    //   this.merchantList = resp.rows
-    // })
-    // this.shopLoading=true
-    // listShop({type:this.shopType}).then(response => {
-    //   this.shopList = response.rows;
-    //   this.shopLoading=false
-    //   // if (this.shopList && this.shopList.length > 0) {
-    //   //   this.queryParams.shopId = this.shopList[0].id
-    //   // }
-    //   // this.getList();
-    // });
-    // this.getList();
-    // this.loading = false;
+    this.shopLoading=true
+    listShop({type:this.shopType}).then(response => {
+      this.shopList = response.rows;
+      this.shopLoading=false
+      // if (this.shopList && this.shopList.length > 0) {
+      //   this.queryParams.shopId = this.shopList[0].id
+      // }
+      // this.getList();
+    });
+    this.getList();
+    this.loading = false;
 
   },
   watch: {
@@ -570,8 +563,8 @@ export default {
           this.queryParams.shopType = targetShop.type;
           
           // 获取商户信息，确保商户下拉框显示正确的商户名称
-          listMerchant({}).then(resp => {
-            this.merchantList = resp.rows;
+          listAllMerchant({}).then(resp => {
+            this.merchantList = resp.data;
             this.shopLoading = false;
             this.getList();
           });

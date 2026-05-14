@@ -308,7 +308,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import {listShop} from "@/api/shop/shop";
 import {pushWaybillPrintSuccess,pushShipSend} from "@/api/wei/ewaybill";
 import {listOrder, getOrder } from "@/api/order/order";
-import {listMerchant} from "@/api/shop/merchant";
+import {listAllMerchant} from "@/api/shop/merchant";
 import {getWaybillCode,getWaybillAccountList} from "@/api/xhs/ewaybill";
 
 
@@ -376,8 +376,8 @@ export default {
   },
   created() {
     this.openWs()
-    listMerchant({pageNum: 1, pageSize: 1000}).then(resp => {
-      this.merchantList = resp.rows
+    listAllMerchant({pageNum: 1, pageSize: 1000}).then(resp => {
+      this.merchantList = resp.data
       if (this.merchantList.length > 0) {
         this.queryParams.merchantId = this.merchantList[0].id
       }

@@ -1,14 +1,18 @@
 package cn.qihangerp.service.impl;
 
+import cn.qihangerp.common.PageQuery;
+import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.mapper.OShopMapper;
 import cn.qihangerp.model.entity.OShop;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.qihangerp.service.OShopService;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -25,7 +29,19 @@ public class OShopServiceImpl extends ServiceImpl<OShopMapper, OShop>
     implements OShopService {
     private final OShopMapper mapper;
 
+    @Override
+    public PageResult<OShop> queryPageList(OShop bo, PageQuery pageQuery) {
+        LambdaQueryWrapper<OShop> queryWrapper = new LambdaQueryWrapper<OShop>()
+                .like(StringUtils.hasText(bo.getName()), OShop::getName, bo.getName())
+                .eq(StringUtils.hasText(bo.getSellerId()), OShop::getSellerId, bo.getSellerId())
+                .eq(bo.getMerchantId() != null, OShop::getMerchantId, bo.getMerchantId())
+                .eq(bo.getStatus()!=null, OShop::getStatus, bo.getStatus())
+                .eq(bo.getType()!=null, OShop::getType, bo.getType())
+                .eq(bo.getRegionId() != null, OShop::getRegionId, bo.getRegionId());
 
+        Page<OShop> pages = mapper.selectPage(pageQuery.build(), queryWrapper);
+        return PageResult.build(pages);
+    }
     @Override
     public List<OShop> selectShopList(OShop shop) {
         LambdaQueryWrapper<OShop> qw = new LambdaQueryWrapper<OShop>()

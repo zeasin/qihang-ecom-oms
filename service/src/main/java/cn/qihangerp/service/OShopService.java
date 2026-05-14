@@ -1,5 +1,7 @@
 package cn.qihangerp.service;
 
+import cn.qihangerp.common.PageQuery;
+import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.model.entity.OShop;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -12,6 +14,7 @@ import java.util.List;
 * @createDate 2024-03-17 15:17:34
 */
 public interface OShopService extends IService<OShop> {
+    PageResult<OShop> queryPageList(OShop bo, PageQuery pageQuery);
     List<OShop> selectShopList(OShop shop);
     OShop selectShopById(Long id);
     int updateShopById(OShop shop);

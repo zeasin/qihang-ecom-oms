@@ -461,8 +461,7 @@ import { pushOrderToSupplier } from '@/api/shipping/shipOrder'
 import Clipboard from 'clipboard'
 
 import {listAllSupplier} from '@/api/goods/supplier'
-import { listMerchant } from '@/api/shop/merchant'
-import {getShopListData} from "@/utils/shopUtils";
+
 import {getUserProfile} from "@/api/system/user";
 
 export default {
@@ -564,8 +563,8 @@ export default {
         // 总部
         this.isMerchant = false;
         this.isShop = false
-        listMerchant({ pageNum: 1, pageSize: 1000 }).then(resp => {
-          this.merchantList = resp.rows
+        listAllMerchant({ pageNum: 1, pageSize: 1000 }).then(resp => {
+          this.merchantList = resp.data
           if (this.merchantList.length > 0) {
             this.queryParams.merchantId = this.merchantList[0].id
           }
@@ -609,25 +608,7 @@ export default {
     listPlatform({status:0}).then(res => {
       this.typeList = res.rows;
     })
-    // listMerchant({ pageNum: 1, pageSize: 1000 }).then(resp => {
-    //   this.merchantList = resp.rows
-    //   if (this.merchantList.length > 0) {
-    //     this.queryParams.merchantId = this.merchantList[0].id
-    //   }
-    //   if(resp.rows.length === 1&&resp.rows[0].id>0) {
-    //     this.isMerchant = true;
-    //   }
-    //   listShop({ merchantId: this.queryParams.merchantId }).then(response => {
-    //     this.shopList = response.rows;
-    //     this.shopLoading = false
-    //   });
-    //   this.getList()
-    // })
-    //  listShop({}).then(response => {
-    //     this.shopList = response.rows;
-    //     this.shopLoading =false
-    //   });
-    // this.getList();
+
   },
   methods: {
     searchShop(query){

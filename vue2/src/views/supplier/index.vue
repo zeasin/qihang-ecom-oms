@@ -255,7 +255,7 @@
 <script>
 import { listSupplier, getSupplier, delSupplier, addSupplier, updateSupplier,setSupplierLoginName } from "@/api/goods/supplier";
 import {validatePassword} from "@/utils/validate";
-import {listMerchant} from "@/api/shop/merchant";
+import {listAllMerchant} from "@/api/shop/merchant";
 
 
 export default {
@@ -337,7 +337,7 @@ export default {
     };
   },
   created() {
-    listMerchant({}).then(response => {
+    listAllMerchant({}).then(response => {
       this.merchantList = response.rows.filter(x => x.id>0);
       this.getList();
     })

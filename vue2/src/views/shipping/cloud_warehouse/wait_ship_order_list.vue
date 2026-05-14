@@ -333,9 +333,9 @@ import {listCloudWarehouseShipper, listCloudWarehouseShop} from '@/api/cloud_war
 import Clipboard from 'clipboard'
 import { getCloudWarehouseList } from '@/api/cloud_warehouse'
 import { getUserProfile } from '@/api/system/user'
-import {listMerchant} from '@/api/shop/merchant'
+import {listAllMerchant} from '@/api/shop/merchant'
 import {getShopListData} from "@/utils/shopUtils";
-import {listMerchantCloudWarehouse} from "@/api/store/warehouse";
+import {listAllMerchantCloudWarehouse} from "@/api/store/warehouse";
 
 export default {
   name: "waitSendOrder",
@@ -414,8 +414,8 @@ export default {
         // 总部
         this.isMerchant = false;
         this.isShop = false
-        listMerchant({ pageNum: 1, pageSize: 1000 }).then(resp => {
-          this.merchantList = resp.rows
+        listAllMerchant({ pageNum: 1, pageSize: 1000 }).then(resp => {
+          this.merchantList = resp.data
           if (this.merchantList.length > 0) {
             this.queryParams.merchantId = this.merchantList[0].id
           }
@@ -459,8 +459,8 @@ export default {
     listPlatform({status:0}).then(res => {
       this.typeList = res.rows;
     })
-    // listMerchant({ pageNum: 1, pageSize: 1000 }).then(resp => {
-    //   this.merchantList = resp.rows
+    // listAllMerchant({ pageNum: 1, pageSize: 1000 }).then(resp => {
+    //   this.merchantList = resp.data
     //   if (this.merchantList.length > 0) {
     //     this.queryParams.merchantId = this.merchantList[0].id
     //   }
@@ -616,7 +616,7 @@ export default {
           })
         } else if (this.userType === '20' || this.userType === '40') {
           console.log("=========商户或者店铺========")
-          listMerchantCloudWarehouse({}).then(response => {
+          listAllMerchantCloudWarehouse({}).then(response => {
             if(response.data && response.data.length > 0) {
               this.cloudWarehouseList = []
               this.cloudWarehouseList = response.data

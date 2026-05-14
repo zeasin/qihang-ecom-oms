@@ -317,7 +317,7 @@ import {
   getWaybillCode,
   pushShipSend
 } from "@/api/dou/ewaybill";
-import {listMerchant} from "@/api/shop/merchant";
+import {listAllMerchant} from "@/api/shop/merchant";
 
 export default {
   name: "ShippedList",
@@ -372,8 +372,8 @@ export default {
   },
   created() {
     this.openWs()
-    listMerchant({pageNum: 1, pageSize: 1000}).then(resp => {
-      this.merchantList = resp.rows
+    listAllMerchant({pageNum: 1, pageSize: 1000}).then(resp => {
+      this.merchantList = resp.data
       if (this.merchantList.length > 0) {
         this.queryParams.merchantId = this.merchantList[0].id
       }

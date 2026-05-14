@@ -1,6 +1,8 @@
 package cn.qihangerp.api.controller;
 
 import cn.qihangerp.common.AjaxResult;
+import cn.qihangerp.common.PageQuery;
+import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.model.entity.OShop;
 import cn.qihangerp.service.OLogisticsCompanyService;
@@ -11,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +41,12 @@ public class ShopController extends BaseController {
         return getDataTable(list);
     }
 
+    @GetMapping("/pageList")
+    public TableDataInfo pageList(OShop shop, PageQuery pageQuery)
+    {
+        PageResult<OShop> pageList = shopService.queryPageList(shop, pageQuery);
+        return getDataTable(pageList);
+    }
 
     /**
      * 获取店铺详细信息

@@ -431,7 +431,7 @@ import {
   addShopRefund
 } from "@/api/shop/refund";
 import { listShopOrder } from '@/api/shop/order'
-import {listMerchant} from "@/api/shop/merchant";
+import {listAllMerchant} from "@/api/shop/merchant";
 import {isRelogin} from "@/utils/request";
 import {amountFormatter} from "../../../utils/zhijian";
 
@@ -569,8 +569,8 @@ export default {
         this.isShop = false
         this.merchantList = []
         this.shopList = []
-        listMerchant({ }).then(resp => {
-          this.merchantList = resp.rows
+        listAllMerchant({ }).then(resp => {
+          this.merchantList = resp.data
           if (this.merchantList.length > 0) {
             this.queryParams.merchantId = this.merchantList[0].id
           }

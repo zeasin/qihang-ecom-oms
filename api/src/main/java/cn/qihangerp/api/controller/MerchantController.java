@@ -24,13 +24,6 @@ public class MerchantController extends BaseController {
     private final ISysUserService userService;
     private final OShopService shopService;
 
-
-    @GetMapping("/list")
-    public TableDataInfo list(MerchantQuery bo, PageQuery pageQuery) {
-        PageResult<ErpMerchant> pageResult = merchantService.queryPageList(bo, pageQuery);
-        return getDataTable(pageResult);
-    }
-
     @GetMapping("/pageList")
     public TableDataInfo pageList(MerchantQuery bo, PageQuery pageQuery) {
         // 管理员

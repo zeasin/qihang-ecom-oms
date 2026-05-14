@@ -83,7 +83,7 @@
 import { listOrder } from "@/api/order/order";
 import { listShop } from "@/api/shop/shop";
 import { parseTime } from "@/utils/zhijian";
-import {listMerchant} from "@/api/shop/merchant";
+import {listAllMerchant} from "@/api/shop/merchant";
 
 export default {
   name: 'PopupOrderList',
@@ -125,8 +125,8 @@ export default {
   methods: {
     parseTime,
     getShopList() {
-      listMerchant({ pageNum: 1, pageSize: 1000 }).then(resp => {
-        this.merchantList = resp.rows
+      listAllMerchant({ pageNum: 1, pageSize: 1000 }).then(resp => {
+        this.merchantList = resp.data
       })
       listShop({}).then(response => {
         this.shopList = response.rows;

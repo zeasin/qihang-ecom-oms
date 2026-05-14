@@ -1,13 +1,6 @@
 import request from '@/utils/request'
 
-// 查询供应商管理列表
-export function listMerchant(query) {
-  return request({
-    url: '/api/oms-api/merchant/list',
-    method: 'get',
-    params: query
-  })
-}
+// 查询商户列表-分页
 export function pageListMerchant() {
   return request({
     url: '/api/oms-api/merchant/pageList',

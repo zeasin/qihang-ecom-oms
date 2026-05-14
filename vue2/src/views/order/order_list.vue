@@ -567,7 +567,7 @@
 import {listOrder, getOrder, delOrder, addOrder, updateOrder, pushErp} from "@/api/order/order";
 import { listPlatform, listShop } from '@/api/shop/shop'
 import Clipboard from "clipboard";
-import { listMerchant } from '@/api/shop/merchant'
+import { listAllMerchant } from '@/api/shop/merchant'
 import { getShopListData } from '@/utils/shopUtils'
 import {getUserProfile} from "@/api/system/user";
 
@@ -642,8 +642,8 @@ export default {
         console.log('===总部');
         this.isMerchant = false
         this.isShop = false
-        listMerchant({ pageNum: 1, pageSize: 1000 }).then(resp => {
-          this.merchantList = resp.rows
+        listAllMerchant({ pageNum: 1, pageSize: 1000 }).then(resp => {
+          this.merchantList = resp.data
           if (this.merchantList.length > 0) {
             this.queryParams.merchantId = this.merchantList[0].id
           }

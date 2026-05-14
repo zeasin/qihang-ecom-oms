@@ -368,7 +368,7 @@ import {searchSku} from "@/api/goods/goods";
 import Clipboard from 'clipboard'
 import {getUserProfile} from "@/api/system/user";
 import {getCloudWarehouseList} from "@/api/cloud_warehouse";
-import {listMerchant, listMerchantCloudWarehouse} from "@/api/shop/merchant";
+import {listAllMerchant, listAllMerchantCloudWarehouse} from "@/api/shop/merchant";
 import {pushOrderItemToCloudWarehouse} from "@/api/shipping/shipOrder";
 import {getShopListData} from "@/utils/shopUtils";
 export default {
@@ -465,8 +465,8 @@ export default {
     listPlatform({status:0}).then(res => {
       this.typeList = res.rows;
     })
-    listMerchant({ pageNum: 1, pageSize: 1000 }).then(resp => {
-      this.merchantList = resp.rows
+    listAllMerchant({ pageNum: 1, pageSize: 1000 }).then(resp => {
+      this.merchantList = resp.data
       if (this.merchantList.length > 0) {
         this.queryParams.merchantId = this.merchantList[0].id
       }
@@ -489,7 +489,7 @@ export default {
         })
       } else if (this.userType === '20') {
         console.log("=========商户========")
-        listMerchantCloudWarehouse({}).then(response => {
+        listAllMerchantCloudWarehouse({}).then(response => {
           if(response.data && response.data.length > 0) {
             response.data.forEach((item)=>{
               this.cloudWarehouseList.push({

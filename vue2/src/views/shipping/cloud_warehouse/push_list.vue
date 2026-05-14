@@ -595,7 +595,7 @@ export default {
         })
       } else if (this.userType === '20') {
         console.log("=========商户========")
-        listMerchantCloudWarehouse({}).then(response => {
+        listAllMerchantCloudWarehouse({}).then(response => {
           if(response.data && response.data.length > 0) {
             response.data.forEach((item)=>{
               this.cloudWarehouseList.push({
@@ -748,7 +748,7 @@ export default {
           })
         } else if (this.userType === '20') {
           console.log("=========商户========")
-          listMerchantCloudWarehouse({}).then(response => {
+          listAllMerchantCloudWarehouse({}).then(response => {
             if(response.data && response.data.length > 0) {
               response.data.forEach((item)=>{
                 this.cloudWarehouseList.push({

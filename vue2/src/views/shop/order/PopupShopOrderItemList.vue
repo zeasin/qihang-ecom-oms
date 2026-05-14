@@ -108,7 +108,7 @@
 </template>
 <script>
 
-import { listMerchant } from '@/api/shop/merchant'
+import { listAllMerchant } from '@/api/shop/merchant'
 import { amountFormatter } from '../../../utils/zhijian'
 import {listShopOrderItem} from "@/api/shop/order";
 import {listShop} from "@/api/shop/shop";
@@ -153,8 +153,8 @@ export default {
     if(this.shopId){
       this.queryParams.shopId = this.shopId
     }
-    listMerchant({ }).then(resp => {
-      this.merchantList = resp.rows
+    listAllMerchant({ }).then(resp => {
+      this.merchantList = resp.data
       if (this.merchantList.length > 0) {
         this.queryParams.merchantId = this.merchantList[0].id
       }

@@ -254,7 +254,7 @@ import {parseTime} from "@/utils/zhijian";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
 import {getWaybillPrintData} from "@/api/pdd/ewaybill";
-import {listMerchant} from "@/api/shop/merchant";
+import {listAllMerchant} from "@/api/shop/merchant";
 import {getUserProfile} from "@/api/system/user";
 
 export default {
@@ -325,8 +325,8 @@ export default {
         // 总部
         this.isMerchant = false;
         this.isShop = false
-        listMerchant({pageNum: 1, pageSize: 1000}).then(resp => {
-          this.merchantList = resp.rows
+        listAllMerchant({pageNum: 1, pageSize: 1000}).then(resp => {
+          this.merchantList = resp.data
           if (this.merchantList.length > 0) {
             this.queryParams.merchantId = this.merchantList[0].id
           }
@@ -364,8 +364,8 @@ export default {
   },
   created() {
     this.openWs()
-    // listMerchant({pageNum: 1, pageSize: 1000}).then(resp => {
-    //   this.merchantList = resp.rows
+    // listAllMerchant({pageNum: 1, pageSize: 1000}).then(resp => {
+    //   this.merchantList = resp.data
     //   if (this.merchantList.length > 0) {
     //     this.queryParams.merchantId = this.merchantList[0].id
     //   }

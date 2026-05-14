@@ -217,7 +217,7 @@
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 import {listShop} from "@/api/shop/shop";
-import { listMerchant } from '@/api/shop/merchant'
+import { listAllMerchant } from '@/api/shop/merchant'
 import {listGoodsSku, linkErpGoodsSkuId, addShopGoodsSku} from "@/api/shop/goods";
 
 import {MessageBox} from "element-ui";
@@ -286,8 +286,8 @@ export default {
     };
   },
   created() {
-    listMerchant({ }).then(resp => {
-      this.merchantList = resp.rows
+    listAllMerchant({ }).then(resp => {
+      this.merchantList = resp.data
       if (this.merchantList.length > 0) {
         this.queryParams.merchantId = this.merchantList[0].id
       }

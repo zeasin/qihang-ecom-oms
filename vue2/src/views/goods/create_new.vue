@@ -317,7 +317,7 @@ import {listSupplier} from "@/api/goods/supplier";
 import {listCategoryAttribute} from "@/api/goods/categoryAttribute";
 import {generateGoodsNumber} from "../../api/goods/goods";
 import { getDicts } from '@/api/system/dict/data'
-import { listMerchant } from '@/api/shop/merchant'
+import { listAllMerchant } from '@/api/shop/merchant'
 import { limitDecimalLength, stringToNumber } from "../../utils/numberInput";
 export default {
   name: "GoodsCreate",
@@ -404,8 +404,8 @@ export default {
     listBrand({pageNum: 1, pageSize: 100}).then(resp=>{
       this.brandList = resp.rows
     })
-    listMerchant({pageNum:1,pageSize:100}).then(resp=>{
-      this.merchantList = resp.rows
+    listAllMerchant({pageNum:1,pageSize:100}).then(resp=>{
+      this.merchantList = resp.data
       if(resp.rows && resp.rows.length>0){
         this.form.merchantId = resp.rows[0].id
       }

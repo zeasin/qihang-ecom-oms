@@ -9,9 +9,7 @@
       <el-tab-pane label="按规格展示" name="ProductSkuList" lazy>
         <product-sku-list></product-sku-list>
       </el-tab-pane>
-<!--      <el-tab-pane label="商户商品" name="ProductListMerchant" lazy>-->
-<!--        <product-list-merchant></product-list-merchant>-->
-<!--      </el-tab-pane>-->
+
     </el-tabs>
 
   </div>
@@ -21,7 +19,7 @@
 
 import ProductList  from "@/views/goods/goods_list";
 import ProductSkuList  from "@/views/goods/spec/index";
-// import ProductListMerchant  from "@/views/goods/merchant_goods_list";
+
 
 export default {
   name: "GoodsLibs",

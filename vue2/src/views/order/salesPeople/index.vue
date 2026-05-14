@@ -173,7 +173,7 @@ import {
 
 import {addSalesPeople, listSalesPeople, updateSalesPeople} from "@/api/order/salespeople";
 import {listShop} from "@/api/shop/shop";
-import {listMerchant} from "@/api/shop/merchant";
+import {listAllMerchant} from "@/api/shop/merchant";
 export default {
   name: "SalesPeople",
   components: { Treeselect },
@@ -232,8 +232,8 @@ export default {
     };
   },
   created() {
-    listMerchant({}).then(resp => {
-      this.merchantList = resp.rows
+    listAllMerchant({}).then(resp => {
+      this.merchantList = resp.data
       if (this.merchantList.length > 0) {
         this.queryParams.merchantId = this.merchantList[0].id
       }

@@ -282,7 +282,7 @@
 import {listGoodsSpec, getGoodsSpec, updateGoodsSpec, addGoodsSpec,delGoodsSpec} from "@/api/goods/goodsSpec";
 import {getToken} from "@/utils/auth";
 import {delGoods} from "@/api/goods/goods";
-import {listMerchant} from "@/api/shop/merchant";
+import {listAllMerchant} from "@/api/shop/merchant";
 import { limitDecimalLength, numberToString, stringToNumber } from "@/utils/numberInput";
 
 export default {
@@ -336,8 +336,8 @@ export default {
     };
   },
   created() {
-    listMerchant({pageNum:1,pageSize:100}).then(resp=>{
-      this.merchantList = resp.rows
+    listAllMerchant({pageNum:1,pageSize:100}).then(resp=>{
+      this.merchantList = resp.data
       if(resp.rows && resp.rows.length>0){
         this.queryParams.merchantId = resp.rows[0].id
       }

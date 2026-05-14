@@ -500,7 +500,7 @@ import { listPlatform, listShop } from '@/api/shop/shop'
 import { manualShipmentOrder, pushToCloudWarehouse } from '@/api/shipping/shipOrder'
 import Clipboard from 'clipboard'
 import { getFavoriteList } from '@/api/shipping/ship_logistics'
-import {listMerchant} from "@/api/shop/merchant";
+import {listAllMerchant} from "@/api/shop/merchant";
 
 export default {
   name: "ManualShipOrderList",
@@ -619,8 +619,8 @@ export default {
     listPlatform({status:0}).then(res => {
       this.typeList = res.rows;
     })
-    listMerchant({ pageNum: 1, pageSize: 1000 }).then(resp => {
-      this.merchantList = resp.rows
+    listAllMerchant({ pageNum: 1, pageSize: 1000 }).then(resp => {
+      this.merchantList = resp.data
       if (this.merchantList.length > 0) {
         this.queryParams.merchantId = this.merchantList[0].id
       }
