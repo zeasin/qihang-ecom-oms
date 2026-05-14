@@ -1,6 +1,6 @@
 package cn.qihangerp.service;
 
-
+import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.model.entity.OGoodsSku;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +13,9 @@ import java.util.List;
 */
 public interface OGoodsSkuService extends IService<OGoodsSku> {
     List<OGoodsSku> searchGoodsSpec(String keyword);
+    List<OGoodsSku> selectSkuAll(Long merchantId);
+    OGoodsSku getGoodsSkuByCode(String skuCode);
+    OGoodsSku getGoodsSkuByOuterSkuCode(String outerSkuCode);
+    ResultVo updateSku(OGoodsSku sku);
+    ResultVo deleteSkuById(Long skuId);
 }

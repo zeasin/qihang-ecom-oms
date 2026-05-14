@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.goods.OGoodsSkuMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.OGoodsSku">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="goodsId" column="goods_id" jdbcType="BIGINT"/>
+        <result property="priceType" column="price_type" jdbcType="INTEGER"/>
+        <result property="outerErpGoodsId" column="outer_erp_goods_id" jdbcType="VARCHAR"/>
+        <result property="outerErpSkuId" column="outer_erp_sku_id" jdbcType="VARCHAR"/>
+        <result property="sellerId" column="seller_id" jdbcType="VARCHAR"/>
+        <result property="goodsName" column="goods_name" jdbcType="VARCHAR"/>
+        <result property="goodsNum" column="goods_num" jdbcType="VARCHAR"/>
+        <result property="skuName" column="sku_name" jdbcType="VARCHAR"/>
+        <result property="skuCode" column="sku_code" jdbcType="VARCHAR"/>
+        <result property="colorId" column="color_id" jdbcType="BIGINT"/>
+        <result property="colorValue" column="color_value" jdbcType="VARCHAR"/>
+        <result property="colorImage" column="color_image" jdbcType="VARCHAR"/>
+        <result property="sizeId" column="size_id" jdbcType="BIGINT"/>
+        <result property="sizeValue" column="size_value" jdbcType="VARCHAR"/>
+        <result property="styleId" column="style_id" jdbcType="BIGINT"/>
+        <result property="styleValue" column="style_value" jdbcType="VARCHAR"/>
+        <result property="barCode" column="bar_code" jdbcType="VARCHAR"/>
+        <result property="purPrice" column="pur_price" jdbcType="DECIMAL"/>
+        <result property="retailPrice" column="retail_price" jdbcType="DECIMAL"/>
+        <result property="unitCost" column="unit_cost" jdbcType="DECIMAL"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="lowQty" column="low_qty" jdbcType="INTEGER"/>
+        <result property="highQty" column="high_qty" jdbcType="INTEGER"/>
+        <result property="shipType" column="ship_type" jdbcType="INTEGER"/>
+        <result property="volume" column="volume" jdbcType="VARCHAR"/>
+        <result property="length" column="length" jdbcType="FLOAT"/>
+        <result property="height" column="height" jdbcType="FLOAT"/>
+        <result property="width" column="width" jdbcType="FLOAT"/>
+        <result property="weight" column="weight" jdbcType="FLOAT"/>
+        <result property="weight1" column="weight1" jdbcType="FLOAT"/>
+        <result property="weight2" column="weight2" jdbcType="FLOAT"/>
+        <result property="weight3" column="weight3" jdbcType="FLOAT"/>
+        <result property="merchantId" column="merchant_id" jdbcType="BIGINT"/>
+        <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+        <result property="unit" column="unit" jdbcType="VARCHAR"/>
+        <result property="inventoryMode" column="inventory_mode" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,goods_id,outer_erp_goods_id,seller_id,price_type,
+        outer_erp_sku_id,goods_name,goods_num,
+        sku_name,sku_code,color_id,
+        color_value,color_image,size_id,
+        size_value,style_id,style_value,
+        bar_code,pur_price,retail_price,
+        unit_cost,remark,status,
+        low_qty,high_qty,ship_type,
+        volume,length,height,
+        width,weight,weight1,weight2,weight3,
+          merchant_id,shop_id,unit,inventory_mode
+    </sql>
+</mapper>

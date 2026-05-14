@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.ShopGoodsMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.ShopGoods">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+            <result property="shopType" column="shop_type" jdbcType="INTEGER"/>
+            <result property="merchantId" column="merchant_id" jdbcType="BIGINT"/>
+            <result property="productId" column="product_id" jdbcType="VARCHAR"/>
+            <result property="outerProductId" column="outer_product_id" jdbcType="VARCHAR"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="subTitle" column="sub_title" jdbcType="VARCHAR"/>
+            <result property="imgs" column="imgs" jdbcType="VARCHAR"/>
+            <result property="img" column="img" jdbcType="VARCHAR"/>
+            <result property="descInfo" column="desc_info" jdbcType="VARCHAR"/>
+            <result property="attrs" column="attrs" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="minPrice" column="min_price" jdbcType="INTEGER"/>
+            <result property="marketPrice" column="market_price" jdbcType="INTEGER"/>
+            <result property="spuCode" column="spu_code" jdbcType="VARCHAR"/>
+            <result property="addTime" column="add_time" jdbcType="INTEGER"/>
+            <result property="editTime" column="edit_time" jdbcType="INTEGER"/>
+            <result property="erpGoodsId" column="erp_goods_id" jdbcType="BIGINT"/>
+            <result property="quantity" column="quantity" jdbcType="INTEGER"/>
+            <result property="createOn" column="create_on" jdbcType="TIMESTAMP"/>
+            <result property="updateOn" column="update_on" jdbcType="TIMESTAMP"/>
+            <result property="deliverMethod" column="deliver_method" jdbcType="INTEGER"/>
+            <result property="bindShipSku" column="bind_ship_sku" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,shop_id,shop_type,
+        merchant_id,product_id,outer_product_id,
+        title,sub_title,imgs,
+        img,desc_info,attrs,
+        status,min_price,market_price,
+        spu_code,add_time,edit_time,
+        erp_goods_id,quantity,create_on,
+        update_on,deliver_method,bind_ship_sku
+    </sql>
+</mapper>

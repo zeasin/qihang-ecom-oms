@@ -1,38 +1,61 @@
 package cn.qihangerp.model.entity;
 
-//import com.baomidou.mybatisplus.annotation.IdType;
-//import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * 商品规格库存管理
+ * OMS商品SKU表
  * @TableName o_goods_sku
  */
+@TableName(value ="o_goods_sku")
 @Data
 public class OGoodsSku implements Serializable {
     /**
      * 主键id
      */
-    @TableId(value = "id", type= IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private String id;
+
+    /**
+     * 计价方式：0一口价；1金包银+工费；
+     */
+    private Integer priceType;
+
+    /**
+     * 外键（o_goods）
+     */
     private String goodsId;
 
     /**
-     * 商品id
+     * 外部erp系统商品id
      */
     private String outerErpGoodsId;
 
-
     /**
-     * skuId(唯一)
+     * 外部erp系统skuId(唯一)
      */
     private String outerErpSkuId;
+
+    /**
+     * 商品名
+     */
     private String goodsName;
+
+    /**
+     * 商品编码
+     */
+    private String goodsNum;
+    private String unit;
+    /**
+     * 库存模式：0-传统SKU模式，1-一物一码模式（珠宝）
+     */
+    private Integer inventoryMode;
 
     /**
      * 规格名
@@ -65,7 +88,7 @@ public class OGoodsSku implements Serializable {
     private Long sizeId;
 
     /**
-     * 尺码值
+     * 尺码值(材质)
      */
     private String sizeValue;
 
@@ -84,12 +107,15 @@ public class OGoodsSku implements Serializable {
      */
     private String barCode;
 
+    /**
+     * 预计采购价格
+     */
+    private BigDecimal purPrice;
 
     /**
      * 建议零售价
      */
     private BigDecimal retailPrice;
-    private BigDecimal purPrice;
 
     /**
      * 单位成本
@@ -116,7 +142,60 @@ public class OGoodsSku implements Serializable {
      */
     private Integer highQty;
 
-    private String volume;
-    private static final long serialVersionUID = 1L;
+    /**
+     * 发货类型10自营发货20供应商发货
+     */
+    private Integer shipType;
 
+    /**
+     * 商品体积
+     */
+    private String volume;
+
+    /**
+     * 衣长
+     */
+    private Double length;
+
+    /**
+     * 高度
+     */
+    private Double height;
+
+    /**
+     * 宽度
+     */
+    private Double width;
+
+    /**
+     * 重量
+     */
+    private Double weight;
+    /**
+     * price_type=1启用，金重（g)
+     */
+    private Double weight1;
+    /**
+     * price_type=1启用，银重（g)
+     */
+    private Double weight2;
+    /**
+     * price_type=1启用，工时
+     */
+    private Double weight3;
+
+    /**
+     * 商户ID
+     */
+    private Long merchantId;
+    private Long shopId;
+    private String sellerId;//卖家ID(外部系统使用)
+    private String sellerBrandId;//卖家品牌ID(外部系统使用)
+
+    @TableField(exist=false)
+    private Integer quantity=1;
+    @TableField(exist=false)
+    private Integer isGift=0;
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 }

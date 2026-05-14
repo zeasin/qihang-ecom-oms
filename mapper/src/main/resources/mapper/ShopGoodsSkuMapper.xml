@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.ShopGoodsSkuMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.ShopGoodsSku">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="shopGoodsId" column="shop_goods_id" jdbcType="BIGINT"/>
+            <result property="merchantId" column="merchant_id" jdbcType="BIGINT"/>
+            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+            <result property="shopType" column="shop_type" jdbcType="INTEGER"/>
+            <result property="productId" column="product_id" jdbcType="VARCHAR"/>
+            <result property="productTitle" column="product_title" jdbcType="VARCHAR"/>
+            <result property="outerProductId" column="outer_product_id" jdbcType="VARCHAR"/>
+            <result property="skuId" column="sku_id" jdbcType="VARCHAR"/>
+            <result property="outerSkuId" column="outer_sku_id" jdbcType="VARCHAR"/>
+            <result property="img" column="img" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="INTEGER"/>
+            <result property="stockNum" column="stock_num" jdbcType="INTEGER"/>
+            <result property="skuCode" column="sku_code" jdbcType="VARCHAR"/>
+            <result property="skuName" column="sku_name" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="addTime" column="add_time" jdbcType="BIGINT"/>
+            <result property="modifyTime" column="modify_time" jdbcType="BIGINT"/>
+            <result property="skuAttrs" column="sku_attrs" jdbcType="VARCHAR"/>
+            <result property="stock" column="stock" jdbcType="INTEGER"/>
+            <result property="bindShipSku" column="bind_ship_sku" jdbcType="INTEGER"/>
+            <result property="erpGoodsId" column="erp_goods_id" jdbcType="BIGINT"/>
+            <result property="erpGoodsSkuId" column="erp_goods_sku_id" jdbcType="BIGINT"/>
+            <result property="createOn" column="create_on" jdbcType="TIMESTAMP"/>
+            <result property="updateOn" column="update_on" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,shop_goods_id,merchant_id,
+        shop_id,shop_type,product_id,
+        product_title,outer_product_id,sku_id,
+        outer_sku_id,img,price,
+        stock_num,sku_code,sku_name,
+        status,add_time,modify_time,sku_attrs,
+        stock,erp_goods_id,erp_goods_sku_id,
+        create_on,update_on,bind_ship_sku
+    </sql>
+
+    <select id="selectBenshuPageVo" parameterType="cn.qihangerp.model.query.ShopGoodsSkuQuery" resultType="cn.qihangerp.model.entity.ShopGoodsSku">
+        SELECT shop.id as shop_id,shop.name as shop_name,shop.merchant_id,
+            bs.goods_name as productTitle,bs.usable_stock as stockNum,
+            sku.id as erpGoodsSkuId,sku.sku_code as outerSkuId,sku.sku_name,sku.color_image as img
+        FROM benshu_stock as bs
+        left join o_shop as shop on shop.id = bs.seller_id
+        left join o_goods_sku as sku on sku.id = bs.goods_id
+        WHERE 1=1
+        <if test="qw.shopId!=null">
+            and shop.id = #{qw.shopId}
+        </if>
+        <if test="qw.merchantId!=null">
+            and shop.merchant_id = #{qw.merchantId}
+        </if>
+        <if test="qw.outerSkuId!=null and qw.outerSkuId!=''">
+            and sku.sku_code = #{qw.outerSkuId}
+        </if>
+        <if test="qw.erpGoodsSkuId!=null and qw.erpGoodsSkuId!=''">
+            and sku.id = #{qw.erpGoodsSkuId}
+        </if>
+        order by bs.goods_id desc
+    </select>
+</mapper>
