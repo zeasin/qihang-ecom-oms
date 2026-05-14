@@ -1,9 +1,7 @@
 <template>
   <div class="app-container">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="仓库商品" name="local" >
-        <WarehouseGoodsList></WarehouseGoodsList>
-      </el-tab-pane>
+
 <!--      <el-tab-pane label="本地仓商品库存" name="local" >-->
 <!--        <InventoryLocal></InventoryLocal>-->
 <!--      </el-tab-pane>-->
@@ -25,7 +23,7 @@
 </template>
 
 <script>
-import WarehouseGoodsList from "@/views/wms/goods/index.vue"
+
 import InventoryLocal  from "@/views/stock/local.vue";
 import WarehouseGoodsStockList  from "@/views/stock/goods_stock.vue";
 import InventoryMerchant  from "@/views/stock/merchant.vue";
@@ -33,7 +31,7 @@ import { getUserProfile } from '@/api/system/user'
 
 export default {
   name: "GoodsInventory",
-  components:{InventoryLocal,WarehouseGoodsStockList,InventoryMerchant,WarehouseGoodsList},
+  components:{InventoryLocal,WarehouseGoodsStockList,InventoryMerchant},
   data() {
     return {
       activeName: 'local',

@@ -1,18 +1,17 @@
 <template>
   <div>
-       <order-list-tl v-if="shopType===911"></order-list-tl>
-       <order-list :shopType="shopType" :shopId="shopId" :merchantId="merchantId" v-else></order-list>
+       <order-list :shopType="shopType" :shopId="shopId" :merchantId="merchantId"></order-list>
   </div>
 </template>
 
 <script>
-import OrderListTl from "@/views/thirdSystem/tanglang/order_index.vue";
+
 import OrderList from "@/views/shop/order/order_list.vue";
 
 export default {
   name: "ShopOrderIndex",
   components:{
-    OrderList,OrderListTl
+    OrderList
   },
   props: {
     shopType: {

@@ -226,8 +226,6 @@
 
     <!-- 添加品对话框 -->
     <PopupShopGoodsSkuList @data-from-select="handleDataFromPopup" :btn="1" :shopId="form.shopId" ref="popup"></PopupShopGoodsSkuList>
-    <!-- 选择会员 -->
-    <PopupShopMemberList @data-from-select="handleDataFromPopupMember" ref="popupMember"></PopupShopMemberList>
     <!-- 选择优惠 -->
     <PopupDiscountList @data-from-select="handleDataFromPopupDiscount" ref="popupDiscount"></PopupDiscountList>
   </div>
@@ -236,7 +234,6 @@
 <script>
 
 import PopupShopGoodsSkuList from '@/views/shop/goods/PopupShopGoodsSkuList.vue'
-import PopupShopMemberList from '@/views/member/PopupShopMemberList.vue'
 import PopupDiscountList from '@/views/marketing/discount/PopupDiscountList.vue'
 import { listShop } from "@/api/shop/shop";
 import {
@@ -257,7 +254,7 @@ import tab from "@/plugins/tab";
 export default {
   name: "ShopOrderCreate",
   components: {
-    PopupShopGoodsSkuList,PopupShopMemberList,PopupDiscountList
+    PopupShopGoodsSkuList,PopupDiscountList
   },
   data() {
     return {
