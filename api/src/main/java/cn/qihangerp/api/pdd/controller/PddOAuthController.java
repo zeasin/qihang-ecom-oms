@@ -6,8 +6,8 @@ import cn.qihangerp.api.pdd.PddTokenCreateBo;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.model.entity.OShopPlatform;
-import cn.qihangerp.module.service.OShopPlatformService;
-import cn.qihangerp.module.service.OShopService;
+import cn.qihangerp.service.OShopPlatformService;
+import cn.qihangerp.service.OShopService;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.pdd.PddTokenApiHelper;
 

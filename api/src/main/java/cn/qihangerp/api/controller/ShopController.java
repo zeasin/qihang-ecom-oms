@@ -1,13 +1,10 @@
 package cn.qihangerp.api.controller;
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.common.PageQuery;
-import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.model.entity.OLogisticsCompany;
 import cn.qihangerp.model.entity.OShop;
-import cn.qihangerp.module.service.OLogisticsCompanyService;
-import cn.qihangerp.module.service.OShopService;
+import cn.qihangerp.service.OLogisticsCompanyService;
+import cn.qihangerp.service.OShopService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

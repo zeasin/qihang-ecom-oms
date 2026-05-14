@@ -9,8 +9,8 @@ import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.model.entity.OShopPullLogs;
 import cn.qihangerp.model.entity.OmsWeiOrder;
 import cn.qihangerp.model.entity.OmsWeiOrderItem;
-import cn.qihangerp.module.service.OShopPullLogsService;
-import cn.qihangerp.module.service.OmsWeiOrderService;
+import cn.qihangerp.service.OShopPullLogsService;
+import cn.qihangerp.service.OmsWeiOrderService;
 
 import cn.qihangerp.open.common.ApiResultVo;
 

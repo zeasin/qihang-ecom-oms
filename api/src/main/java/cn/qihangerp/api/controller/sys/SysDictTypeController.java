@@ -3,7 +3,7 @@ package cn.qihangerp.api.controller.sys;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.model.entity.SysDictType;
-import cn.qihangerp.module.service.ISysDictTypeService;
+import cn.qihangerp.service.ISysDictTypeService;
 import cn.qihangerp.security.common.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

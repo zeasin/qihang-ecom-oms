@@ -10,12 +10,11 @@ import cn.qihangerp.common.mq.MqMessage;
 import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.mq.MqUtils;
 import cn.qihangerp.common.utils.DateUtils;
-import cn.qihangerp.model.entity.OShopPullLasttime;
 import cn.qihangerp.model.entity.OShopPullLogs;
 import cn.qihangerp.model.entity.JdRefund;
-import cn.qihangerp.module.service.JdRefundService;
-import cn.qihangerp.module.service.OShopPullLasttimeService;
-import cn.qihangerp.module.service.OShopPullLogsService;
+import cn.qihangerp.service.JdRefundService;
+import cn.qihangerp.service.OShopPullLasttimeService;
+import cn.qihangerp.service.OShopPullLogsService;
 
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.jd.JdAfterSaleApiHelper;

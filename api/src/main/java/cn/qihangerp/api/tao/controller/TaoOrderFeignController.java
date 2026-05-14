@@ -2,7 +2,7 @@ package cn.qihangerp.api.tao.controller;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.model.entity.TaoOrder;
-import cn.qihangerp.module.service.TaoOrderService;
+import cn.qihangerp.service.TaoOrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

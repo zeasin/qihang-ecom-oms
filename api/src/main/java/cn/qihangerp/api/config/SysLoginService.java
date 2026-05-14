@@ -9,7 +9,7 @@ import cn.qihangerp.common.exception.CaptchaExpireException;
 import cn.qihangerp.common.exception.UserNotExistsException;
 import cn.qihangerp.common.utils.DateUtils;
 import cn.qihangerp.common.utils.StringUtils;
-import cn.qihangerp.module.service.SysConfigService;
+import cn.qihangerp.service.SysConfigService;
 import cn.qihangerp.security.AuthenticationContextHolder;
 import cn.qihangerp.security.LoginUser;
 import cn.qihangerp.security.TokenService;

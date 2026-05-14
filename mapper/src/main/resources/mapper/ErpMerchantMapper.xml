@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.ErpMerchantMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.ErpMerchant">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="loginName" column="login_name" jdbcType="VARCHAR"/>
+            <result property="nickName" column="nick_name" jdbcType="VARCHAR"/>
+            <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
+            <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="CHAR"/>
+            <result property="delFlag" column="del_flag" jdbcType="CHAR"/>
+            <result property="loginIp" column="login_ip" jdbcType="VARCHAR"/>
+            <result property="loginDate" column="login_date" jdbcType="TIMESTAMP"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="number" column="number" jdbcType="VARCHAR"/>
+            <result property="usci" column="usci" jdbcType="VARCHAR"/>
+            <result property="faren" column="faren" jdbcType="VARCHAR"/>
+            <result property="bank" column="bank" jdbcType="VARCHAR"/>
+            <result property="linkMan" column="link_man" jdbcType="VARCHAR"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="supplierIds" column="supplier_ids" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,login_name,nick_name,
+        mobile,avatar,password,
+        status,del_flag,login_ip,
+        login_date,create_by,create_time,
+        update_by,update_time,remark,
+        name,number,usci,faren,bank,link_man,address,supplier_ids
+    </sql>
+</mapper>

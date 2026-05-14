@@ -5,8 +5,8 @@ import cn.qihangerp.model.bo.GoodsAddBo;
 import cn.qihangerp.model.entity.OGoods;
 import cn.qihangerp.model.entity.OGoodsSku;
 import cn.qihangerp.model.vo.GoodsSpecListVo;
-import cn.qihangerp.module.service.OGoodsService;
-import cn.qihangerp.module.service.OGoodsSkuService;
+import cn.qihangerp.service.OGoodsService;
+import cn.qihangerp.service.OGoodsSkuService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 @AllArgsConstructor
 @RestController
-@RequestMapping("/goods")
+@RequestMapping("/api/erp-api/goods")
 public class GoodsController extends BaseController
 {
     private final OGoodsService goodsService;

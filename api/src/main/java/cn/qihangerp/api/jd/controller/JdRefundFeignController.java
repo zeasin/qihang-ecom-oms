@@ -2,7 +2,7 @@ package cn.qihangerp.api.jd.controller;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.model.entity.JdRefund;
-import cn.qihangerp.module.service.JdRefundService;
+import cn.qihangerp.service.JdRefundService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

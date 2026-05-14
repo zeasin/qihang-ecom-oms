@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.ErpWarehouseMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.ErpWarehouse">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="ownerNo" column="owner_no" jdbcType="VARCHAR"/>
+            <result property="warehouseType" column="warehouse_type" jdbcType="VARCHAR"/>
+            <result property="warehouseNo" column="warehouse_no" jdbcType="VARCHAR"/>
+            <result property="warehouseName" column="warehouse_name" jdbcType="VARCHAR"/>
+            <result property="erpWarehouseName" column="erp_warehouse_name" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="province" column="province" jdbcType="VARCHAR"/>
+            <result property="city" column="city" jdbcType="VARCHAR"/>
+            <result property="county" column="county" jdbcType="VARCHAR"/>
+            <result property="town" column="town" jdbcType="VARCHAR"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="contacts" column="contacts" jdbcType="VARCHAR"/>
+            <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="appKey" column="app_key" jdbcType="VARCHAR"/>
+        <result property="appSecret" column="app_secret" jdbcType="VARCHAR"/>
+        <result property="accountToken" column="account_token" jdbcType="VARCHAR"/>
+        <result property="refreshToken" column="refresh_token" jdbcType="VARCHAR"/>
+        <result property="bizPin" column="biz_pin" jdbcType="VARCHAR"/>
+        <result property="bizId" column="biz_id" jdbcType="VARCHAR"/>
+        <result property="sourceNo" column="source_no" jdbcType="VARCHAR"/>
+        <result property="jdlApiType" column="jdl_api_type" jdbcType="INTEGER"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="merchantId" column="merchant_id" jdbcType="BIGINT"/>
+            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="merchantIds" column="merchant_ids" jdbcType="VARCHAR"/>
+            <result property="loginName" column="login_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,owner_no,warehouse_type,erp_warehouse_name,
+        warehouse_no,warehouse_name,type,
+        status,province,city,source_no,
+        county,town,address,login_name,contacts,phone,
+          app_key,app_secret,account_token,refresh_token,biz_pin,biz_id,jdl_api_type,
+          create_by,remark,create_time,update_by,update_time,merchant_id,shop_id,merchant_ids
+    </sql>
+</mapper>

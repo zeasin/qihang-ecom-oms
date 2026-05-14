@@ -2,18 +2,16 @@ package cn.qihangerp.api.dou.controller;
 
 import cn.qihangerp.api.dou.DouPullRequest;
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.model.entity.OShopPlatform;
-import cn.qihangerp.module.service.OShopPlatformService;
-import cn.qihangerp.module.service.OShopService;
+import cn.qihangerp.service.OShopPlatformService;
+import cn.qihangerp.service.OShopService;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.dou.DouTokenApiHelper;
 import cn.qihangerp.open.dou.model.Token;
 import lombok.AllArgsConstructor;
-import org.aspectj.weaver.loadtime.Aj;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 

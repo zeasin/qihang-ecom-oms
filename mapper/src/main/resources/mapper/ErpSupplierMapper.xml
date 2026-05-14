@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.ErpSupplierMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.ErpSupplier">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="number" column="number" jdbcType="VARCHAR"/>
+            <result property="loginName" column="login_name" jdbcType="VARCHAR"/>
+            <result property="loginPwd" column="login_pwd" jdbcType="VARCHAR"/>
+            <result property="loginSlat" column="login_slat" jdbcType="VARCHAR"/>
+            <result property="taxRate" column="tax_rate" jdbcType="DOUBLE"/>
+            <result property="amount" column="amount" jdbcType="DOUBLE"/>
+            <result property="periodMoney" column="period_money" jdbcType="DOUBLE"/>
+            <result property="difMoney" column="dif_money" jdbcType="DOUBLE"/>
+            <result property="beginDate" column="begin_date" jdbcType="DATE"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="place" column="place" jdbcType="VARCHAR"/>
+            <result property="linkMan" column="link_man" jdbcType="VARCHAR"/>
+            <result property="contact" column="contact" jdbcType="VARCHAR"/>
+            <result property="province" column="province" jdbcType="VARCHAR"/>
+            <result property="city" column="city" jdbcType="VARCHAR"/>
+            <result property="county" column="county" jdbcType="VARCHAR"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="pinYin" column="pin_yin" jdbcType="VARCHAR"/>
+            <result property="disable" column="disable" jdbcType="TINYINT"/>
+            <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+            <result property="purchaserName" column="purchaser_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="usci" column="usci" jdbcType="VARCHAR"/>
+            <result property="bl" column="bl" jdbcType="VARCHAR"/>
+            <result property="blPeriod" column="bl_period" jdbcType="VARCHAR"/>
+            <result property="blFaren" column="bl_faren" jdbcType="VARCHAR"/>
+            <result property="bank" column="bank" jdbcType="VARCHAR"/>
+            <result property="bankAccountName" column="bank_account_name" jdbcType="VARCHAR"/>
+            <result property="bankAccount" column="bank_account" jdbcType="VARCHAR"/>
+            <result property="merchantId" column="merchant_id" jdbcType="VARCHAR"/>
+            <result property="isShipper" column="is_shipper" jdbcType="VARCHAR"/>
+            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+            <result property="warehouseId" column="warehouse_id" jdbcType="BIGINT"/>
+            <result property="merchantIds" column="merchant_ids" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,number,
+        login_name,login_pwd,login_slat,
+        tax_rate,amount,period_money,
+        dif_money,begin_date,remark,
+        place,link_man,contact,
+        province,city,county,
+        address,pin_yin,disable,
+        is_delete,purchaser_name,create_time,
+        create_by,update_time,update_by,
+        usci,bl,bl_period,merchant_ids,
+        bl_faren,bank,bank_account_name,warehouse_id,
+        bank_account,is_shipper,merchant_id,shop_id
+    </sql>
+</mapper>

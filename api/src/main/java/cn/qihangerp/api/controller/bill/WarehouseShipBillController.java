@@ -4,7 +4,7 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.model.entity.ErpBillShipment;
-import cn.qihangerp.module.service.ErpBillShipmentService;
+import cn.qihangerp.service.ErpBillShipmentService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

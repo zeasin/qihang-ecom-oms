@@ -9,7 +9,7 @@ import cn.qihangerp.common.enums.HttpStatus;
 
 import cn.qihangerp.model.entity.OmsWeiGoods;
 import cn.qihangerp.model.entity.OmsWeiGoodsSku;
-import cn.qihangerp.module.service.OmsWeiGoodsService;
+import cn.qihangerp.service.OmsWeiGoodsService;
 import cn.qihangerp.open.common.ApiResultVo;
 
 import cn.qihangerp.open.wei.WeiGoodsApiService;
