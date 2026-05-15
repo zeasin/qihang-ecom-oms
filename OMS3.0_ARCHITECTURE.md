@@ -6,14 +6,14 @@
 
 ## 2. 技术栈
 
-| 分类 | 技术 | 版本 |
-|------|------|------|
-| 后端框架 | Spring Boot | 2.7.x |
-| 前端框架 | Vue.js | 2.x |
-| 数据库 | MySQL | 8.0+ |
-| ORM框架 | MyBatis Plus | 3.5.x |
-| 定时任务 | Spring Scheduling | - |
-| 前端UI | Element UI | 2.x |
+| 分类 | 技术 | 版本 | 说明 |
+|------|------|------|------|
+| 后端框架 | Spring Boot | 2.7.x | 稳定可靠的Java后端框架 |
+| 前端框架 | Vue.js | 2.x | **3.0升级：底层框架升级，UI看齐商业版** |
+| 数据库 | MySQL | 8.0+ | 稳定高效的关系型数据库 |
+| ORM框架 | MyBatis Plus | 3.5.x | 增强版MyBatis，简化开发 |
+| 定时任务 | Spring Scheduling | - | 动态任务加载支持 |
+| 前端UI | Element UI | 2.x | 企业级UI组件库 |
 
 ## 3. 架构设计
 
