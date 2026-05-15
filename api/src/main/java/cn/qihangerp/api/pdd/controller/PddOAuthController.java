@@ -4,7 +4,7 @@ package cn.qihangerp.api.pdd.controller;
 
 import cn.qihangerp.api.pdd.PddTokenCreateBo;
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.common.enums.EnumShopType;
+import cn.qihangerp.enums.EnumShopType;
 import cn.qihangerp.model.entity.OShopPlatform;
 import cn.qihangerp.service.OShopPlatformService;
 import cn.qihangerp.service.OShopService;

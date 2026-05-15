@@ -4,7 +4,7 @@ package cn.qihangerp.security.common;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.common.enums.HttpStatus;
+import cn.qihangerp.enums.HttpStatus;
 import cn.qihangerp.common.utils.StringUtils;
 import cn.qihangerp.security.LoginUser;
 import org.slf4j.Logger;

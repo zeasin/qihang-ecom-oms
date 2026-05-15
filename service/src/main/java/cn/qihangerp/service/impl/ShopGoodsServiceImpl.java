@@ -3,7 +3,6 @@ package cn.qihangerp.service.impl;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
-import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.mapper.ShopGoodsMapper;
 import cn.qihangerp.mapper.ShopGoodsSkuMapper;
 import cn.qihangerp.mapper.goods.OGoodsMapper;

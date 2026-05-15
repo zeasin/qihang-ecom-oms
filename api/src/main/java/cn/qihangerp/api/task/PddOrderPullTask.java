@@ -1,7 +1,7 @@
 package cn.qihangerp.api.task;
 
 import cn.qihangerp.api.pdd.PddOrderApiService;
-import cn.qihangerp.common.enums.EnumShopType;
+import cn.qihangerp.enums.EnumShopType;
 import cn.qihangerp.common.task.IPollableService;
 import cn.qihangerp.model.entity.OShop;
 import cn.qihangerp.model.entity.OShopPlatform;

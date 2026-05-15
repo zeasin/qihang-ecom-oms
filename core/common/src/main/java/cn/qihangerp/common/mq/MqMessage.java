@@ -1,6 +1,6 @@
 package cn.qihangerp.common.mq;
 
-import cn.qihangerp.common.enums.EnumShopType;
+import cn.qihangerp.enums.EnumShopType;
 import lombok.Data;
 
 @Data

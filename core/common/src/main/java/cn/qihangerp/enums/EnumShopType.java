@@ -1,31 +1,37 @@
-package cn.qihangerp.common.enums;
+package cn.qihangerp.enums;
 
 /**
- * 描述：发货类型
- *
+ * 描述：
+ * 店铺类型Enum
  *
  * @author qlp
  * @date 2019-09-18 19:44
  */
-public enum EnumUserType {
-    SUPPER("总部管理员", 0),
-    WAREHOUSE("仓库", 10),
-    MERCHANT("商户", 20),
-    VENDOR("供应商", 30),
-    STORE("店铺", 40)
+public enum EnumShopType {
+    TAO("淘宝天猫", 100),
+    JD("京东POP", 200),
+    JDVC("京东自营", 280),
+    PDD("拼多多", 300),
+    DOU("抖店", 400),
+    WEI("视频号", 500),
+    KWAI("快手小店", 600),
+    XHS("小红书", 700),
+    OFFLINE("拼多多", 999),
+    ERP_ORDER("ERP内销订单", 0),
+    SHOP_ORDER("店铺订单", 10000)
     ;
     private String name;
     private int index;
 
     // 构造方法
-    private EnumUserType(String name, int index) {
+    private EnumShopType(String name, int index) {
         this.name = name;
         this.index = index;
     }
 
     // 普通方法
     public static String getName(int index) {
-        for (EnumUserType c : EnumUserType.values()) {
+        for (EnumShopType c : EnumShopType.values()) {
             if (c.getIndex() == index) {
                 return c.name;
             }

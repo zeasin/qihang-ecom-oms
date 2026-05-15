@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.ShopOrderMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.ShopOrder">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="merchantId" column="merchant_id" jdbcType="BIGINT"/>
+            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+            <result property="shopType" column="shop_type" jdbcType="INTEGER"/>
+            <result property="orderType" column="order_type" jdbcType="INTEGER"/>
+            <result property="orderMode" column="order_mode" jdbcType="INTEGER"/>
+            <result property="orderSource" column="order_source" jdbcType="VARCHAR"/>
+            <result property="orderId" column="order_id" jdbcType="VARCHAR"/>
+            <result property="orderTime" column="order_time" jdbcType="INTEGER"/>
+            <result property="orderTimeText" column="order_time_text" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="INTEGER"/>
+            <result property="updateTimeText" column="update_time_text" jdbcType="VARCHAR"/>
+            <result property="orderStatus" column="order_status" jdbcType="INTEGER"/>
+            <result property="refundStatus" column="refund_status" jdbcType="INTEGER"/>
+            <result property="goodsAmount" column="goods_amount" jdbcType="INTEGER"/>
+            <result property="orderAmount" column="order_amount" jdbcType="INTEGER"/>
+            <result property="freight" column="freight" jdbcType="INTEGER"/>
+            <result property="paymentAmount" column="payment_amount" jdbcType="INTEGER"/>
+            <result property="paymentMethod" column="payment_method" jdbcType="VARCHAR"/>
+            <result property="payTime" column="pay_time" jdbcType="BIGINT"/>
+            <result property="discountAmount" column="discount_amount" jdbcType="INTEGER"/>
+            <result property="sellerDiscount" column="seller_discount" jdbcType="INTEGER"/>
+            <result property="platformDiscount" column="platform_discount" jdbcType="INTEGER"/>
+            <result property="finderDiscount" column="finder_discount" jdbcType="INTEGER"/>
+            <result property="changePrice" column="change_price" jdbcType="INTEGER"/>
+            <result property="deductionPrice" column="deduction_price" jdbcType="INTEGER"/>
+            <result property="merchantReceievePrice" column="merchant_receieve_price" jdbcType="INTEGER"/>
+            <result property="buyerMemo" column="buyer_memo" jdbcType="VARCHAR"/>
+            <result property="sellerMemo" column="seller_memo" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="province" column="province" jdbcType="VARCHAR"/>
+            <result property="city" column="city" jdbcType="VARCHAR"/>
+            <result property="county" column="county" jdbcType="VARCHAR"/>
+            <result property="town" column="town" jdbcType="VARCHAR"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="receiverName" column="receiver_name" jdbcType="VARCHAR"/>
+            <result property="receiverPhone" column="receiver_phone" jdbcType="VARCHAR"/>
+            <result property="encryptPostReceiver" column="encrypt_post_receiver" jdbcType="VARCHAR"/>
+            <result property="encryptPostTel" column="encrypt_post_tel" jdbcType="VARCHAR"/>
+            <result property="encryptPostAddress" column="encrypt_post_address" jdbcType="VARCHAR"/>
+            <result property="virtualOrderTelNumber" column="virtual_order_tel_number" jdbcType="VARCHAR"/>
+            <result property="shipDoneTime" column="ship_done_time" jdbcType="BIGINT"/>
+            <result property="finishTime" column="finish_time" jdbcType="BIGINT"/>
+            <result property="ewaybillOrderCode" column="ewaybill_order_code" jdbcType="VARCHAR"/>
+            <result property="confirmStatus" column="confirm_status" jdbcType="INTEGER"/>
+            <result property="confirmTime" column="confirm_time" jdbcType="TIMESTAMP"/>
+            <result property="erpShipStatus" column="erp_ship_status" jdbcType="INTEGER"/>
+            <result property="erpShipTime" column="erp_ship_time" jdbcType="TIMESTAMP"/>
+            <result property="createOn" column="create_on" jdbcType="TIMESTAMP"/>
+            <result property="platformUserId" column="update_on" jdbcType="TIMESTAMP"/>
+            <result property="shopMemberId" column="shop_member_id" jdbcType="BIGINT"/>
+            <result property="platformUserId" column="platform_user_id" jdbcType="BIGINT"/>
+            <result property="platformAccount" column="platform_account" jdbcType="VARCHAR"/>
+            <result property="platformOrderStatus" column="platform_order_status" jdbcType="VARCHAR"/>
+            <result property="platformOrderStatusText" column="platform_order_status_text" jdbcType="VARCHAR"/>
+            <result property="deliverMethod" column="deliver_method" jdbcType="INTEGER"/>
+            <result property="cancelReason" column="cancel_reason" jdbcType="VARCHAR"/>
+            <result property="erpShipCompany" column="erp_ship_company" jdbcType="VARCHAR"/>
+            <result property="erpShipCode" column="erp_ship_code" jdbcType="VARCHAR"/>
+            <result property="receiverId" column="receiver_id" jdbcType="VARCHAR"/>
+            <result property="logisticsPartnerCode" column="logistics_partner_code" jdbcType="VARCHAR"/>
+            <result property="logisticsOrderNo" column="logistics_order_no" jdbcType="VARCHAR"/>
+            <result property="latestDeliveryTime" column="latest_delivery_time" jdbcType="BIGINT"/>
+        <result property="platformSellerId" column="platform_seller_id" />
+        <result property="platformSellerName" column="platform_seller_name" />
+        <result property="platformType" column="platform_type" />
+        <result property="finderId" column="finder_id" />
+        <result property="liveId" column="live_id" />
+        <result property="platformType" column="order_scene" />
+        <result property="openAddressId" column="open_address_id" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,merchant_id,shop_id,order_mode,order_source,order_type,
+        shop_type,order_id,order_time,update_time,order_status,refund_status,
+        goods_amount,order_amount,freight,finish_time,payment_method,pay_time,
+        payment_amount,discount_amount,seller_discount,change_price,finder_discount,deduction_price,merchant_receieve_price,
+        platform_discount,buyer_memo,seller_memo,encrypt_post_receiver,encrypt_post_tel,encrypt_post_address,
+        remark,province,city,erp_ship_company,erp_ship_code,
+        county,town,address,order_time_text,update_time_text,
+        receiver_name,receiver_phone,virtual_order_tel_number,
+        ship_done_time,ewaybill_order_code,confirm_status,logistics_partner_code,logistics_order_no,latest_delivery_time,
+        confirm_time,erp_ship_status,erp_ship_time,cancel_reason,receiver_id,platform_seller_id,platform_seller_name,platform_type,
+        create_on,update_on,platform_user_id,shop_member_id,platform_account,platform_order_status,platform_order_status_text,deliver_method,
+          finder_id,live_id,order_scene,open_address_id
+    </sql>
+    <select id="searchOrderByGoodsParam" parameterType="cn.qihangerp.model.query.ShopOrderQueryBo" resultType="cn.qihangerp.model.entity.ShopOrder">
+        SELECT o.* FROM oms_shop_order as o
+        left join oms_shop_order_item as oi on oi.shop_order_id = o.id
+        WHERE 1=1
+        <if test="qw.shopId!=null">
+            and o.shop_id = #{qw.shopId}
+        </if>
+        <if test="qw.shopType!=null">
+            and o.shop_type = #{qw.shopType}
+        </if>
+        <if test="qw.merchantId!=null">
+            and o.merchant_id = #{qw.merchantId}
+        </if>
+        <if test="qw.deliverMethod!=null">
+            and o.deliver_method = #{qw.deliverMethod}
+        </if>
+        <if test="qw.orderId!=null and qw.orderId !=''">
+            and o.order_id = #{qw.orderId}
+        </if>
+        <if test="qw.refundStatus!=null">
+            and o.refund_status = #{qw.refundStatus}
+        </if>
+        <if test="qw.orderStatus!=null">
+            and o.order_status = #{qw.orderStatus}
+        </if>
+        <if test="qw.confirmStatus!=null">
+            and o.confirm_status = #{qw.confirmStatus}
+        </if>
+        <if test="qw.platformOrderStatus!=null">
+            and o.platform_order_status = #{qw.platformOrderStatus}
+        </if>
+        <if test="qw.startTime!=null and qw.startTime != ''">
+            and o.order_time &gt;= #{qw.startTime}
+        </if>
+        <if test="qw.endTime!=null and qw.endTime != ''">
+            and o.order_time &lt;= #{qw.endTime}
+        </if>
+
+        <if test="qw.goodsId != null and qw.goodsId != ''">
+            AND oi.product_id = #{qw.goodsId}
+        </if>
+        <if test="qw.isAll==0">
+            <if test="(qw.goodsId == null or qw.goodsId == '' ) and (qw.deliverMethod==null or qw.deliverMethod== 1)">
+                AND (oi.product_id in (SELECT product_id FROM oms_shop_goods AS sg WHERE sg.bind_ship_sku=1 and sg.shop_type=911) )
+            </if>
+        </if>
+        order by o.order_time desc
+    </select>
+</mapper>

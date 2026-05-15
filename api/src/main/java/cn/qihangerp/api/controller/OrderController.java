@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/api/erp-api/order")
 public class OrderController extends BaseController
 {
 

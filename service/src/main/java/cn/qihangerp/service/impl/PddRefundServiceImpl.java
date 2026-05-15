@@ -2,7 +2,7 @@ package cn.qihangerp.service.impl;
 
 
 import cn.qihangerp.common.*;
-import cn.qihangerp.common.enums.EnumShopType;
+import cn.qihangerp.enums.EnumShopType;
 import cn.qihangerp.mapper.*;
 import cn.qihangerp.model.bo.RefundProcessingBo;
 import cn.qihangerp.model.entity.*;

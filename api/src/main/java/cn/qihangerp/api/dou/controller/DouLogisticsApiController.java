@@ -2,8 +2,8 @@ package cn.qihangerp.api.dou.controller;
 
 import cn.qihangerp.api.dou.DouApiCommon;
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.common.enums.EnumShopType;
-import cn.qihangerp.common.enums.HttpStatus;
+import cn.qihangerp.enums.EnumShopType;
+import cn.qihangerp.enums.HttpStatus;
 import cn.qihangerp.model.entity.OLogisticsCompany;
 import cn.qihangerp.model.entity.OShop;
 import cn.qihangerp.service.OLogisticsCompanyService;

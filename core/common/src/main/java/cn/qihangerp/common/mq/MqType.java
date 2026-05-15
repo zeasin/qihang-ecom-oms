@@ -10,6 +10,10 @@ public class MqType {
      */
     public static final int REFUND_MESSAGE = 2;
     /**
+     * 订单取消
+     */
+    public static final int ORDER_CANCEL_MESSAGE = 3;
+    /**
      * 备货消息
      */
     public static final int SHIP_STOCKUP_MESSAGE = 30;

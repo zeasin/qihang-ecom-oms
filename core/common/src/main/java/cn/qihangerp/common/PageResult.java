@@ -1,7 +1,7 @@
 package cn.qihangerp.common;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import cn.qihangerp.common.enums.HttpStatus;
+import cn.qihangerp.enums.HttpStatus;
 import lombok.Data;
 
 import java.io.Serializable;

@@ -2,7 +2,7 @@ package cn.qihangerp.security;
 
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.common.enums.HttpStatus;
+import cn.qihangerp.enums.HttpStatus;
 import com.alibaba.fastjson2.JSON;
 
 import jakarta.servlet.FilterChain;

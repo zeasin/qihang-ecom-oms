@@ -3,8 +3,8 @@ package cn.qihangerp.api.wei;
 
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.api.ShopApiParams;
-import cn.qihangerp.common.enums.EnumShopType;
-import cn.qihangerp.common.enums.HttpStatus;
+import cn.qihangerp.enums.EnumShopType;
+import cn.qihangerp.enums.HttpStatus;
 import cn.qihangerp.model.entity.OShop;
 import cn.qihangerp.service.OShopService;
 import cn.qihangerp.open.common.ApiResultVo;

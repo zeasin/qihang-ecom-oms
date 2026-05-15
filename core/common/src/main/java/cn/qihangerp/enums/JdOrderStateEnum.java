@@ -1,4 +1,4 @@
-package cn.qihangerp.common.enums;
+package cn.qihangerp.enums;
 
 /**
  * 描述：

@@ -5,7 +5,7 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;
-import cn.qihangerp.common.enums.EnumShopType;
+import cn.qihangerp.enums.EnumShopType;
 import cn.qihangerp.mapper.*;
 import cn.qihangerp.model.bo.DouOrderConfirmBo;
 import cn.qihangerp.model.entity.OOrder;

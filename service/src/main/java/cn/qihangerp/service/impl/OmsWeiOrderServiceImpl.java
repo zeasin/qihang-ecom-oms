@@ -4,7 +4,7 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;
-import cn.qihangerp.common.enums.EnumShopType;
+import cn.qihangerp.enums.EnumShopType;
 import cn.qihangerp.mapper.ErpOrderItemMapper;
 import cn.qihangerp.mapper.ErpOrderMapper;
 import cn.qihangerp.model.bo.WeiOrderBo;

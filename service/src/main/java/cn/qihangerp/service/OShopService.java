@@ -2,7 +2,7 @@ package cn.qihangerp.service;
 
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
-import cn.qihangerp.common.enums.EnumShopType;
+import cn.qihangerp.enums.EnumShopType;
 import cn.qihangerp.model.entity.OShop;
 import com.baomidou.mybatisplus.extension.service.IService;
 

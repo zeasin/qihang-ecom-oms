@@ -1,4 +1,4 @@
-package cn.qihangerp.common.enums;
+package cn.qihangerp.enums;
 
 /**
  * 用户状态

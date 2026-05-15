@@ -3,7 +3,7 @@ package cn.qihangerp.api.wei.controller;
 import cn.qihangerp.api.wei.WeiApiCommon;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
-import cn.qihangerp.common.enums.EnumShopType;
+import cn.qihangerp.enums.EnumShopType;
 import cn.qihangerp.model.entity.OLogisticsCompany;
 import cn.qihangerp.model.entity.OShop;
 import cn.qihangerp.service.OLogisticsCompanyService;

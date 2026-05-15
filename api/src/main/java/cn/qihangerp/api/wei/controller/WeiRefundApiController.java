@@ -5,7 +5,7 @@ import cn.qihangerp.api.wei.PullRequest;
 import cn.qihangerp.api.wei.WeiApiCommon;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
-import cn.qihangerp.common.enums.HttpStatus;
+import cn.qihangerp.enums.HttpStatus;
 import cn.qihangerp.model.entity.OmsWeiRefund;
 import cn.qihangerp.service.OmsWeiRefundService;
 

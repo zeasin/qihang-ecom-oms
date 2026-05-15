@@ -1,7 +1,7 @@
 package cn.qihangerp.common;
 
 
-import cn.qihangerp.common.enums.HttpStatus;
+import cn.qihangerp.enums.HttpStatus;
 
 import java.util.HashMap;
 import java.util.Objects;
