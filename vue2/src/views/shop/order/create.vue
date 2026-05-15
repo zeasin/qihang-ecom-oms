@@ -245,8 +245,7 @@ import {
 } from "element-china-area-data";
 import { createShopOrder } from '@/api/shop/order'
 import { amountFormatter } from '@/utils/zhijian'
-import {listSalesPeople} from "@/api/order/salespeople";
-import {addRecovery} from "@/api/afterSale/recovery";
+
 import { limitDecimalLength, stringToNumber } from "@/utils/numberInput";
 import tab from "@/plugins/tab";
 
